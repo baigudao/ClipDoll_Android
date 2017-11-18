@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/border_notification_background_view">
+
+        <com.happy.moment.clip.doll.view.CircleImageView
+            android:id="@+id/iv_user_photo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/avatar"/>
+
+        <TextView
+            android:id="@+id/tv_notification_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/iv_user_photo"
+            android:text="我爱抓娃娃"
+            android:textColor="@color/main_text_color"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tv_notification_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_notification_title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@id/iv_user_photo"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="你邀请的xxx加入了我爱抓娃娃，你获得邀请币60个。。。"/>
+
+        <TextView
+            android:id="@+id/tv_notification_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="22dp"
+            android:layout_toRightOf="@id/tv_notification_title"
+            android:text="2017/05/23 23:45:34"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
