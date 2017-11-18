@@ -70,6 +70,19 @@
             android:scaleType="centerCrop"
             android:src="@drawable/icon__share"/>
 
+        <TextView
+            android:id="@+id/tv_cost_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:clickable="true"
+            android:text="消费记录"
+            android:textColor="@color/main_text_color"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
 </LinearLayout>

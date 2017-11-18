@@ -1,18 +1,28 @@
 package com.happy.moment.clip.doll.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.EmptyUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
+import com.happy.moment.clip.doll.bean.BannerBean;
+import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.fragment.NotificationCenterFragment;
 import com.happy.moment.clip.doll.fragment.UserCenterFragment;
+import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.GlideImageLoader;
 import com.happy.moment.clip.doll.view.SharePlatformPopupWindow;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -23,15 +33,22 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.onekeyshare.OnekeyShareTheme;
+import okhttp3.Call;
 
 import static com.blankj.utilcode.util.SnackbarUtils.getView;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, OnRefreshListener, OnLoadmoreListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, OnRefreshListener, OnLoadmoreListener, BaseRecyclerViewAdapter.OnItemClickListener {
 
     private String share_img;
     private String share_title;
@@ -40,10 +57,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private Banner banner;
 
-    private SmartRefreshLayout smartRefreshLayout;
-    private int refresh_or_load;//0或1
+    private static final int HOME_ROOM_LIST_DATA_TYPE = 1;
 
-    private ArrayList<String> images = new ArrayList<>();
+    private SmartRefreshLayout smartRefreshLayout;
+    private RecyclerView recyclerView;
+    private int refresh_or_load;//0或1
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +69,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         BarUtils.setStatusBarColor(MainActivity.this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_main);
 
+        initView();
+        initData();
+    }
+
+    private void initView() {
         findViewById(R.id.ll_close).setVisibility(View.GONE);
         ImageView iv_user_photo = (ImageView) findViewById(R.id.iv_user_photo);
         iv_user_photo.setVisibility(View.VISIBLE);
@@ -69,17 +92,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         smartRefreshLayout.setOnLoadmoreListener(this);
         refresh_or_load = 0;
 
-        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510393528928&di=270563025bcd05daecd6185670305488&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2F2015%2Fa1%2F84%2Fd%2F95.jpg");
-        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510393529139&di=6001f9a8d8b29abe83502a23f242eca1&imgtype=0&src=http%3A%2F%2Fh.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F29381f30e924b899deb0d7ea64061d950b7bf650.jpg");
-        images.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510393529133&di=b41f298f9623a34d1ebc2f1d790fc649&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dshijue1%252C0%252C0%252C294%252C40%2Fsign%3Dc55331232c9759ee5e5d6888da922963%2F3c6d55fbb2fb4316a08b2f542aa4462309f7d30c.jpg");
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         banner = (Banner) findViewById(R.id.banner);
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
-        //设置图片集合
-        banner.setImages(images);
         //设置banner动画效果
         banner.setBannerAnimation(Transformer.DepthPage);
         //设置自动轮播，默认为true
@@ -95,8 +114,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 ToastUtils.showShort("你点击了第" + position + "个banner");
             }
         });
-        //banner设置方法全部调用完毕时最后调用
-        banner.start();
     }
 
     @Override
@@ -107,8 +124,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.iv_exchange:
             case R.id.tv_exchange:
-                startActivity(new Intent(MainActivity.this, ClipDollDetailActivity.class));
-
+                getHomeRoomListData();
                 //分享
                 //            showSharePlatformPopWindow();
                 break;
@@ -117,6 +133,132 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             default:
                 break;
+        }
+    }
+
+    private void initData() {
+        getHomeBannerData();
+        getHomeRoomListData();
+    }
+
+    private void getHomeBannerData() {
+        OkHttpUtils.get()
+                .url(Constants.getHomeBannerUrl())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                handlerBannerData(jsonObjectResBody);
+                                smartRefreshLayout.finishRefresh();
+                                smartRefreshLayout.finishLoadmore();
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败,请检查网络并重试！");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    private void getHomeRoomListData() {
+        OkHttpUtils.get()
+                .url(Constants.getHomeRoomListUrl())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                handlerHomeRoomListData(jsonObjectResBody);
+                                smartRefreshLayout.finishRefresh();
+                                smartRefreshLayout.finishLoadmore();
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败,请检查网络并重试！");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    private void handlerHomeRoomListData(JSONObject jsonObjectResBody) {
+        if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
+            JSONArray homeRoomList = jsonObjectResBody.optJSONArray("liveRoomList");
+            if (EmptyUtils.isNotEmpty(homeRoomList)) {
+                Gson gson = new Gson();
+                ArrayList<HomeRoomBean> homeRoomBeanArrayList = gson.fromJson(homeRoomList.toString(), new TypeToken<ArrayList<HomeRoomBean>>() {
+                }.getType());
+                if (EmptyUtils.isNotEmpty(homeRoomBeanArrayList) && homeRoomBeanArrayList.size() != 0) {
+                    BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(MainActivity.this, homeRoomBeanArrayList, HOME_ROOM_LIST_DATA_TYPE);
+                    recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2, LinearLayoutManager.VERTICAL, false));
+                    recyclerView.setAdapter(baseRecyclerViewAdapter);
+                    baseRecyclerViewAdapter.setOnItemClickListener(this);
+                }
+            }
+        }
+    }
+
+    private void handlerBannerData(JSONObject jsonObjectResBody) {
+        if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
+            JSONArray bannerList = jsonObjectResBody.optJSONArray("bannerList");
+            if (EmptyUtils.isNotEmpty(bannerList)) {
+                Gson gson = new Gson();
+                ArrayList<BannerBean> bannerArrayList = gson.fromJson(bannerList.toString(), new TypeToken<ArrayList<BannerBean>>() {
+                }.getType());
+
+                if (EmptyUtils.isNotEmpty(bannerArrayList) && bannerArrayList.size() != 0) {
+                    ArrayList<String> images = new ArrayList<>();
+                    for (int i = 0; i < bannerArrayList.size(); i++) {
+                        images.add(bannerArrayList.get(i).getPictures());
+                    }
+                    //设置图片集合
+                    banner.setImages(images);
+                    //banner设置方法全部调用完毕时最后调用
+                    banner.start();
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void onItemClick(Object data, int position) {
+        if (data.getClass().getSimpleName().equals("HomeRoomBean")) {
+            HomeRoomBean homeRoomBean = (HomeRoomBean) data;
+            if (EmptyUtils.isNotEmpty(homeRoomBean)) {
+                ToastUtils.showShort("position:" + position + "url地址:" + homeRoomBean.getFrontPullRtmpUrl());
+                gotoPager(ClipDollDetailActivity.class,null);
+            }
         }
     }
 
@@ -136,43 +278,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        initData();
     }
 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    private long startTime = 0;
-
-    @Override
-    public void onBackPressed() {
-        long currentTime = System.currentTimeMillis();
-        if ((currentTime - startTime) > 2000) {
-            Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-            startTime = currentTime;
-        } else {
-            finish();
-        }
+        initData();
     }
 
     private void showSharePlatformPopWindow() {
@@ -233,5 +344,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         // 启动分享
         oks.show(context);
+    }
+
+    private long startTime = 0;
+
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if ((currentTime - startTime) > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            startTime = currentTime;
+        } else {
+            finish();
+        }
     }
 }

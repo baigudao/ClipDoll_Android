@@ -69,6 +69,7 @@
     <string name="cancel">取消</string>
     <string name="close">关闭</string>
     <string name="start_clip_btn">开始抓取</string>
+    <string name="start_button">开启抓娃娃之旅</string>
 
     <string-array name="str_btu_type">
         <item>内置美颜</item>

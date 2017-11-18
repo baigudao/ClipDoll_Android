@@ -50,25 +50,25 @@ public class UserCenterFragment extends BaseFragment {
                 gotoPager(NotificationCenterFragment.class, null);
                 break;
             case R.id.rl_game_coin:
-                ToastUtils.showShort("我的游戏币");
+                gotoPager(MyGameCoinFragment.class, null);
                 break;
             case R.id.rl_clip_doll_record:
-                gotoPager(ClipDollRecordFragment.class,null);
+                gotoPager(ClipDollRecordFragment.class, null);
                 break;
             case R.id.rl_order:
-                ToastUtils.showShort("订单");
+                gotoPager(MyOrderFragment.class, null);
                 break;
             case R.id.rl_prize:
-                ToastUtils.showShort("邀请奖励");
+                gotoPager(InvitePrizeFragment.class, null);
                 break;
             case R.id.rl_invite_num:
-                ToastUtils.showShort("邀请");
+                gotoPager(InviteNumExchangeFragment.class, null);
                 break;
             case R.id.rl_about_us:
-                ToastUtils.showShort("关于我们");
+                gotoPager(AboutUsFragment.class, null);
                 break;
             case R.id.rl_feed_back:
-                gotoPager(FeedBackFragment.class,null);
+                gotoPager(FeedBackFragment.class, null);
                 break;
             case R.id.rl_score_prize:
                 ToastUtils.showShort("评分有奖");

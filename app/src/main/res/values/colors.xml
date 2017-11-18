@@ -27,7 +27,10 @@
     <color name="sixth_text_color">#353637</color>
     <color name="seventh_text_color">#ff562b</color>
 
-
+    <color name="btn_press_yes_color">#cd9b1d</color>
+    <color name="btn_press_no_color">#e3af5e</color>
+    <color name="btn_text_press_yes_color">#6e6e6e</color>
+    <color name="btn_text_press_no_color">#fffafa</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>

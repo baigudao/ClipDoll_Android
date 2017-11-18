@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
+import com.happy.moment.clip.doll.R;
 import com.youth.banner.loader.ImageLoader;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
@@ -21,6 +22,7 @@ public class GlideImageLoader extends ImageLoader {
         //Glide 加载图片简单用法
         Glide.with(context)
                 .load(path)
+                .placeholder(R.drawable.wawa_default)
                 .bitmapTransform(new RoundedCornersTransformation(context, SizeUtils.dp2px(15), 0, RoundedCornersTransformation.CornerType.ALL))
                 .into(imageView);
     }

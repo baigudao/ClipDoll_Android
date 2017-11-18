@@ -33,7 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:text="@string/weixin_login"/>
+            android:text="@string/weixin_login"
+            android:textColor="@color/main_text_color"
+            android:textSize="16sp"/>
 
     </LinearLayout>
 

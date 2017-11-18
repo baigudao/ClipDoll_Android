@@ -4,19 +4,10 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/pure_white_color
-        </item> <!--以前的颜色：@color/colorPrimaryDark-->
-        <item name="colorAccent">@color/colorAccent</item>
-        <!--<item name="android:windowBackground">@null</item>&lt;!&ndash;窗口的背景:在应用启动时和xml文件的背景&ndash;&gt;-->
+        <item name="colorPrimaryDark">@color/pure_white_color</item> <!--以前的颜色：@color/colorPrimaryDark-->
+        <item name="colorAccent">@color/main_color</item>
+        <!--<item name="android:windowBackground">@layout/activity_splash</item>&lt;!&ndash;窗口的背景:在应用启动时和xml文件的背景&ndash;&gt;-->
     </style>
-
-    <!--&lt;!&ndash; Base application theme. &ndash;&gt;-->
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-    <!--<item name="colorAccent">@color/colorAccent</item>-->
-    <!--</style>-->
 
     <style name="ACPLDialog">
         <item name="android:windowFrame">@null</item>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="horizontal">
+
+    <View
+        android:layout_width="6dp"
+        android:layout_height="50dp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_room"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/wawa_default"/>
+
+        <TextView
+            android:id="@+id/tv_state_playing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/background_room_list"
+            android:gravity="center"
+            android:text="游戏中"
+            android:textColor="@color/pure_white_color"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_state_free"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/background_room_list_free"
+            android:gravity="center"
+            android:text="空闲中"
+            android:textColor="@color/pure_white_color"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_room_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_room"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="美发屋好多公仔"
+            android:textColor="@color/main_text_color"
+            android:textSize="18sp"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_room_name"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/iv_game_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_gold"/>
+
+            <TextView
+                android:id="@+id/tv_cost_coin_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_game_coin"
+                android:text="20币/次"
+                android:textColor="#ff562b"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="6dp"
+        android:layout_height="50dp"/>
+
+</LinearLayout>

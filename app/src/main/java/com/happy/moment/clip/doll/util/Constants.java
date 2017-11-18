@@ -7,6 +7,8 @@ public class Constants {
     public static final String FRAGMENT_NAME = "fragment_name";
     public static final int LIVE_APPID = 1400048722;
     public static final int ACCOUNT_TYPE = 19064;
+    public static final String IS_ENTER_GUIDE_VIEW = "is_enter_guide_view";
+    public static final String IS_USER_LOGIN = "is_user_login";
 
 
     // 存储
@@ -33,4 +35,21 @@ public class Constants {
 
 
     //网络常量
+    private static final String BASE_URL = "http://192.168.1.108:8080/wawa_api/";
+    private static final String homeRoomListUrl = BASE_URL + "live/room/getHomeRoomList/v1";
+    private static final String homeBannerUrl = BASE_URL + "home/getBannerList/v1";
+    private static final String clipDollRecordUrl = BASE_URL + "playRecord/getPlayRecordList/v1";
+
+
+    public static String getHomeRoomListUrl() {
+        return homeRoomListUrl;
+    }
+
+    public static String getHomeBannerUrl() {
+        return homeBannerUrl;
+    }
+
+    public static String getClipDollRecordUrl() {
+        return clipDollRecordUrl;
+    }
 }
