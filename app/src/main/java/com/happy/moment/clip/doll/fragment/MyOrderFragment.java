@@ -12,6 +12,7 @@ import com.happy.moment.clip.doll.R;
  */
 
 public class MyOrderFragment extends BaseFragment {
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_my_order;

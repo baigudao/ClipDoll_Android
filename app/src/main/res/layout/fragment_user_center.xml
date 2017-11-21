@@ -218,6 +218,7 @@
                     android:src="@drawable/personal_icon_music"/>
 
                 <TextView
+                    android:id="@+id/tv_music"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -225,6 +226,22 @@
                     android:text="背景音乐"
                     android:textColor="@color/main_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/music_btn_toggle_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/tv_music"
+                    android:src="@drawable/personal_icon_open"/>
+
+                <ImageView
+                    android:id="@+id/music_btn_toggle_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/tv_music"
+                    android:src="@drawable/personal_icon_shutdown"/>
 
             </RelativeLayout>
 
@@ -244,6 +261,7 @@
                     android:src="@drawable/personal_icon_musiceffect"/>
 
                 <TextView
+                    android:id="@+id/tv_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -251,6 +269,22 @@
                     android:text="音效"
                     android:textColor="@color/main_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/sound_btn_toggle_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="55dp"
+                    android:layout_toRightOf="@id/tv_sound"
+                    android:src="@drawable/personal_icon_open"/>
+
+                <ImageView
+                    android:id="@+id/sound_btn_toggle_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="55dp"
+                    android:layout_toRightOf="@id/tv_sound"
+                    android:src="@drawable/personal_icon_shutdown"/>
 
             </RelativeLayout>
 

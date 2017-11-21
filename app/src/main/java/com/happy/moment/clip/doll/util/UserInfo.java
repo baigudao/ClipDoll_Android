@@ -32,8 +32,6 @@ public class UserInfo {
     private UserInfo() {
     }
 
-    ;
-
     public String getAccount() {
         return account;
     }

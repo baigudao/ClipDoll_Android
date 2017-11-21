@@ -14,6 +14,11 @@ import com.happy.moment.clip.doll.R;
 
 public class UserCenterFragment extends BaseFragment {
 
+    private ImageView music_btn_toggle_on;
+    private ImageView music_btn_toggle_off;
+    private ImageView sound_btn_toggle_on;
+    private ImageView sound_btn_toggle_off;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_user_center;
@@ -37,7 +42,24 @@ public class UserCenterFragment extends BaseFragment {
         view.findViewById(R.id.rl_score_prize).setOnClickListener(this);
         view.findViewById(R.id.rl_check_update).setOnClickListener(this);
 
+        music_btn_toggle_on = (ImageView) view.findViewById(R.id.music_btn_toggle_on);
+        music_btn_toggle_on.setOnClickListener(this);
+        music_btn_toggle_off = (ImageView) view.findViewById(R.id.music_btn_toggle_off);
+        music_btn_toggle_off.setOnClickListener(this);
+        sound_btn_toggle_on = (ImageView) view.findViewById(R.id.sound_btn_toggle_on);
+        sound_btn_toggle_on.setOnClickListener(this);
+        sound_btn_toggle_off = (ImageView) view.findViewById(R.id.sound_btn_toggle_off);
+        sound_btn_toggle_off.setOnClickListener(this);
+        //默认显示开的状态
+        showImageView(music_btn_toggle_on, music_btn_toggle_off);
+        showImageView(sound_btn_toggle_on, sound_btn_toggle_off);
+
         view.findViewById(R.id.btn_exit_login).setOnClickListener(this);
+    }
+
+    private void showImageView(ImageView imageView1, ImageView imageView2) {
+        imageView1.setVisibility(View.VISIBLE);
+        imageView2.setVisibility(View.GONE);
     }
 
     @Override
@@ -78,6 +100,22 @@ public class UserCenterFragment extends BaseFragment {
                 break;
             case R.id.btn_exit_login:
                 ToastUtils.showShort("退出登录");
+                break;
+            case R.id.music_btn_toggle_on:
+                showImageView(music_btn_toggle_off, music_btn_toggle_on);
+                ToastUtils.showShort("关闭音乐");
+                break;
+            case R.id.music_btn_toggle_off:
+                showImageView(music_btn_toggle_on, music_btn_toggle_off);
+                ToastUtils.showShort("打开音乐");
+                break;
+            case R.id.sound_btn_toggle_on:
+                showImageView(sound_btn_toggle_off, sound_btn_toggle_on);
+                ToastUtils.showShort("关闭音效");
+                break;
+            case R.id.sound_btn_toggle_off:
+                showImageView(sound_btn_toggle_on, sound_btn_toggle_off);
+                ToastUtils.showShort("打开音效");
                 break;
             default:
                 break;

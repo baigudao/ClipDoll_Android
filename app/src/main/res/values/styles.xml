@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/pure_white_color</item> <!--以前的颜色：@color/colorPrimaryDark-->
         <item name="colorAccent">@color/main_color</item>
-        <!--<item name="android:windowBackground">@layout/activity_splash</item>&lt;!&ndash;窗口的背景:在应用启动时和xml文件的背景&ndash;&gt;-->
+        <item name="android:windowBackground">@drawable/start_pic</item><!--窗口的背景:在应用启动时和xml文件的背景-->
     </style>
 
     <style name="ACPLDialog">
@@ -51,13 +51,23 @@
     </style>
 
     <style name="NoBackGroundDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <!--<item name="android:windowContentOverlay">@null</item>-->
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
+        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
 </resources>

@@ -1,6 +1,5 @@
 package com.happy.moment.clip.doll.activity;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,14 +16,18 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.view.TransparentDialog;
 import com.tencent.av.sdk.AVRoomMulti;
 import com.tencent.ilivesdk.ILiveCallBack;
 import com.tencent.ilivesdk.ILiveConstants;
 import com.tencent.ilivesdk.core.ILiveLoginManager;
 import com.tencent.ilivesdk.core.ILiveRoomManager;
-import com.tencent.ilivesdk.view.AVRootView;
 import com.tencent.livesdk.ILVLiveManager;
 import com.tencent.livesdk.ILVLiveRoomOption;
+import com.tencent.rtmp.TXLiveConstants;
+import com.tencent.rtmp.TXLivePlayConfig;
+import com.tencent.rtmp.TXLivePlayer;
+import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -38,11 +41,10 @@ import okhttp3.Call;
 
 public class ClipDollDetailActivity extends BaseActivity implements View.OnClickListener {
 
-    private final String TAG = "DemoHost";
     private EditText etRoom;
     private TextView tvMsg;
     private ScrollView svScroll;
-    private AVRootView arvRoot;
+    private TXCloudVideoView txvv_play_view;
 
     private boolean isCameraOn = true;
     private boolean isMicOn = true;
@@ -73,6 +75,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     private TextView tv_timer;
 
     private int time;
+    private TXLivePlayer mTxlpPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +87,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
         //        UserInfo.getInstance().getCache(getApplicationContext());
         OkHttpUtils.post()
-                .url("http://192.168.1.108:8080/wawa_api/user/getTlsSign/v1")
+                .url("http://119.29.119.179:8090/wawa_api/user/getTlsSign/v1")
                 .addParams("state", "1")
                 .addParams("data", getJsonData().toString())
                 .build()
@@ -103,6 +106,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                             JSONObject jsonObjectData = jsonObject.optJSONObject("data");
                             if (code == 1) {
                                 String tlsSign = jsonObjectData.optString("tlsSign");
+                                LogUtils.e(tlsSign);
                                 if (EmptyUtils.isNotEmpty(tlsSign)) {
                                     login(tlsSign);
                                 }
@@ -117,7 +121,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 });
 
         //进入界面后10s开始抓取娃娃
-        time = 10;
+        time = 5;
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -135,24 +139,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 });
             }
         }, 1000, 1000);
-
-
-
-        //试运行
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //        etRoom = (EditText) findViewById(R.id.et_room);
@@ -195,7 +181,14 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         findViewById(R.id.iv_share).setOnClickListener(this);
         findViewById(R.id.iv_live_room_camera).setOnClickListener(this);
         tv_timer = (TextView) findViewById(R.id.tv_timer);
-        arvRoot = (AVRootView) findViewById(R.id.arv_root);
+        txvv_play_view = (TXCloudVideoView) findViewById(R.id.txvv_play_view);
+
+        mTxlpPlayer = new TXLivePlayer(this);
+
+        mTxlpPlayer.setPlayerView(txvv_play_view);
+        mTxlpPlayer.setConfig(new TXLivePlayConfig());
+        mTxlpPlayer.setRenderMode(TXLiveConstants.RENDER_MODE_FULL_FILL_SCREEN);
+        mTxlpPlayer.setRenderRotation(TXLiveConstants.RENDER_ROTATION_LANDSCAPE);
 
         rl_start_clip_and_recharge = (RelativeLayout) findViewById(R.id.rl_start_clip_and_recharge);
         rl_start_clip_and_recharge.setVisibility(View.VISIBLE);
@@ -287,6 +280,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private void login(String tlsSign) {
+        LogUtils.e("进入登录");
         ILiveLoginManager.getInstance().iLiveLogin("f631a6c7c84511e790f2246e96754b22", tlsSign, new ILiveCallBack() {
             @Override
             public void onSuccess(Object data) {
@@ -304,24 +298,34 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
     private void createRoom() {
         if (login) {
-            //创建房间配置项
-            ILVLiveRoomOption hostOption = new ILVLiveRoomOption(null)
-                    .controlRole("Host")//角色设置
-                    .authBits(AVRoomMulti.AUTH_BITS_DEFAULT)//权限设置
-                    .cameraId(ILiveConstants.FRONT_CAMERA)//摄像头前置后置
-                    .videoRecvMode(AVRoomMulti.VIDEO_RECV_MODE_SEMI_AUTO_RECV_CAMERA_VIDEO);//是否开始半自动接收
-
-            //创建房间
-            ILVLiveManager.getInstance().createRoom(44, hostOption, new ILiveCallBack() {
+            //加入房间配置项
+            ILVLiveRoomOption memberOption = new ILVLiveRoomOption("live_1_front_push_1510577069")
+                    .autoCamera(false) //是否自动打开摄像头
+                    .controlRole("Guest") //角色设置
+                    .authBits(AVRoomMulti.AUTH_BITS_JOIN_ROOM | AVRoomMulti.AUTH_BITS_RECV_AUDIO | AVRoomMulti.AUTH_BITS_RECV_CAMERA_VIDEO | AVRoomMulti.AUTH_BITS_RECV_SCREEN_VIDEO) //权限设置
+                    .videoRecvMode(AVRoomMulti.VIDEO_RECV_MODE_SEMI_AUTO_RECV_CAMERA_VIDEO) //是否开始半自动接收
+                    .autoMic(false);//是否自动打开mic
+            //加入房间
+            ILVLiveManager.getInstance().joinRoom(348312, memberOption, new ILiveCallBack() {
                 @Override
                 public void onSuccess(Object data) {
-                    Toast.makeText(ClipDollDetailActivity.this, "create room  ok", Toast.LENGTH_SHORT).show();
-                    ILVLiveManager.getInstance().setAvVideoView(arvRoot);
+                    //                bEnterRoom = true;
+                    LogUtils.e(data);
+                    Toast.makeText(ClipDollDetailActivity.this, "join room  ok ", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mTxlpPlayer.startPlay("rtmp://16145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0", TXLivePlayer.PLAY_TYPE_LIVE_RTMP);
+                        }
+                    });
+                    //                logoutBtn.setVisibility(View.INVISIBLE);
+                    //                backBtn.setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onError(String module, int errCode, String errMsg) {
-                    Toast.makeText(ClipDollDetailActivity.this, module + "|create fail " + errMsg + " " + errMsg, Toast.LENGTH_SHORT).show();
+                    //                Toast.makeText(LiveActivity.this, module + "|join fail " + errMsg + " " + errMsg, Toast.LENGTH_SHORT).show();
+                    LogUtils.e("module:" + module + "\n" + "code:" + errCode + "\n" + "msg:" + errMsg);
                 }
             });
         }
@@ -616,9 +620,13 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     }
 
     private void showResultDialog() {
-        View view = View.inflate(ClipDollDetailActivity.this,R.layout.dialog_clip_doll_result_yes,null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(ClipDollDetailActivity.this,R.style.NoBackGroundDialog);
-        builder.setView(view);
-        builder.create().show();
+        //        View view = View.inflate(ClipDollDetailActivity.this, R.layout.dialog_clip_doll_result_yes, null);
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(ClipDollDetailActivity.this, R.style.dialog);
+        //        builder.setView(view);
+        //        builder.create().show();
+
+        TransparentDialog transparentDialog = new TransparentDialog(this, R.style.dialog);//创建Dialog并设置样式主题
+        transparentDialog.setCanceledOnTouchOutside(true);//设置点击Dialog外部任意区域关闭Dialog
+        transparentDialog.show();
     }
 }

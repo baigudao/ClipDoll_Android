@@ -3,12 +3,23 @@ package com.happy.moment.clip.doll.util;
 public class Constants {
 
     //一般常量
-    public static final String APP_ID = "wx8bac6dd603d47d15";//微信开放平台AppID
+    public static final String APP_ID = "wx5419793b4eeff9be";//微信开放平台AppID
+    public static final String APP_SECRET = "d44b28417caa330d12128338ecfea664";//微信开放平台AppID
     public static final String FRAGMENT_NAME = "fragment_name";
     public static final int LIVE_APPID = 1400048722;
     public static final int ACCOUNT_TYPE = 19064;
     public static final String IS_ENTER_GUIDE_VIEW = "is_enter_guide_view";
     public static final String IS_USER_LOGIN = "is_user_login";
+    public static final String LOGINTYPE = "loginType";
+    public static final String PLATFORM = "platform";
+    public static final String WECHATCODE = "wechatCode";
+    public static final String SESSION = "session";
+    public static final String HEADIMG = "headImg";
+    public static final String INVITECODE = "inviteCode";
+    public static final String NICKNAME = "nickName";
+    public static final String USERID = "userId";
+    public static final String DEVICE_ID = "device_id";
+    public static final String MY_USER_INFO = "my_user_info";
 
 
     // 存储
@@ -35,10 +46,11 @@ public class Constants {
 
 
     //网络常量
-    private static final String BASE_URL = "http://192.168.1.108:8080/wawa_api/";
+    private static final String BASE_URL = "http://192.168.1.112:8080/wawa_api/";//192.168.1.108:8080（蔡）//119.29.119.179:8090//192.168.1.112:8080（盾哥）
     private static final String homeRoomListUrl = BASE_URL + "live/room/getHomeRoomList/v1";
     private static final String homeBannerUrl = BASE_URL + "home/getBannerList/v1";
     private static final String clipDollRecordUrl = BASE_URL + "playRecord/getPlayRecordList/v1";
+    private static final String userLoginUrl = BASE_URL + "user/account/login/v1";
 
 
     public static String getHomeRoomListUrl() {
@@ -51,5 +63,9 @@ public class Constants {
 
     public static String getClipDollRecordUrl() {
         return clipDollRecordUrl;
+    }
+
+    public static String getUserLoginUrl() {
+        return userLoginUrl;
     }
 }

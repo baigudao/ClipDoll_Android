@@ -2,14 +2,132 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/pure_white_color"
               android:orientation="vertical">
 
     <include layout="@layout/title_bar"/>
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/invite_icon_images"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/invite_icon_images"/>
+
+        <LinearLayout
+            android:id="@+id/ll_invite_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_invite_num1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/colorBlack"
+                android:digits="@string/filter_vcode"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/main_color"
+                android:textSize="25sp"/>
+
+            <EditText
+                android:id="@+id/et_invite_num2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorBlack"
+                android:digits="@string/filter_vcode"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/main_color"
+                android:textSize="25sp"/>
+
+            <EditText
+                android:id="@+id/et_invite_num3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorBlack"
+                android:digits="@string/filter_vcode"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/main_color"
+                android:textSize="25sp"/>
+
+            <EditText
+                android:id="@+id/et_invite_num4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorBlack"
+                android:digits="@string/filter_vcode"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/main_color"
+                android:textSize="25sp"/>
+
+            <EditText
+                android:id="@+id/et_invite_num5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorBlack"
+                android:digits="@string/filter_vcode"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/main_color"
+                android:textSize="25sp"/>
+
+            <EditText
+                android:id="@+id/et_invite_num6"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorBlack"
+                android:digits="@string/filter_vcode"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/main_color"
+                android:textSize="25sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_invite_num"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="40dp"
+            android:text="输入好友的邀请码，即可获赠50个游戏币"
+            android:textColor="@color/main_text_color"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_exchange"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_background_invite_num_exchange_enable"
+        android:enabled="false"
+        android:text="立即兑换"
+        android:textColor="@color/main_color"
+        android:textSize="18sp"/>
 
 </LinearLayout>

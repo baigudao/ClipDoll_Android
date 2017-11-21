@@ -88,8 +88,8 @@
 	-->
     <!--要分享微信小应用程序时用userName,path-->
     <Wechat
-        AppId="wx4868b35061f87885"
-        AppSecret="64020361b8ec4c99936c0e3999a9f249"
+        AppId="wx5419793b4eeff9be"
+        AppSecret="d44b28417caa330d12128338ecfea664"
         BypassApproval="true"
         Enable="true"
         Id="4"
@@ -98,16 +98,16 @@
         userName="gh_afb25ac019c9"/>
 
     <WechatMoments
-        AppId="wx4868b35061f87885"
-        AppSecret="64020361b8ec4c99936c0e3999a9f249"
+        AppId="wx5419793b4eeff9be"
+        AppSecret="d44b28417caa330d12128338ecfea664"
         BypassApproval="true"
         Enable="true"
         Id="5"
         SortId="5"/>
 
     <WechatFavorite
-        AppId="wx4868b35061f87885"
-        AppSecret="64020361b8ec4c99936c0e3999a9f249"
+        AppId="wx5419793b4eeff9be"
+        AppSecret="d44b28417caa330d12128338ecfea664"
         Enable="true"
         Id="6"
         SortId="6"/>

@@ -70,6 +70,9 @@
     <string name="close">关闭</string>
     <string name="start_clip_btn">开始抓取</string>
     <string name="start_button">开启抓娃娃之旅</string>
+    <string name="login_successful">登录成功</string>
+    <string name="reject">拒绝</string>
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 
     <string-array name="str_btu_type">
         <item>内置美颜</item>

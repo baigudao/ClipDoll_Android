@@ -1,6 +1,10 @@
 package com.happy.moment.clip.doll.util;
 
 
+import com.blankj.utilcode.util.EmptyUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.happy.moment.clip.doll.bean.UserInfo;
+
 public class DataManager {
 
     private static DataManager mDataManager;
@@ -101,5 +105,26 @@ public class DataManager {
 
     public void setData9(Object mData9) {
         this.mData9 = mData9;
+    }
+
+    /**
+     * 保存当前用户信息
+     *
+     * @param userInfo
+     */
+    public void setUserInfo(UserInfo userInfo) {
+        SPUtils.getInstance().put(Constants.MY_USER_INFO, userInfo == null ? "" : CommonUtil.toJson(userInfo));
+    }
+
+    /**
+     * 获取当前用户信息
+     */
+    public UserInfo getUserInfo() {
+        String userInfoString = SPUtils.getInstance().getString(Constants.MY_USER_INFO);
+        if (EmptyUtils.isEmpty(userInfoString)) {
+            return null;
+        }
+        UserInfo userInfo = CommonUtil.fromJson(UserInfo.class, userInfoString);
+        return userInfo;
     }
 }

@@ -25,6 +25,10 @@ android {
         }
     }
 
+    lintOptions {
+        disable 'MissingTranslation'
+    }
+
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
