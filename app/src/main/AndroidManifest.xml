@@ -27,7 +27,6 @@
     <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -53,7 +52,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
@@ -65,7 +63,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!-- 短信验证登陆功能需要添加次权限来自动填充验证码，用不到可以去掉 -->
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-
     <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
@@ -76,7 +73,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -87,31 +83,25 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.GuideActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"/>
-
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
-
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
-
         <activity
             android:name=".activity.EmptyActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
-
         <activity android:name=".activity.ClipDollDetailActivity"/>
-
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -129,21 +119,24 @@
             <!-- 调用新浪原生SDK，需要注册的回调activity -->
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
-            <!--集成line客户端登录授权，需要添如下格式的过滤器-->
+            <!-- 集成line客户端登录授权，需要添如下格式的过滤器 -->
             <intent-filter>
                 <data android:scheme="line.1477692153"/>
+
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
 
-            <!-- ShareSDK<strong>3.1.0版本之前</strong>才需要在MobUIShell下面注册此意图，3.1.0版本之后（包含3.1.0）不需要注册此intent-->
+            <!-- ShareSDK<strong>3.1.0版本之前</strong>才需要在MobUIShell下面注册此意图，3.1.0版本之后（包含3.1.0）不需要注册此intent -->
             <intent-filter>
                 <data android:scheme="tencent100371282"/>
+
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -159,6 +152,8 @@
             android:name="Mob-AppSecret"
             android:value="5ec73fe78abc2d0c5ab2ae9da6567745"/>
 
+        <activity android:name=".activity.Main2Activity">
+        </activity>
     </application>
 
 </manifest>

@@ -8,31 +8,28 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.bean.HomeRoomBean;
+import com.happy.moment.clip.doll.util.Constants;
+import com.happy.moment.clip.doll.util.DataManager;
 import com.happy.moment.clip.doll.view.TransparentDialog;
-import com.tencent.av.sdk.AVRoomMulti;
-import com.tencent.ilivesdk.ILiveCallBack;
 import com.tencent.ilivesdk.ILiveConstants;
-import com.tencent.ilivesdk.core.ILiveLoginManager;
 import com.tencent.ilivesdk.core.ILiveRoomManager;
 import com.tencent.livesdk.ILVLiveManager;
-import com.tencent.livesdk.ILVLiveRoomOption;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayConfig;
 import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.tencent.wawasdk.TXWawaCallBack;
+import com.tencent.wawasdk.TXWawaPlayer;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -77,6 +74,8 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     private int time;
     private TXLivePlayer mTxlpPlayer;
 
+    private HomeRoomBean homeRoomBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,41 +83,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         setContentView(R.layout.activity_clip_doll_detail);
 
         initView();
-
-        //        UserInfo.getInstance().getCache(getApplicationContext());
-        OkHttpUtils.post()
-                .url("http://119.29.119.179:8090/wawa_api/user/getTlsSign/v1")
-                .addParams("state", "1")
-                .addParams("data", getJsonData().toString())
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LogUtils.e(e.toString());
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        JSONObject jsonObject = null;
-                        try {
-                            jsonObject = new JSONObject(response);
-                            int code = jsonObject.optInt("code");
-                            JSONObject jsonObjectData = jsonObject.optJSONObject("data");
-                            if (code == 1) {
-                                String tlsSign = jsonObjectData.optString("tlsSign");
-                                LogUtils.e(tlsSign);
-                                if (EmptyUtils.isNotEmpty(tlsSign)) {
-                                    login(tlsSign);
-                                }
-                            } else {
-                                String msg = jsonObject.optString("msg");
-                                ToastUtils.showShort("请求数据失败,请检查网络:" + code + " - " + msg);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
 
         //进入界面后10s开始抓取娃娃
         time = 5;
@@ -131,7 +95,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                     public void run() {
                         --time;
                         if (time <= 0) {
-                            LogUtils.e("hhahahah");
                             startClipDoll();
                             timer.cancel();
                         }
@@ -139,25 +102,19 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 });
             }
         }, 1000, 1000);
+    }
 
-
-        //        etRoom = (EditText) findViewById(R.id.et_room);
-        //        //        etRoom.setText(""+UserInfo.getInstance().getRoom());
-        //        tvMsg = (TextView) findViewById(R.id.tv_msg);
-        //        svScroll = (ScrollView) findViewById(R.id.sv_scroll);
-        //
-        //                ILVLiveManager.getInstance().setAvVideoView(arvRoot);
-        //        MessageObservable.getInstance().addObserver(this);
-        //        StatusObservable.getInstance().addObserver(this);
-        //
-        //        arvRoot.setAutoOrientation(false);
-        //        // 打开摄像头预览
-        //        arvRoot.setSubCreatedListener(new AVRootView.onSubViewCreatedListener() {
-        //            @Override
-        //            public void onSubViewCreated() {
-        //                ILiveRoomManager.getInstance().enableCamera(ILiveConstants.FRONT_CAMERA, true);
-        //            }
-        //        });
+    @Override
+    protected void onStart() {
+        super.onStart();
+        homeRoomBean = (HomeRoomBean) DataManager.getInstance().getData1();
+        DataManager.getInstance().setData1(null);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTxlpPlayer.startPlay(homeRoomBean.getFrontPullRtmpUrl(), TXLivePlayer.PLAY_TYPE_LIVE_RTMP);
+            }
+        });
     }
 
     /**
@@ -234,6 +191,8 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.ll_start_clip_doll:
                 ToastUtils.showShort("开始抓取");
+                //请求开始游戏接口
+                requestBeginGame();
                 //显示操作按钮，隐藏开始抓取和充值按钮
                 rl_operation.setVisibility(View.VISIBLE);
                 rl_start_clip_and_recharge.setVisibility(View.INVISIBLE);
@@ -269,66 +228,82 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         }
     }
 
-    public JSONObject getJsonData() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("state", "1");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
+    private void requestBeginGame() {
+        OkHttpUtils.post()
+                .url(Constants.getApplyBeginGame())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .addParams(Constants.GROUPID, homeRoomBean.getGroupId())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
 
-    private void login(String tlsSign) {
-        LogUtils.e("进入登录");
-        ILiveLoginManager.getInstance().iLiveLogin("f631a6c7c84511e790f2246e96754b22", tlsSign, new ILiveCallBack() {
-            @Override
-            public void onSuccess(Object data) {
-                login = true;
-                Toast.makeText(ClipDollDetailActivity.this, "login success !", Toast.LENGTH_SHORT).show();
-                createRoom();
-            }
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LogUtils.e(response);
 
-            @Override
-            public void onError(String module, int errCode, String errMsg) {
-                Toast.makeText(ClipDollDetailActivity.this, module + "|login fail " + errCode + " " + errMsg, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+                        TXWawaPlayer txWawaPlayer = new TXWawaPlayer(new TXWawaPlayer.PlayerListener() {
+                            @Override
+                            public void OnWait(int i) {
+                                LogUtils.e("OnWait");
+                            }
 
-    private void createRoom() {
-        if (login) {
-            //加入房间配置项
-            ILVLiveRoomOption memberOption = new ILVLiveRoomOption("live_1_front_push_1510577069")
-                    .autoCamera(false) //是否自动打开摄像头
-                    .controlRole("Guest") //角色设置
-                    .authBits(AVRoomMulti.AUTH_BITS_JOIN_ROOM | AVRoomMulti.AUTH_BITS_RECV_AUDIO | AVRoomMulti.AUTH_BITS_RECV_CAMERA_VIDEO | AVRoomMulti.AUTH_BITS_RECV_SCREEN_VIDEO) //权限设置
-                    .videoRecvMode(AVRoomMulti.VIDEO_RECV_MODE_SEMI_AUTO_RECV_CAMERA_VIDEO) //是否开始半自动接收
-                    .autoMic(false);//是否自动打开mic
-            //加入房间
-            ILVLiveManager.getInstance().joinRoom(348312, memberOption, new ILiveCallBack() {
-                @Override
-                public void onSuccess(Object data) {
-                    //                bEnterRoom = true;
-                    LogUtils.e(data);
-                    Toast.makeText(ClipDollDetailActivity.this, "join room  ok ", Toast.LENGTH_SHORT).show();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mTxlpPlayer.startPlay("rtmp://16145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0", TXLivePlayer.PLAY_TYPE_LIVE_RTMP);
-                        }
-                    });
-                    //                logoutBtn.setVisibility(View.INVISIBLE);
-                    //                backBtn.setVisibility(View.VISIBLE);
-                }
+                            @Override
+                            public void OnReady() {
+                                LogUtils.e("OnReady");
+                            }
 
-                @Override
-                public void onError(String module, int errCode, String errMsg) {
-                    //                Toast.makeText(LiveActivity.this, module + "|join fail " + errMsg + " " + errMsg, Toast.LENGTH_SHORT).show();
-                    LogUtils.e("module:" + module + "\n" + "code:" + errCode + "\n" + "msg:" + errMsg);
-                }
-            });
-        }
+                            @Override
+                            public void OnState(int i) {
+                                LogUtils.e("OnState");
+                            }
+
+                            @Override
+                            public void OnResult(boolean b) {
+                                LogUtils.e("OnResult");
+                            }
+
+                            @Override
+                            public void OnTime(int i) {
+                                LogUtils.e("OnTime");
+                            }
+
+                            @Override
+                            public void OnClose(int i, int i1, String s) {
+                                LogUtils.e("OnClose");
+                            }
+
+                            @Override
+                            public void OnControlRTT(int i) {
+                                LogUtils.e("OnControlRTT");
+                            }
+                        });
+                        //                        txWawaPlayer.startQueue("", "", new TXWawaCallBack() {
+                        //                            @Override
+                        //                            public void onSuccess(Object o) {
+                        //
+                        //                            }
+                        //
+                        //                            @Override
+                        //                            public void onError(int i, String s) {
+                        //
+                        //                            }
+                        //                        });
+                        txWawaPlayer.startGame(new TXWawaCallBack<Integer>() {
+                            @Override
+                            public void onSuccess(Integer integer) {
+                                LogUtils.e("开始游戏");
+                            }
+
+                            @Override
+                            public void onError(int i, String s) {
+                                LogUtils.e("cuo game");
+                            }
+                        });
+                    }
+                });
     }
 
     @Override
@@ -349,8 +324,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         if (ILiveConstants.NONE_CAMERA != ILiveRoomManager.getInstance().getActiveCameraId()) {
             ILiveRoomManager.getInstance().enableCamera(ILiveRoomManager.getInstance().getActiveCameraId(), false);
         }
-        //        MessageObservable.getInstance().deleteObserver(this);
-        //        StatusObservable.getInstance().deleteObserver(this);
         ILVLiveManager.getInstance().onDestory();
     }
     //

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,12 +24,15 @@ import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.fragment.NotificationCenterFragment;
 import com.happy.moment.clip.doll.fragment.UserCenterFragment;
 import com.happy.moment.clip.doll.util.Constants;
+import com.happy.moment.clip.doll.util.DataManager;
 import com.happy.moment.clip.doll.util.GlideImageLoader;
 import com.happy.moment.clip.doll.view.SharePlatformPopupWindow;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tencent.ilivesdk.ILiveCallBack;
+import com.tencent.ilivesdk.core.ILiveLoginManager;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -62,6 +66,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private SmartRefreshLayout smartRefreshLayout;
     private RecyclerView recyclerView;
     private int refresh_or_load;//0或1
+    private boolean bLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         smartRefreshLayout.setOnRefreshListener(this);
         smartRefreshLayout.setOnLoadmoreListener(this);
         refresh_or_load = 0;
+
+        bLogin = false;
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
@@ -139,6 +146,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void initData() {
         getHomeBannerData();
         getHomeRoomListData();
+        if (!bLogin) {
+            loginTXLive();
+        }
     }
 
     private void getHomeBannerData() {
@@ -246,7 +256,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     //banner设置方法全部调用完毕时最后调用
                     banner.start();
                 }
-
             }
         }
     }
@@ -256,8 +265,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (data.getClass().getSimpleName().equals("HomeRoomBean")) {
             HomeRoomBean homeRoomBean = (HomeRoomBean) data;
             if (EmptyUtils.isNotEmpty(homeRoomBean)) {
-                ToastUtils.showShort("position:" + position + "url地址:" + homeRoomBean.getFrontPullRtmpUrl());
-                gotoPager(ClipDollDetailActivity.class,null);
+                DataManager.getInstance().setData1(homeRoomBean);
+                gotoPager(ClipDollDetailActivity.class, null);
             }
         }
     }
@@ -284,6 +293,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         initData();
+    }
+
+    private void loginTXLive() {
+        String sig = SPUtils.getInstance().getString(Constants.TLSSIGN);
+        int user_id = SPUtils.getInstance().getInt(Constants.USERID);
+        if (EmptyUtils.isNotEmpty(sig) && EmptyUtils.isNotEmpty(user_id)) {
+            ILiveLoginManager.getInstance().iLiveLogin(String.valueOf(user_id), sig, new ILiveCallBack() {
+                @Override
+                public void onSuccess(Object data) {
+                    bLogin = true;
+                    LogUtils.e(data.toString());
+                    LogUtils.e("登录成功");
+                }
+
+                @Override
+                public void onError(String module, int errCode, String errMsg) {
+                    LogUtils.e(module + errMsg);
+                }
+            });
+        }
     }
 
     private void showSharePlatformPopWindow() {

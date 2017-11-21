@@ -20,6 +20,9 @@ public class Constants {
     public static final String USERID = "userId";
     public static final String DEVICE_ID = "device_id";
     public static final String MY_USER_INFO = "my_user_info";
+    public static final String TLSSIGN = "tlsSign";
+    public static final String OPINION = "opinion";
+    public static final String GROUPID = "groupId";
 
 
     // 存储
@@ -46,11 +49,16 @@ public class Constants {
 
 
     //网络常量
-    private static final String BASE_URL = "http://192.168.1.112:8080/wawa_api/";//192.168.1.108:8080（蔡）//119.29.119.179:8090//192.168.1.112:8080（盾哥）
+    private static final String BASE_URL = "http://119.29.119.179:8090/wawa_api/";//192.168.1.108:8080（蔡）//119.29.119.179:8090//192.168.1.112:8080（盾哥）
     private static final String homeRoomListUrl = BASE_URL + "live/room/getHomeRoomList/v1";
     private static final String homeBannerUrl = BASE_URL + "home/getBannerList/v1";
     private static final String clipDollRecordUrl = BASE_URL + "playRecord/getPlayRecordList/v1";
     private static final String userLoginUrl = BASE_URL + "user/account/login/v1";
+    private static final String liveSigUrl = BASE_URL+"user/getTlsSign/v1";
+    private static final String userFeedBack = BASE_URL+"feedback/saveFeedback/v1";
+    private static final String userInfo = BASE_URL+"user/getUserInfo/v1";
+    private static final String userBalance = BASE_URL+"user/getUserBalance/v1";
+    private static final String applyBeginGame = BASE_URL+"live/room/applyBeginGame/v1";
 
 
     public static String getHomeRoomListUrl() {
@@ -67,5 +75,25 @@ public class Constants {
 
     public static String getUserLoginUrl() {
         return userLoginUrl;
+    }
+
+    public static String getLiveSigUrl() {
+        return liveSigUrl;
+    }
+
+    public static String getUserFeedBack() {
+        return userFeedBack;
+    }
+
+    public static String getUserInfo() {
+        return userInfo;
+    }
+
+    public static String getUserBalance() {
+        return userBalance;
+    }
+
+    public static String getApplyBeginGame() {
+        return applyBeginGame;
     }
 }

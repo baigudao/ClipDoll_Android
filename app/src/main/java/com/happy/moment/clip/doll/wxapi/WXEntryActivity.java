@@ -68,7 +68,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     //发送到微信请求的响应结果
     @Override
     public void onResp(BaseResp resp) {
-        showLoadingDialog("正在登录中...", null, false);
+        showLoadingDialog("正在登录...", null, false);
         int result = 0;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
@@ -116,11 +116,13 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         LogUtils.e(e.toString());
+                        hideLoadingDialog();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         LogUtils.e(response);
+                        hideLoadingDialog();
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response);
@@ -135,6 +137,9 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                                 JSONObject jsonObjectTicketAndUserId = getJsonData(ticket, userId);
                                 //存储ticket和userId
                                 SPUtils.getInstance().put(Constants.SESSION, jsonObjectTicketAndUserId.toString());
+                                String tlsSign = jsonObjectResBody.optString("tlsSign");
+                                //存储sig
+                                SPUtils.getInstance().put(Constants.TLSSIGN, tlsSign);
                                 JSONObject jsonObjectUserInfo = jsonObjectResBody.optJSONObject("userInfo");
                                 if (EmptyUtils.isNotEmpty(jsonObjectUserInfo)) {
                                     Gson gson = new Gson();
@@ -150,12 +155,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                                     if (EmptyUtils.isNotEmpty(SPUtils.getInstance().getString(Constants.SESSION))) {
                                         SPUtils.getInstance().put(Constants.IS_USER_LOGIN, true);
                                     }
-                                    hideLoadingDialog();
+
                                     gotoPager(MainActivity.class, null);
                                     finish();
                                     ToastUtils.showShort(R.string.login_successful);
                                 }
-
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
                                 ToastUtils.showShort("请求数据失败,请检查网络并重试！");

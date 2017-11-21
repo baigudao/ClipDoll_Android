@@ -10,10 +10,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.Call;
 
@@ -86,8 +91,9 @@ public class FeedBackFragment extends BaseFragment {
     private void commitContent() {
         showLoadingDialog(null, null, false);
         OkHttpUtils.post()
-                .url("http://192.168.1.108:8080/feedback/saveFeedback/v1")
-                .addParams("opinion", et_put_feed_back.getText().toString())
+                .url(Constants.getUserFeedBack())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .addParams(Constants.OPINION, et_put_feed_back.getText().toString())
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -98,10 +104,61 @@ public class FeedBackFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        LogUtils.e(response);
                         hideLoadingDialog();
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                ToastUtils.showShort("提交成功！");
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败,请检查网络并重试！");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
+
+        //获取用户信息
+        //        OkHttpUtils.post()
+        //                .url(Constants.getUserInfo())
+        //                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+        //                .addParams(Constants.USERID, String.valueOf(SPUtils.getInstance().getInt(Constants.USERID)))
+        //                .build()
+        //                .execute(new StringCallback() {
+        //                    @Override
+        //                    public void onError(Call call, Exception e, int id) {
+        //                        LogUtils.e(e.toString());
+        //                    }
+        //
+        //                    @Override
+        //                    public void onResponse(String response, int id) {
+        //                        LogUtils.e(response);
+        //                    }
+        //                });
+
+        //获取用户余额
+        //        OkHttpUtils.post()
+        //                .url(Constants.getUserBalance())
+        //                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+        //                .build()
+        //                .execute(new StringCallback() {
+        //                    @Override
+        //                    public void onError(Call call, Exception e, int id) {
+        //                        LogUtils.e(e.toString());
+        //                    }
+        //
+        //                    @Override
+        //                    public void onResponse(String response, int id) {
+        //                        LogUtils.e(response);
+        //                    }
+        //                });
     }
 
     private TextWatcher watcher = new TextWatcher() {
