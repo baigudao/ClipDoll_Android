@@ -323,8 +323,13 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
             case R.id.action_start_clip:
                 //下抓
                 wawaPlayer.controlClaw(TXWawaPlayer.CTL_CATCH);
-                //                wawaPlayer.quitGame();
                 tv_timer.setVisibility(View.GONE);
+                //不激活操作按钮
+                action_start_clip.setEnabled(false);
+                action_btn_left.setEnabled(false);
+                action_btn_top.setEnabled(false);
+                action_btn_right.setEnabled(false);
+                action_btn_bottom.setEnabled(false);
                 break;
             case R.id.iv_share:
                 gameOver();
@@ -514,12 +519,12 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void OnResult(boolean b) {
-        wawaPlayer.quitGame();
         if (b) {
             ToastUtils.showShort("恭喜你，抓到了娃娃");
         } else {
             ToastUtils.showShort("很遗憾，没有抓到");
         }
+        wawaPlayer.quitGame();
     }
 
     @Override
