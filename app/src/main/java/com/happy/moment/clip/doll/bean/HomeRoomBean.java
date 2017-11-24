@@ -8,49 +8,49 @@ package com.happy.moment.clip.doll.bean;
 public class HomeRoomBean extends BaseBean {
 
     /**
-     * frontPulFlvUrl : http://16145.liveplay.myqcloud.com/live/16145_d95f3c35f184debb1980ed6569e0c673.flv
+     * frontPullFlvUrl : http://16145.liveplay.myqcloud.com/live/16145_d95f3c35f184debb1980ed6569e0c673.flv
      * frontPullHlsUrl : http://16145.liveplay.myqcloud.com/live/16145_d95f3c35f184debb1980ed6569e0c673.m3u8
      * frontPullRtmpUrl : rtmp://16145.liveplay.myqcloud.com/live/16145_d95f3c35f184debb1980ed6569e0c673
+     * frontPushId : live_1_front_push_1510577069
      * gamePrice : 1
-     * gameTime : 1
+     * gameTime : 30
      * groupId : 348312
-     * lastPlayTime : 0
      * product : {"productId":1,"state":0,"toyId":"1","toyName":"鹦鹉兄弟","toyPicUrl":"http://cachu-test.b0.upaiyun.com/r4rqic5e4hbjxqanld2e956fi0fyqswf.jpg"}
      * productId : 1
      * roomId : 1
      * roomName : LIVE_ROOM_1001
-     * roomPicUrl : http://wawa-1255388722.cosgz.myqcloud.com/img/tea2.png
-     * roomState : 1
-     * sidePulFlvUrl : http://16145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0.flv
-     * sidePullHlsUrl : http://16145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0.m3u8
+     * roomPicUrl : http://wawa-1255388722.cosgz.myqcloud.com/img/wawa.jpg
+     * roomState : 0
+     * sidePullFlvUrl : http://16145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0.flv
+     * sidePullHlsUrl : http://1145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0.m3u8
      * sidePullRtmpUrl : rtmp://16145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0
-     * sort : 0
+     * sidePushId : live_1_side_push_1510577079
      */
 
-    private String frontPulFlvUrl;
+    private String frontPullFlvUrl;
     private String frontPullHlsUrl;
     private String frontPullRtmpUrl;
+    private String frontPushId;
     private int gamePrice;
     private int gameTime;
     private String groupId;
-    private int lastPlayTime;
     private ProductBean product;
     private int productId;
     private int roomId;
     private String roomName;
     private String roomPicUrl;
     private int roomState;
-    private String sidePulFlvUrl;
+    private String sidePullFlvUrl;
     private String sidePullHlsUrl;
     private String sidePullRtmpUrl;
-    private int sort;
+    private String sidePushId;
 
-    public String getFrontPulFlvUrl() {
-        return frontPulFlvUrl;
+    public String getFrontPullFlvUrl() {
+        return frontPullFlvUrl;
     }
 
-    public void setFrontPulFlvUrl(String frontPulFlvUrl) {
-        this.frontPulFlvUrl = frontPulFlvUrl;
+    public void setFrontPullFlvUrl(String frontPullFlvUrl) {
+        this.frontPullFlvUrl = frontPullFlvUrl;
     }
 
     public String getFrontPullHlsUrl() {
@@ -67,6 +67,14 @@ public class HomeRoomBean extends BaseBean {
 
     public void setFrontPullRtmpUrl(String frontPullRtmpUrl) {
         this.frontPullRtmpUrl = frontPullRtmpUrl;
+    }
+
+    public String getFrontPushId() {
+        return frontPushId;
+    }
+
+    public void setFrontPushId(String frontPushId) {
+        this.frontPushId = frontPushId;
     }
 
     public int getGamePrice() {
@@ -91,14 +99,6 @@ public class HomeRoomBean extends BaseBean {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
-    }
-
-    public int getLastPlayTime() {
-        return lastPlayTime;
-    }
-
-    public void setLastPlayTime(int lastPlayTime) {
-        this.lastPlayTime = lastPlayTime;
     }
 
     public ProductBean getProduct() {
@@ -149,12 +149,12 @@ public class HomeRoomBean extends BaseBean {
         this.roomState = roomState;
     }
 
-    public String getSidePulFlvUrl() {
-        return sidePulFlvUrl;
+    public String getSidePullFlvUrl() {
+        return sidePullFlvUrl;
     }
 
-    public void setSidePulFlvUrl(String sidePulFlvUrl) {
-        this.sidePulFlvUrl = sidePulFlvUrl;
+    public void setSidePullFlvUrl(String sidePullFlvUrl) {
+        this.sidePullFlvUrl = sidePullFlvUrl;
     }
 
     public String getSidePullHlsUrl() {
@@ -173,12 +173,12 @@ public class HomeRoomBean extends BaseBean {
         this.sidePullRtmpUrl = sidePullRtmpUrl;
     }
 
-    public int getSort() {
-        return sort;
+    public String getSidePushId() {
+        return sidePushId;
     }
 
-    public void setSort(int sort) {
-        this.sort = sort;
+    public void setSidePushId(String sidePushId) {
+        this.sidePushId = sidePushId;
     }
 
     public static class ProductBean {

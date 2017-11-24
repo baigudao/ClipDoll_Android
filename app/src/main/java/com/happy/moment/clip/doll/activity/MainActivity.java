@@ -27,7 +27,6 @@ import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
 import com.happy.moment.clip.doll.util.GlideImageLoader;
 import com.happy.moment.clip.doll.view.SharePlatformPopupWindow;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -63,7 +62,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private static final int HOME_ROOM_LIST_DATA_TYPE = 1;
 
-    private SmartRefreshLayout smartRefreshLayout;
+    //    private SmartRefreshLayout smartRefreshLayout;
     private RecyclerView recyclerView;
     private int refresh_or_load;//0或1
     private boolean bLogin;
@@ -90,11 +89,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         findViewById(R.id.tv_exchange).setOnClickListener(this);
         findViewById(R.id.iv_exchange).setOnClickListener(this);
 
-        smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.smartRefreshLayout);
-        smartRefreshLayout.setEnableRefresh(true);
-        smartRefreshLayout.setEnableLoadmore(true);
-        smartRefreshLayout.setOnRefreshListener(this);
-        smartRefreshLayout.setOnLoadmoreListener(this);
+        //        smartRefreshLayout = (SmartRefreshLayout) findViewById(smartRefreshLayout);
+        //        smartRefreshLayout.setEnableRefresh(true);
+        //        smartRefreshLayout.setEnableLoadmore(true);
+        //        smartRefreshLayout.setOnRefreshListener(this);
+        //        smartRefreshLayout.setOnLoadmoreListener(this);
         refresh_or_load = 0;
 
         bLogin = false;
@@ -173,8 +172,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                             JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
                             if (code == 1) {
                                 handlerBannerData(jsonObjectResBody);
-                                smartRefreshLayout.finishRefresh();
-                                smartRefreshLayout.finishLoadmore();
+                                //                                smartRefreshLayout.finishRefresh();
+                                //                                smartRefreshLayout.finishLoadmore();
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
                                 ToastUtils.showShort("请求数据失败,请检查网络并重试！");
@@ -208,8 +207,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                             JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
                             if (code == 1) {
                                 handlerHomeRoomListData(jsonObjectResBody);
-                                smartRefreshLayout.finishRefresh();
-                                smartRefreshLayout.finishLoadmore();
+                                //                                smartRefreshLayout.finishRefresh();
+                                //                                smartRefreshLayout.finishLoadmore();
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
                                 ToastUtils.showShort("请求数据失败,请检查网络并重试！");
@@ -303,7 +302,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 @Override
                 public void onSuccess(Object data) {
                     bLogin = true;
-                    LogUtils.e(data.toString());
                     LogUtils.e("登录成功");
                 }
 

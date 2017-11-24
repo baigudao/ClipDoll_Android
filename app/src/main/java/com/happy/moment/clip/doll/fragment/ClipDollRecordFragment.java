@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.util.Constants;
@@ -58,8 +59,11 @@ public class ClipDollRecordFragment extends BaseFragment {
     }
 
     private void getDataFromNet() {
-        OkHttpUtils.get()
+        OkHttpUtils.post()
                 .url(Constants.getClipDollRecordUrl())
+                .addParams(Constants.PAGENUM, "1")
+                .addParams(Constants.PAGESIZE, "10")//每页的数据数量
+                .addParams(Constants.USERID, SPUtils.getInstance().getInt(Constants.USERID)+"")
                 .build()
                 .execute(new StringCallback() {
                     @Override

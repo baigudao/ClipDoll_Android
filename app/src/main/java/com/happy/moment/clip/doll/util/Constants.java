@@ -23,6 +23,8 @@ public class Constants {
     public static final String TLSSIGN = "tlsSign";
     public static final String OPINION = "opinion";
     public static final String GROUPID = "groupId";
+    public static final String PAGENUM = "pageNum";
+    public static final String PAGESIZE = "pageSize";
 
 
     // 存储
@@ -59,7 +61,7 @@ public class Constants {
     private static final String userInfo = BASE_URL+"user/getUserInfo/v1";
     private static final String userBalance = BASE_URL+"user/getUserBalance/v1";
     private static final String applyBeginGame = BASE_URL+"live/room/applyBeginGame/v1";
-
+    private static final String gameOverUrl = BASE_URL+"live/room/gameover/v1";
 
     public static String getHomeRoomListUrl() {
         return homeRoomListUrl;
@@ -96,4 +98,9 @@ public class Constants {
     public static String getApplyBeginGame() {
         return applyBeginGame;
     }
+
+    public static String getGameOverUrl() {
+        return gameOverUrl;
+    }
+
 }

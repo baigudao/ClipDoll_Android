@@ -28,21 +28,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp">
 
-                    <!--<com.tencent.ilivesdk.view.AVRootView-->
-                    <!--android:id="@+id/arv_root"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginLeft="15dp"-->
-                    <!--android:layout_marginRight="15dp"-->
-                    <!--android:src="@drawable/wawa_default"/>-->
-
-                    <com.tencent.rtmp.ui.TXCloudVideoView
-                        android:id="@+id/txvv_play_view"
+                    <com.tencent.ilivesdk.view.AVRootView
+                        android:id="@+id/arv_root"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:src="@drawable/wawa_default"/>
+                        android:background="@color/main_color"/>
 
                     <ImageView
                         android:id="@+id/iv_live_room_camera"
@@ -64,14 +56,16 @@
                         android:text="30s"
                         android:textColor="@color/pure_white_color"
                         android:textSize="30sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
 
                     <RelativeLayout
                         android:layout_width="185dp"
                         android:layout_height="40dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="30dp"
-                        android:background="@drawable/background_users_waiting">
+                        android:background="@drawable/background_users_waiting"
+                        android:visibility="gone">
 
                         <com.happy.moment.clip.doll.view.CircleImageView
                             android:layout_width="25dp"
@@ -118,7 +112,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
                         android:layout_marginTop="10dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="80dp"
@@ -286,7 +281,6 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="15dp"
                         android:background="@drawable/background_action_start_clip"/>
-
 
                 </RelativeLayout>
 

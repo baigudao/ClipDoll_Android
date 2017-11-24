@@ -101,7 +101,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
-        <activity android:name=".activity.ClipDollDetailActivity"/>
+        <activity
+            android:name=".activity.ClipDollDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -152,8 +156,6 @@
             android:name="Mob-AppSecret"
             android:value="5ec73fe78abc2d0c5ab2ae9da6567745"/>
 
-        <activity android:name=".activity.Main2Activity">
-        </activity>
     </application>
 
 </manifest>

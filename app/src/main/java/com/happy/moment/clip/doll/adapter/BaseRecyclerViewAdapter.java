@@ -53,7 +53,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder viewHolder;
         switch (dataType) {
             case NOTIFICATION_CENTER_DATA_TYPE:
@@ -63,7 +63,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                 viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_home_room, null));
                 break;
             case CLIP_DOLL_RECORD_DATA_TYPE:
-                viewHolder = new ViewHolder(View.inflate(mContext,R.layout.item_view_clip_doll_record,null));
+                viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_clip_doll_record, null));
                 break;
             default:
                 viewHolder = null;
@@ -113,7 +113,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
         return mList == null ? 0 : mList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private View itemView;
 
@@ -186,7 +186,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
         void onItemClick(Object data, int position);
     }
 
-    public OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener mOnItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
