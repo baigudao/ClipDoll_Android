@@ -1,10 +1,13 @@
 package com.happy.moment.clip.doll.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,8 +18,13 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
 import com.happy.moment.clip.doll.bean.HomeRoomBean;
+import com.happy.moment.clip.doll.bean.LiveRoomLuckyUserBean;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
 import com.happy.moment.clip.doll.view.TransparentDialog;
@@ -32,9 +40,11 @@ import com.tencent.wawasdk.TXWawaPlayer;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -72,6 +82,11 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     private HomeRoomBean homeRoomBean;
 
     private boolean isFront;
+
+    private ImageView iv_product_pic;
+
+    private static final int CLIP_DOLL_RECORD_LIVE_DATA_TYPE = 3;
+    private RecyclerView recyclerView_lucky;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +133,72 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         DataManager.getInstance().setData1(null);
         if (EmptyUtils.isNotEmpty(homeRoomBean)) {
             joinRoom();
+        }
+        //得到幸运儿
+        getLuckyUsers();
+
+        //渲染宝贝图片
+        if (EmptyUtils.isNotEmpty(homeRoomBean)) {
+            Glide.with(ClipDollDetailActivity.this)
+                    .load(homeRoomBean.getProduct().getToyPicUrl())
+                    .placeholder(R.drawable.wawa_default)
+                    .error(R.drawable.wawa_default)
+                    .into(iv_product_pic);
+        }
+    }
+
+    private void getLuckyUsers() {
+        //获取抓取记录，幸运儿
+        OkHttpUtils.post()
+                .url(Constants.getClipDollRecordUrl())
+                .addParams(Constants.GROUPID, homeRoomBean.getGroupId())
+                .addParams(Constants.PAGENUM, "1")
+                .addParams(Constants.PAGESIZE, "10")
+                .addParams(Constants.RESULT, "1")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                handlerDataForLuckyUsers(jsonObjectResBody);
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败,请检查网络并重试！");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    private void handlerDataForLuckyUsers(JSONObject jsonObjectResBody) {
+        if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
+            JSONArray jsonArrayForLuckyUsers = jsonObjectResBody.optJSONArray("pageData");
+            if (EmptyUtils.isNotEmpty(jsonArrayForLuckyUsers)) {
+                Gson gson = new Gson();
+                ArrayList<LiveRoomLuckyUserBean> liveRoomLuckyUserBeanArrayList = gson.fromJson(jsonArrayForLuckyUsers.toString()
+                        , new TypeToken<ArrayList<LiveRoomLuckyUserBean>>() {
+                        }.getType());
+                if (EmptyUtils.isNotEmpty(liveRoomLuckyUserBeanArrayList) && liveRoomLuckyUserBeanArrayList.size() != 0) {
+                    BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(ClipDollDetailActivity.this, liveRoomLuckyUserBeanArrayList, CLIP_DOLL_RECORD_LIVE_DATA_TYPE);
+                    recyclerView_lucky.setAdapter(baseRecyclerViewAdapter);
+                    recyclerView_lucky.setLayoutManager(new LinearLayoutManager(ClipDollDetailActivity.this, LinearLayoutManager.VERTICAL, false));
+                }
+            }
         }
     }
 
@@ -215,6 +296,10 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         action_start_clip = (ImageButton) findViewById(R.id.action_start_clip);
         action_start_clip.setEnabled(true);
         action_start_clip.setOnClickListener(this);
+
+        //底部视图的初始化
+        recyclerView_lucky = (RecyclerView) findViewById(R.id.recyclerView_lucky);
+        iv_product_pic = (ImageView) findViewById(R.id.iv_product_pic);
     }
 
     @Override

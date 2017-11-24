@@ -25,6 +25,8 @@ public class Constants {
     public static final String GROUPID = "groupId";
     public static final String PAGENUM = "pageNum";
     public static final String PAGESIZE = "pageSize";
+    public static final String RESULT = "result";
+    public static final int PAGE_SIZE = 10;
 
 
     // 存储
@@ -62,6 +64,8 @@ public class Constants {
     private static final String userBalance = BASE_URL+"user/getUserBalance/v1";
     private static final String applyBeginGame = BASE_URL+"live/room/applyBeginGame/v1";
     private static final String gameOverUrl = BASE_URL+"live/room/gameover/v1";
+    private static final String coinCostRecordUrl = BASE_URL+"user/getCoinRecords/v1";//游戏币消费记录
+    private static final String myNotifyUrl = BASE_URL+"message/getMyNotify/v1";//我的通知
 
     public static String getHomeRoomListUrl() {
         return homeRoomListUrl;
@@ -103,4 +107,11 @@ public class Constants {
         return gameOverUrl;
     }
 
+    public static String getCoinCostRecordUrl() {
+        return coinCostRecordUrl;
+    }
+
+    public static String getMyNotifyUrl() {
+        return myNotifyUrl;
+    }
 }

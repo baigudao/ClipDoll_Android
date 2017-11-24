@@ -3,8 +3,15 @@ package com.happy.moment.clip.doll.fragment;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.util.Constants;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 
 /**
  * Created by Devin on 2017/11/18 20:49
@@ -36,6 +43,24 @@ public class MyGameCoinFragment extends BaseFragment {
                 break;
             case R.id.tv_cost_record:
                 ToastUtils.showShort("消费记录");
+                OkHttpUtils.post()
+                        .url(Constants.getCoinCostRecordUrl())
+                        .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                        .addParams(Constants.USERID, String.valueOf(SPUtils.getInstance().getInt(Constants.USERID)))
+                        .addParams(Constants.PAGESIZE, "10")
+                        .addParams(Constants.PAGENUM, "1")
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                LogUtils.e(e.toString());
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                LogUtils.e(response);
+                            }
+                        });
                 break;
             default:
                 break;

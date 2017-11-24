@@ -11,9 +11,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.bean.ClipDollRecordBean;
 import com.happy.moment.clip.doll.bean.HomeRoomBean;
+import com.happy.moment.clip.doll.bean.LiveRoomLuckyUserBean;
+import com.happy.moment.clip.doll.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
 
     private static final int HOME_ROOM_LIST_DATA_TYPE = 1;
     private static final int CLIP_DOLL_RECORD_DATA_TYPE = 2;
+    private static final int CLIP_DOLL_RECORD_LIVE_DATA_TYPE = 3;
     private static final int NOTIFICATION_CENTER_DATA_TYPE = 16;
 
     private Context mContext;
@@ -65,6 +70,9 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
             case CLIP_DOLL_RECORD_DATA_TYPE:
                 viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_clip_doll_record, null));
                 break;
+            case CLIP_DOLL_RECORD_LIVE_DATA_TYPE:
+                viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_live_clip_doll_record, null));
+                break;
             default:
                 viewHolder = null;
                 break;
@@ -100,6 +108,45 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                         }
                         holder.tv_item3.setText(homeRoomBean.getRoomName());
                         holder.tv_item4.setText(homeRoomBean.getGamePrice() + "币/次");
+                    }
+                }
+                break;
+            case CLIP_DOLL_RECORD_DATA_TYPE:
+                ArrayList<ClipDollRecordBean> clipDollRecordBeanArrayList = (ArrayList<ClipDollRecordBean>) mList;
+                if (EmptyUtils.isNotEmpty(clipDollRecordBeanArrayList)) {
+                    ClipDollRecordBean clipDollRecordBean = clipDollRecordBeanArrayList.get(position);
+                    if (EmptyUtils.isNotEmpty(clipDollRecordBean)) {
+                        Glide.with(mContext)
+                                .load(SPUtils.getInstance().getString(Constants.HEADIMG))
+                                .placeholder(R.drawable.avatar)
+                                .error(R.drawable.avatar)
+                                .into(holder.iv_item1);
+                        holder.tv_item1.setText(SPUtils.getInstance().getString(Constants.NICKNAME));
+                        holder.tv_item2.setText(clipDollRecordBean.getCreateTime());
+                        boolean result = clipDollRecordBean.isResult();
+                        if (result) {
+                            //抓取成功
+                            holder.tv_item3.setText("抓取成功");
+                            holder.tv_item3.setTextColor(mContext.getResources().getColor(R.color.seventh_text_color));
+                        } else {
+                            holder.tv_item3.setText("抓取失败");
+                            holder.tv_item3.setTextColor(mContext.getResources().getColor(R.color.fifth_text_color));
+                        }
+                    }
+                }
+                break;
+            case CLIP_DOLL_RECORD_LIVE_DATA_TYPE:
+                ArrayList<LiveRoomLuckyUserBean> liveRoomLuckyUserBeanArrayList = (ArrayList<LiveRoomLuckyUserBean>) mList;
+                if (EmptyUtils.isNotEmpty(liveRoomLuckyUserBeanArrayList)) {
+                    LiveRoomLuckyUserBean liveRoomLuckyUserBean = liveRoomLuckyUserBeanArrayList.get(position);
+                    if (EmptyUtils.isNotEmpty(liveRoomLuckyUserBean)) {
+                        Glide.with(mContext)
+                                .load(liveRoomLuckyUserBean.getUser().getHeadImg())
+                                .placeholder(R.drawable.avatar)
+                                .error(R.drawable.avatar)
+                                .into(holder.iv_item1);
+                        holder.tv_item1.setText(liveRoomLuckyUserBean.getUser().getNickName());
+                        holder.tv_item2.setText(liveRoomLuckyUserBean.getRecordTimeDesc());
                     }
                 }
                 break;
@@ -162,6 +209,39 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     tv_item2 = (TextView) itemView.findViewById(R.id.tv_state_free);//空闲中
                     tv_item3 = (TextView) itemView.findViewById(R.id.tv_room_name);
                     tv_item4 = (TextView) itemView.findViewById(R.id.tv_cost_coin_num);
+
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mOnItemClickListener != null) {
+                                int position = getLayoutPosition();
+                                mOnItemClickListener.onItemClick(mList.get(position), position);
+                            }
+                        }
+                    });
+                    break;
+                case CLIP_DOLL_RECORD_DATA_TYPE:
+                    iv_item1 = (ImageView) itemView.findViewById(R.id.iv_user_photo);
+
+                    tv_item1 = (TextView) itemView.findViewById(R.id.tv_clip_doll_name);
+                    tv_item2 = (TextView) itemView.findViewById(R.id.tv_clip_doll_time);
+                    tv_item3 = (TextView) itemView.findViewById(R.id.tv_clip_doll_state);
+
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mOnItemClickListener != null) {
+                                int position = getLayoutPosition();
+                                mOnItemClickListener.onItemClick(mList.get(position), position);
+                            }
+                        }
+                    });
+                    break;
+                case CLIP_DOLL_RECORD_LIVE_DATA_TYPE:
+                    iv_item1 = (ImageView) itemView.findViewById(R.id.iv_user_photo);
+
+                    tv_item1 = (TextView) itemView.findViewById(R.id.tv_user_name);
+                    tv_item2 = (TextView) itemView.findViewById(R.id.tv_clip_doll_time);
 
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override

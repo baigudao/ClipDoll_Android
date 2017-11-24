@@ -59,7 +59,8 @@
             android:id="@+id/recyclerView_lucky"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"/>
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"/>
 
     </LinearLayout>
 
@@ -120,8 +121,8 @@
 
     </LinearLayout>
 
-
     <ImageView
+        android:id="@+id/iv_product_pic"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginBottom="20dp"

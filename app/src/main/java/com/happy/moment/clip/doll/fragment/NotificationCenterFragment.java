@@ -5,10 +5,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
+import com.happy.moment.clip.doll.util.Constants;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
+
+import okhttp3.Call;
 
 /**
  * Created by Devin on 2017/11/16 17:53
@@ -18,7 +25,6 @@ import java.util.ArrayList;
 public class NotificationCenterFragment extends BaseFragment {
 
     private static final int NOTIFICATION_CENTER_DATA_TYPE = 16;
-
     private RecyclerView recyclerView_notification;
 
 
@@ -50,6 +56,22 @@ public class NotificationCenterFragment extends BaseFragment {
         BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(mContext, strings, NOTIFICATION_CENTER_DATA_TYPE);
         recyclerView_notification.setAdapter(baseRecyclerViewAdapter);
         recyclerView_notification.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+
+        OkHttpUtils.post()
+                .url(Constants.getMyNotifyUrl())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LogUtils.e(response);
+                    }
+                });
     }
 
     @Override
