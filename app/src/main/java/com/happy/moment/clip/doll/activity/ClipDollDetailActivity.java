@@ -176,7 +176,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                                 handlerDataForLuckyUsers(jsonObjectResBody);
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败,请检查网络并重试！");
+                                ToastUtils.showShort("请求数据失败:" + msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -509,7 +509,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                                 }
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败,请检查网络并重试！");
+                                ToastUtils.showShort("请求数据失败:"+msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

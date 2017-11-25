@@ -12,13 +12,16 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.bean.ClipDollRecordBean;
 import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.bean.LiveRoomLuckyUserBean;
+import com.happy.moment.clip.doll.bean.MessageNotificationBean;
 import com.happy.moment.clip.doll.util.Constants;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,24 +143,36 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                 if (EmptyUtils.isNotEmpty(liveRoomLuckyUserBeanArrayList)) {
                     LiveRoomLuckyUserBean liveRoomLuckyUserBean = liveRoomLuckyUserBeanArrayList.get(position);
                     if (EmptyUtils.isNotEmpty(liveRoomLuckyUserBean)) {
+                        if (EmptyUtils.isNotEmpty(liveRoomLuckyUserBean.getUser())) {
+                            Glide.with(mContext)
+                                    .load(liveRoomLuckyUserBean.getUser().getHeadImg())
+                                    .placeholder(R.drawable.avatar)
+                                    .error(R.drawable.avatar)
+                                    .into(holder.iv_item1);
+                            holder.tv_item1.setText(liveRoomLuckyUserBean.getUser().getNickName());
+                        }
+                        holder.tv_item2.setText(liveRoomLuckyUserBean.getRecordTimeDesc());
+                    }
+                }
+                break;
+            case NOTIFICATION_CENTER_DATA_TYPE:
+                ArrayList<MessageNotificationBean> messageNotificationBeanArrayList = (ArrayList<MessageNotificationBean>) mList;
+                if (EmptyUtils.isNotEmpty(messageNotificationBeanArrayList)) {
+                    MessageNotificationBean messageNotificationBean = messageNotificationBeanArrayList.get(position);
+                    if (EmptyUtils.isNotEmpty(messageNotificationBean)) {
                         Glide.with(mContext)
-                                .load(liveRoomLuckyUserBean.getUser().getHeadImg())
+                                .load(SPUtils.getInstance().getString(Constants.HEADIMG))
                                 .placeholder(R.drawable.avatar)
                                 .error(R.drawable.avatar)
                                 .into(holder.iv_item1);
-                        holder.tv_item1.setText(liveRoomLuckyUserBean.getUser().getNickName());
-                        holder.tv_item2.setText(liveRoomLuckyUserBean.getRecordTimeDesc());
+                        holder.tv_item1.setText(messageNotificationBean.getMessageContent());
+                        holder.tv_item2.setText(TimeUtils.millis2String(messageNotificationBean.getCreateTime(), new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")));
                     }
                 }
                 break;
             default:
                 break;
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList == null ? 0 : mList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -253,11 +268,33 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                         }
                     });
                     break;
+                case NOTIFICATION_CENTER_DATA_TYPE:
+                    iv_item1 = (ImageView) itemView.findViewById(R.id.iv_user_photo);
+
+                    tv_item1 = (TextView) itemView.findViewById(R.id.tv_notification_content);
+                    tv_item2 = (TextView) itemView.findViewById(R.id.tv_notification_time);
+
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mOnItemClickListener != null) {
+                                int position = getLayoutPosition();
+                                mOnItemClickListener.onItemClick(mList.get(position), position);
+                            }
+                        }
+                    });
+                    break;
                 default:
                     break;
             }
         }
     }
+
+    @Override
+    public int getItemCount() {
+        return mList == null ? 0 : mList.size();
+    }
+
 
     /**
      * 接口定义三步曲

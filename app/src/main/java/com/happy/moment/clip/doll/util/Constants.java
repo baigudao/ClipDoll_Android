@@ -26,6 +26,8 @@ public class Constants {
     public static final String PAGENUM = "pageNum";
     public static final String PAGESIZE = "pageSize";
     public static final String RESULT = "result";
+    public static final String FROMINVITECODE = "fromInviteCode";
+    public static final String FROMUSERID = "fromUserId";
     public static final int PAGE_SIZE = 10;
 
 
@@ -66,6 +68,8 @@ public class Constants {
     private static final String gameOverUrl = BASE_URL+"live/room/gameover/v1";
     private static final String coinCostRecordUrl = BASE_URL+"user/getCoinRecords/v1";//游戏币消费记录
     private static final String myNotifyUrl = BASE_URL+"message/getMyNotify/v1";//我的通知
+    private static final String verifyInviteUrl = BASE_URL+"inviteAward/verifyInviteCode/v1";//邀请有奖
+    private static final String logoutUrl = BASE_URL+"user/account/logout/v1";//登录注销
 
     public static String getHomeRoomListUrl() {
         return homeRoomListUrl;
@@ -113,5 +117,13 @@ public class Constants {
 
     public static String getMyNotifyUrl() {
         return myNotifyUrl;
+    }
+
+    public static String getVerifyInviteUrl() {
+        return verifyInviteUrl;
+    }
+
+    public static String getLogoutUrl() {
+        return logoutUrl;
     }
 }

@@ -178,7 +178,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                                 smartRefreshLayout.finishLoadmore();
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败,请检查网络并重试！");
+                                ToastUtils.showShort("请求数据失败:" + msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -7,8 +7,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.util.Constants;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 
 /**
  * Created by Devin on 2017/11/18 21:11
@@ -61,6 +68,22 @@ public class InviteNumExchangeFragment extends BaseFragment {
                 break;
             case R.id.btn_exchange:
                 ToastUtils.showShort("兑换");
+                OkHttpUtils.post()
+                        .url(Constants.getVerifyInviteUrl())
+                        .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                        .addParams(Constants.FROMINVITECODE, "BPYTWC")
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                LogUtils.e(e.toString());
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                LogUtils.e(response);
+                            }
+                        });
                 break;
             default:
                 break;

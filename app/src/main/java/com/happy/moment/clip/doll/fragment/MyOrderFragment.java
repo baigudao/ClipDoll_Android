@@ -1,10 +1,14 @@
 package com.happy.moment.clip.doll.fragment;
 
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Devin on 2017/11/18 20:58
@@ -12,6 +16,11 @@ import com.happy.moment.clip.doll.R;
  */
 
 public class MyOrderFragment extends BaseFragment {
+
+    private RadioButton btn_wait_send;
+    private RadioButton btn_send_over;
+
+    private List<BaseFragment> mBaseFragment;
 
     @Override
     protected int getLayoutId() {
@@ -27,6 +36,17 @@ public class MyOrderFragment extends BaseFragment {
         tv_cost_record.setVisibility(View.VISIBLE);
         tv_cost_record.setText("地址管理");
         tv_cost_record.setOnClickListener(this);
+
+        btn_wait_send = (RadioButton) view.findViewById(R.id.btn_wait_send);
+        btn_send_over = (RadioButton) view.findViewById(R.id.btn_send_over);
+        btn_wait_send.setChecked(true);
+
+        mBaseFragment = new ArrayList<>();
+        mBaseFragment.add(new WaitingSendFragment());
+        mBaseFragment.add(new SendOverFragment());
+
+        btn_wait_send.setOnClickListener(this);
+        btn_send_over.setOnClickListener(this);
     }
 
     @Override

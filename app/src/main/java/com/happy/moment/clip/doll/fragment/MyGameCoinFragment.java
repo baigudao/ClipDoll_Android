@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -42,7 +41,7 @@ public class MyGameCoinFragment extends BaseFragment {
                 goBack();
                 break;
             case R.id.tv_cost_record:
-                ToastUtils.showShort("消费记录");
+                gotoPager(SpendCoinRecordFragment.class,null);
                 OkHttpUtils.post()
                         .url(Constants.getCoinCostRecordUrl())
                         .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
