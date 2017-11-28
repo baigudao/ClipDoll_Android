@@ -60,16 +60,26 @@ public class Constants {
     private static final String homeBannerUrl = BASE_URL + "home/getBannerList/v1";
     private static final String clipDollRecordUrl = BASE_URL + "playRecord/getPlayRecordList/v1";
     private static final String userLoginUrl = BASE_URL + "user/account/login/v1";
-    private static final String liveSigUrl = BASE_URL+"user/getTlsSign/v1";
-    private static final String userFeedBack = BASE_URL+"feedback/saveFeedback/v1";
-    private static final String userInfo = BASE_URL+"user/getUserInfo/v1";
-    private static final String userBalance = BASE_URL+"user/getUserBalance/v1";
-    private static final String applyBeginGame = BASE_URL+"live/room/applyBeginGame/v1";
-    private static final String gameOverUrl = BASE_URL+"live/room/gameover/v1";
-    private static final String coinCostRecordUrl = BASE_URL+"user/getCoinRecords/v1";//游戏币消费记录
-    private static final String myNotifyUrl = BASE_URL+"message/getMyNotify/v1";//我的通知
-    private static final String verifyInviteUrl = BASE_URL+"inviteAward/verifyInviteCode/v1";//邀请有奖
-    private static final String logoutUrl = BASE_URL+"user/account/logout/v1";//登录注销
+    private static final String liveSigUrl = BASE_URL + "user/getTlsSign/v1";
+    private static final String userFeedBack = BASE_URL + "feedback/saveFeedback/v1";
+    private static final String userInfo = BASE_URL + "user/getUserInfo/v1";
+    private static final String userBalance = BASE_URL + "user/getUserBalance/v1";//得到余额
+    private static final String applyBeginGame = BASE_URL + "live/room/applyBeginGame/v1";
+    private static final String gameOverUrl = BASE_URL + "live/room/gameover/v1";
+    private static final String coinCostRecordUrl = BASE_URL + "user/getCoinRecords/v1";//游戏币消费记录
+    private static final String myNotifyUrl = BASE_URL + "message/getMyNotify/v1";//我的通知
+    private static final String verifyInviteUrl = BASE_URL + "inviteAward/verifyInviteCode/v1";//邀请有奖
+    private static final String logoutUrl = BASE_URL + "user/account/logout/v1";//登录注销
+    private static final String rechargePriceList = BASE_URL + "recharge/getLqbPriceByPlatformType/v1";//获取价目表
+    private static final String rechargeUrl = BASE_URL + "recharge/rechargeLqb/v1";//充值
+    private static final String waitingSendUrl = BASE_URL + "order/unsentProducts/v1";//待发货
+    private static final String sendOverUrl = BASE_URL + "order/sentedProducts/v1";//待发货
+
+    private static final String userAddressSaveUrl = BASE_URL + "user/address/save/v1";//保存地址
+    private static final String userAddressListUrl = BASE_URL + "user/address/list/v1";//地址列表
+    private static final String userAddressDeleteUrl = BASE_URL + "user/address/delete/v1";//删除地址
+
+    private static final String checkVersionUrl = BASE_URL + "version/checkAppVersionByVersion/v1";//获取版本信息
 
     public static String getHomeRoomListUrl() {
         return homeRoomListUrl;
@@ -125,5 +135,37 @@ public class Constants {
 
     public static String getLogoutUrl() {
         return logoutUrl;
+    }
+
+    public static String getRechargePriceList() {
+        return rechargePriceList;
+    }
+
+    public static String getRechargeUrl() {
+        return rechargeUrl;
+    }
+
+    public static String getWaitingSendUrl() {
+        return waitingSendUrl;
+    }
+
+    public static String getSendOverUrl() {
+        return sendOverUrl;
+    }
+
+    public static String getUserAddressSaveUrl() {
+        return userAddressSaveUrl;
+    }
+
+    public static String getUserAddressListUrl() {
+        return userAddressListUrl;
+    }
+
+    public static String getUserAddressDeleteUrl() {
+        return userAddressDeleteUrl;
+    }
+
+    public static String getCheckVersionUrl() {
+        return checkVersionUrl;
     }
 }

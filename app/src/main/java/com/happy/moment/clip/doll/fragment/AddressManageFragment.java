@@ -3,7 +3,7 @@ package com.happy.moment.clip.doll.fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
@@ -14,8 +14,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
-import com.happy.moment.clip.doll.bean.MessageNotificationBean;
+import com.happy.moment.clip.doll.bean.AddressBean;
 import com.happy.moment.clip.doll.util.Constants;
+import com.happy.moment.clip.doll.util.DataManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -28,40 +29,66 @@ import java.util.ArrayList;
 import okhttp3.Call;
 
 /**
- * Created by Devin on 2017/11/16 17:53
+ * Created by Devin on 2017/11/27 22:33
  * E-mail:971060378@qq.com
  */
 
-public class NotificationCenterFragment extends BaseFragment {
+public class AddressManageFragment extends BaseFragment {
 
-    private static final int NOTIFICATION_CENTER_DATA_TYPE = 16;
-    private RecyclerView recyclerView_notification;
-    private LinearLayout ll_no_data;
+    private Button btn_new_add_address;
+    private static final int ADDRESS_LIST_DATA_TYPE = 6;
+    private RecyclerView recyclerView;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_notification_center;
+        return R.layout.fragment_address_manage;
     }
 
     @Override
     protected void initView(View view) {
         view.findViewById(R.id.ll_close).setOnClickListener(this);
-        ((TextView) view.findViewById(R.id.tv_bar_title)).setText("通知中心");
+        ((TextView) view.findViewById(R.id.tv_bar_title)).setText("地址管理");
         view.findViewById(R.id.iv_share).setVisibility(View.GONE);
 
-        recyclerView_notification = (RecyclerView) view.findViewById(R.id.recyclerView_notification);
-        ll_no_data = (LinearLayout) view.findViewById(R.id.ll_no_data);
+        btn_new_add_address = (Button) view.findViewById(R.id.btn_new_add_address);
+        btn_new_add_address.setOnClickListener(this);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
     }
 
     @Override
-    protected void initData() {
-        super.initData();
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_close:
+                goBack();
+                break;
+            case R.id.btn_new_add_address:
+                DataManager.getInstance().setData1("NEW_ADD_TYPE");
+                gotoPager(NewAddAddressFragment.class, null);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            //显示出来时
+            getDataFromNet();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         getDataFromNet();
     }
 
     private void getDataFromNet() {
-        OkHttpUtils.post()
-                .url(Constants.getMyNotifyUrl())
+        OkHttpUtils.get()
+                .url(Constants.getUserAddressListUrl())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
                 .build()
                 .execute(new StringCallback() {
@@ -81,10 +108,10 @@ public class NotificationCenterFragment extends BaseFragment {
                             String req = jsonObjectResHead.optString("req");
                             JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
                             if (code == 1) {
-                                handlerMessageDataForNotification(jsonObjectResBody);
+                                handlerDataForAddressList(jsonObjectResBody);
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败:" + msg);
+                                ToastUtils.showShort("请求数据失败" + msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -93,36 +120,19 @@ public class NotificationCenterFragment extends BaseFragment {
                 });
     }
 
-    private void handlerMessageDataForNotification(JSONObject jsonObjectResBody) {
+    private void handlerDataForAddressList(JSONObject jsonObjectResBody) {
         if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
-            JSONArray jsonArray = jsonObjectResBody.optJSONArray("messageList");
+            JSONArray jsonArray = jsonObjectResBody.optJSONArray("addressList");
             if (jsonArray.length() > 0) {
-                recyclerView_notification.setVisibility(View.VISIBLE);
-                ll_no_data.setVisibility(View.GONE);
                 Gson gson = new Gson();
-                ArrayList<MessageNotificationBean> messageNotificationBeanArrayList = gson.fromJson(jsonArray.toString(), new TypeToken<ArrayList<MessageNotificationBean>>() {
+                ArrayList<AddressBean> addressBeanArrayList = gson.fromJson(jsonArray.toString(), new TypeToken<ArrayList<AddressBean>>() {
                 }.getType());
-                if (EmptyUtils.isNotEmpty(messageNotificationBeanArrayList) && messageNotificationBeanArrayList.size() != 0) {
-                    BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(mContext, messageNotificationBeanArrayList, NOTIFICATION_CENTER_DATA_TYPE);
-                    recyclerView_notification.setAdapter(baseRecyclerViewAdapter);
-                    recyclerView_notification.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                if (EmptyUtils.isNotEmpty(addressBeanArrayList) && addressBeanArrayList.size() != 0) {
+                    BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(mContext, addressBeanArrayList, ADDRESS_LIST_DATA_TYPE);
+                    recyclerView.setAdapter(baseRecyclerViewAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
                 }
-            } else {
-                //没有任何数据
-                ll_no_data.setVisibility(View.VISIBLE);
-                recyclerView_notification.setVisibility(View.GONE);
             }
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ll_close:
-                goBack();
-                break;
-            default:
-                break;
         }
     }
 }

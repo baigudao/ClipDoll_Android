@@ -1,6 +1,5 @@
 package com.happy.moment.clip.doll.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +23,6 @@ import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.fragment.NotificationCenterFragment;
 import com.happy.moment.clip.doll.fragment.UserCenterFragment;
 import com.happy.moment.clip.doll.util.Constants;
-import com.happy.moment.clip.doll.util.DataManager;
 import com.happy.moment.clip.doll.util.GlideImageLoader;
 import com.happy.moment.clip.doll.view.SharePlatformPopupWindow;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -46,8 +44,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.onekeyshare.OnekeyShareTheme;
 import okhttp3.Call;
 
 import static com.blankj.utilcode.util.SnackbarUtils.getView;
@@ -119,7 +115,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                ToastUtils.showShort("你点击了第" + position + "个banner");
+                //                ToastUtils.showShort("你点击了第" + position + "个banner");
             }
         });
     }
@@ -213,7 +209,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                                 smartRefreshLayout.finishLoadmore();
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败,请检查网络并重试！");
+                                ToastUtils.showShort("请求数据失败" + msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -266,7 +262,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (data.getClass().getSimpleName().equals("HomeRoomBean")) {
             HomeRoomBean homeRoomBean = (HomeRoomBean) data;
             if (EmptyUtils.isNotEmpty(homeRoomBean)) {
-                DataManager.getInstance().setData1(homeRoomBean);
+                SPUtils.getInstance().put("groupId", homeRoomBean.getGroupId());
+                SPUtils.getInstance().put("frontPushId", homeRoomBean.getFrontPushId());
+                SPUtils.getInstance().put("sidePushId", homeRoomBean.getSidePushId());
+                SPUtils.getInstance().put("toyPic", homeRoomBean.getProduct().getToyPicUrl());
                 gotoPager(ClipDollDetailActivity.class, null);
             }
         }
@@ -319,17 +318,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         SharePlatformPopupWindow sharePlatformPopWindow = new SharePlatformPopupWindow(MainActivity.this, new SharePlatformPopupWindow.SharePlatformListener() {
             @Override
             public void onSinaWeiboClicked() {
-                showShare(MainActivity.this, "SinaWeibo", true);
+                //                showShare(MainActivity.this, "SinaWeibo", true);
             }
 
             @Override
             public void onWeChatClicked() {
-                showShare(MainActivity.this, "Wechat", true);
+                //                showShare(MainActivity.this, "Wechat", true);
             }
 
             @Override
             public void onWechatMomentsClicked() {
-                showShare(MainActivity.this, "WechatMoments", true);
+                //                showShare(MainActivity.this, "WechatMoments", true);
             }
 
             @Override
@@ -339,40 +338,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         });
         sharePlatformPopWindow.initView();
         sharePlatformPopWindow.showAtLocation(getView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-    }
-
-    /**
-     * 演示调用ShareSDK执行分享
-     *
-     * @param context
-     * @param platformToShare 指定直接分享平台名称（一旦设置了平台名称，则九宫格将不会显示）
-     * @param showContentEdit 是否显示编辑页
-     */
-    private void showShare(Context context, String platformToShare, boolean showContentEdit) {
-
-        OnekeyShare oks = new OnekeyShare();
-        oks.setSilent(!showContentEdit);
-        if (platformToShare != null) {
-            oks.setPlatform(platformToShare);
-        }
-        //ShareSDK快捷分享提供两个界面第一个是九宫格 CLASSIC  第二个是SKYBLUE
-        oks.setTheme(OnekeyShareTheme.CLASSIC);
-        // 令编辑页面显示为Dialog模式
-        //        oks.setDialogMode();
-        // 在自动授权时可以禁用SSO方式
-        oks.disableSSOWhenAuthorize();
-
-        oks.setTitle(share_title);
-        if (platformToShare.equalsIgnoreCase("SinaWeibo")) {
-            oks.setText(share_txt + "\n" + share_url);
-        } else {
-            oks.setText(share_img);
-            oks.setImageUrl(share_img);
-            oks.setUrl(share_url);
-        }
-
-        // 启动分享
-        oks.show(context);
     }
 
     private long startTime = 0;

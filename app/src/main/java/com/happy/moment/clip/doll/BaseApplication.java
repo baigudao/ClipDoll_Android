@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.MemoryCategory;
 import com.happy.moment.clip.doll.fragment.BaseFragment;
 import com.happy.moment.clip.doll.util.Constants;
-import com.mob.MobSDK;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
@@ -74,10 +73,14 @@ public class BaseApplication extends Application {
         ILVLiveConfig liveConfig = new ILVLiveConfig();
         ILVLiveManager.getInstance().init(liveConfig);
 
-        //初始社会化组件
-        MobSDK.init(this, "224bdd661dffa", "5ec73fe78abc2d0c5ab2ae9da6567745");
+        //        //初始社会化组件
+        //        MobSDK.init(this, "224bdd661dffa", "5ec73fe78abc2d0c5ab2ae9da6567745");
 
         //信鸽推送
+        configXGPush();
+    }
+
+    private void configXGPush() {
         XGPushConfig.enableDebug(this, true);
         XGPushManager.registerPush(this, new XGIOperateCallback() {
             @Override

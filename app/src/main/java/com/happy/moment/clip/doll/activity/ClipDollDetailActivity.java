@@ -23,10 +23,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
-import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.bean.LiveRoomLuckyUserBean;
+import com.happy.moment.clip.doll.fragment.MyGameCoinFragment;
 import com.happy.moment.clip.doll.util.Constants;
-import com.happy.moment.clip.doll.util.DataManager;
 import com.happy.moment.clip.doll.view.TransparentDialog;
 import com.tencent.av.sdk.AVRoomMulti;
 import com.tencent.ilivesdk.ILiveCallBack;
@@ -79,8 +78,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     private AVRootView arv_root;
     private TXWawaPlayer wawaPlayer;
 
-    private HomeRoomBean homeRoomBean;
-
     private boolean isFront;
 
     private ImageView iv_product_pic;
@@ -129,29 +126,61 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onStart() {
         super.onStart();
-        homeRoomBean = (HomeRoomBean) DataManager.getInstance().getData1();
-        DataManager.getInstance().setData1(null);
-        if (EmptyUtils.isNotEmpty(homeRoomBean)) {
-            joinRoom();
-        }
+        joinRoom();
+
+        //得到余额
+        getBalanceCoin();
         //得到幸运儿
         getLuckyUsers();
 
         //渲染宝贝图片
-        if (EmptyUtils.isNotEmpty(homeRoomBean)) {
-            Glide.with(ClipDollDetailActivity.this)
-                    .load(homeRoomBean.getProduct().getToyPicUrl())
-                    .placeholder(R.drawable.wawa_default)
-                    .error(R.drawable.wawa_default)
-                    .into(iv_product_pic);
-        }
+        Glide.with(ClipDollDetailActivity.this)
+                .load(SPUtils.getInstance().getString("toyPic"))
+                .placeholder(R.drawable.wawa_default)
+                .error(R.drawable.wawa_default)
+                .into(iv_product_pic);
+    }
+
+    private void getBalanceCoin() {
+        OkHttpUtils.post()
+                .url(Constants.getUserBalance())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                int balance = jsonObjectResBody.optInt("balance");
+                                tv_coin_num.setText(String.valueOf(balance));
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void getLuckyUsers() {
         //获取抓取记录，幸运儿
         OkHttpUtils.post()
                 .url(Constants.getClipDollRecordUrl())
-                .addParams(Constants.GROUPID, homeRoomBean.getGroupId())
+                .addParams(Constants.GROUPID, SPUtils.getInstance().getString("groupId"))
                 .addParams(Constants.PAGENUM, "1")
                 .addParams(Constants.PAGESIZE, "10")
                 .addParams(Constants.RESULT, "1")
@@ -204,7 +233,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
     private void joinRoom() {
         //加入房间配置项
-        ILVLiveRoomOption memberOption = new ILVLiveRoomOption(homeRoomBean.getFrontPushId())
+        ILVLiveRoomOption memberOption = new ILVLiveRoomOption(SPUtils.getInstance().getString("frontPushId"))
                 .autoCamera(false) //是否自动打开摄像头
                 .controlRole("Guest") //角色设置
                 .authBits(AVRoomMulti.AUTH_BITS_JOIN_ROOM | AVRoomMulti.AUTH_BITS_RECV_AUDIO |
@@ -213,7 +242,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 .autoMic(false);//是否自动打开mic
 
         //加入房间
-        ILVLiveManager.getInstance().joinRoom(Integer.parseInt(homeRoomBean.getGroupId()), memberOption, new ILiveCallBack() {
+        ILVLiveManager.getInstance().joinRoom(Integer.parseInt(SPUtils.getInstance().getString("groupId")), memberOption, new ILiveCallBack() {
             @Override
             public void onSuccess(Object data) {
                 //加入房间成功
@@ -224,8 +253,12 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 //加入房间失败
-                LogUtils.e("加入房间失败" + module + errMsg);
-                ToastUtils.showShort("加入房间失败");
+                LogUtils.e("加入房间失败" + module + errMsg + errCode);
+                if (errCode == 1003) {
+
+                } else {
+                    ToastUtils.showShort("加入房间失败");
+                }
             }
         });
     }
@@ -403,7 +436,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 requestBeginGame();
                 break;
             case R.id.ll_coin_recharge:
-                ToastUtils.showShort("充值");
+                gotoPager(MyGameCoinFragment.class, null);
                 break;
             case R.id.action_start_clip:
                 //下抓
@@ -428,7 +461,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         OkHttpUtils.post()
                 .url(Constants.getGameOverUrl())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                .addParams(Constants.GROUPID, homeRoomBean.getGroupId())
+                .addParams(Constants.GROUPID, SPUtils.getInstance().getString("groupId"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -460,7 +493,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         OkHttpUtils.post()
                 .url(Constants.getApplyBeginGame())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                .addParams(Constants.GROUPID, homeRoomBean.getGroupId())
+                .addParams(Constants.GROUPID, SPUtils.getInstance().getString("groupId"))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -470,7 +503,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
                     @Override
                     public void onResponse(String response, int id) {
-                        LogUtils.e(response);
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response);
@@ -489,7 +521,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                                     case 1:
                                         final String wsUrl = jsonObjectResBody.optString("wsUrl");
                                         final int playId = jsonObjectResBody.optInt("playId");
-                                        LogUtils.e(wsUrl);
                                         wawaPlayer = new TXWawaPlayer(ClipDollDetailActivity.this);
                                         //playId: 唯一标识一次游戏;wsUrl: 需要从业务后台服务器获取
                                         wawaPlayer.startQueue(String.valueOf(playId), wsUrl, new TXWawaCallBack() {
@@ -509,7 +540,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                                 }
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败:"+msg);
+                                ToastUtils.showShort("请求数据失败:" + msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -677,7 +708,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
             }
         });
 
-        arv_root.bindIdAndView(0, VIDEO_SRC_TYPE_CAMERA, homeRoomBean.getFrontPushId());
-        arv_root.bindIdAndView(1, VIDEO_SRC_TYPE_CAMERA, homeRoomBean.getSidePushId());
+        arv_root.bindIdAndView(0, VIDEO_SRC_TYPE_CAMERA, SPUtils.getInstance().getString("frontPushId"));
+        arv_root.bindIdAndView(1, VIDEO_SRC_TYPE_CAMERA, SPUtils.getInstance().getString("sidePushId"));
     }
 }

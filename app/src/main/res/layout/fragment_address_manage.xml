@@ -5,19 +5,16 @@
               android:background="@color/background_color"
               android:orientation="vertical">
 
+    <include layout="@layout/title_bar"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/ll_no_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="300dp"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone">
@@ -25,24 +22,33 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:src="@drawable/order_icon_image"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:text="还没有任何娃娃，快去抓取娃娃吧！"/>
-
-            <Button
-                android:id="@+id/btn_go_clip_doll"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/background_go_clip_doll"
-                android:text="前往抓取"/>
+                android:text="还没添加地址，快去添加新地址吧"/>
 
         </LinearLayout>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_new_add_address"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/weixin_login_background"
+        android:text="+ 新增地址"
+        android:textSize="16sp"/>
 
 </LinearLayout>

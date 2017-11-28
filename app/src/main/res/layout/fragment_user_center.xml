@@ -233,7 +233,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/tv_music"
-                    android:src="@drawable/personal_icon_open"/>
+                    android:src="@drawable/personal_icon_open"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/music_btn_toggle_off"
@@ -241,7 +242,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/tv_music"
-                    android:src="@drawable/personal_icon_shutdown"/>
+                    android:src="@drawable/personal_icon_shutdown"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 
@@ -276,7 +278,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="55dp"
                     android:layout_toRightOf="@id/tv_sound"
-                    android:src="@drawable/personal_icon_open"/>
+                    android:src="@drawable/personal_icon_open"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/sound_btn_toggle_off"
@@ -284,7 +287,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="55dp"
                     android:layout_toRightOf="@id/tv_sound"
-                    android:src="@drawable/personal_icon_shutdown"/>
+                    android:src="@drawable/personal_icon_shutdown"
+                    android:visibility="gone"/>
 
             </RelativeLayout>
 
@@ -352,7 +356,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="40dp"
-                android:clickable="true">
+                android:clickable="true"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_score_prize"

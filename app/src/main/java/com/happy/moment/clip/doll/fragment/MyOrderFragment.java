@@ -1,10 +1,11 @@
 package com.happy.moment.clip.doll.fragment;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
 
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class MyOrderFragment extends BaseFragment {
     private RadioButton btn_send_over;
 
     private List<BaseFragment> mBaseFragment;
+    private Fragment fromFragment;
+    private int position;
 
     @Override
     protected int getLayoutId() {
@@ -37,16 +40,20 @@ public class MyOrderFragment extends BaseFragment {
         tv_cost_record.setText("地址管理");
         tv_cost_record.setOnClickListener(this);
 
-        btn_wait_send = (RadioButton) view.findViewById(R.id.btn_wait_send);
-        btn_send_over = (RadioButton) view.findViewById(R.id.btn_send_over);
-        btn_wait_send.setChecked(true);
-
         mBaseFragment = new ArrayList<>();
         mBaseFragment.add(new WaitingSendFragment());
         mBaseFragment.add(new SendOverFragment());
 
+        btn_wait_send = (RadioButton) view.findViewById(R.id.btn_wait_send);
+        btn_send_over = (RadioButton) view.findViewById(R.id.btn_send_over);
+        btn_wait_send.setChecked(true);
+        btn_send_over.setChecked(false);
+
         btn_wait_send.setOnClickListener(this);
         btn_send_over.setOnClickListener(this);
+
+        position = 0;
+        switchFragment(fromFragment, getFragment());
     }
 
     @Override
@@ -56,10 +63,56 @@ public class MyOrderFragment extends BaseFragment {
                 goBack();
                 break;
             case R.id.tv_cost_record:
-                ToastUtils.showShort("地址管理");
+                gotoPager(AddressManageFragment.class,null);
+                break;
+            case R.id.btn_wait_send:
+                position = 0;
+                btn_wait_send.setChecked(true);
+                btn_send_over.setChecked(false);
+                switchFragment(fromFragment, getFragment());
+                break;
+            case R.id.btn_send_over:
+                position = 1;
+                btn_send_over.setChecked(true);
+                btn_wait_send.setChecked(false);
+                switchFragment(fromFragment, getFragment());
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * @param from 刚显示的Fragment,马上就要被隐藏了
+     * @param to   马上要切换到的Fragment，一会要显示
+     */
+    private void switchFragment(Fragment from, Fragment to) {
+        if (from != to) {
+            fromFragment = to;
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            //才切换
+            //判断有没有被添加
+            if (!to.isAdded()) {
+                //to没有被添加
+                //from隐藏
+                if (from != null) {
+                    ft.hide(from);
+                }
+                //添加to
+                ft.add(R.id.rl_container, to).commit();
+            } else {
+                //to已经被添加
+                // from隐藏
+                if (from != null) {
+                    ft.hide(from);
+                }
+                //显示to
+                ft.show(to).commit();
+            }
+        }
+    }
+
+    private BaseFragment getFragment() {
+        return mBaseFragment.get(position);
     }
 }

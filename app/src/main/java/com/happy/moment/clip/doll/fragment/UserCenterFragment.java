@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -116,7 +117,7 @@ public class UserCenterFragment extends BaseFragment {
                 ToastUtils.showShort("评分有奖");
                 break;
             case R.id.rl_check_update:
-                ToastUtils.showShort("检查更新");
+                checkUpdate();
                 break;
             case R.id.btn_exit_login:
                 final Dialog dialog = new Dialog(mContext);
@@ -171,23 +172,62 @@ public class UserCenterFragment extends BaseFragment {
                 break;
             case R.id.music_btn_toggle_on:
                 showImageView(music_btn_toggle_off, music_btn_toggle_on);
-                ToastUtils.showShort("关闭音乐");
+                //                ToastUtils.showShort("关闭音乐");
                 break;
             case R.id.music_btn_toggle_off:
                 showImageView(music_btn_toggle_on, music_btn_toggle_off);
-                ToastUtils.showShort("打开音乐");
+                //                ToastUtils.showShort("打开音乐");
                 break;
             case R.id.sound_btn_toggle_on:
                 showImageView(sound_btn_toggle_off, sound_btn_toggle_on);
-                ToastUtils.showShort("关闭音效");
+                //                ToastUtils.showShort("关闭音效");
                 break;
             case R.id.sound_btn_toggle_off:
                 showImageView(sound_btn_toggle_on, sound_btn_toggle_off);
-                ToastUtils.showShort("打开音效");
+                //                ToastUtils.showShort("打开音效");
                 break;
             default:
                 break;
         }
+    }
+
+    private void checkUpdate() {
+        OkHttpUtils.get()
+                .url(Constants.getCheckVersionUrl())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .addParams("platform", String.valueOf(0))
+                .addParams("version", AppUtils.getAppVersionName())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                int success = jsonObjectResBody.optInt("success");
+                                if (success == 1) {
+                                    ToastUtils.showShort("已经是最新版本");
+                                }
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     @Override

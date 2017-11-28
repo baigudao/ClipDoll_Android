@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
@@ -42,6 +41,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -66,15 +69,8 @@ dependencies {
     //banner
     compile 'com.youth.banner:banner:1.4.10'
 
-    //使用微信分享、登录、收藏、支付等功能需要的库以及文件（不包含统计功能）
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.3.4'
-    compile files('libs/MobCommons-2017.1024.1907.jar')
-    compile files('libs/MobTools-2017.1024.1907.jar')
-    compile files('libs/ShareSDK-Core-3.1.1.jar')
-    compile files('libs/ShareSDK-Wechat-3.1.1.jar')
-    compile files('libs/ShareSDK-Wechat-Core-3.1.1.jar')
-    compile files('libs/ShareSDK-Wechat-Favorite-3.1.1.jar')
-    compile files('libs/ShareSDK-Wechat-Moments-3.1.1.jar')
+    //使用微信分享、登录、收藏、支付等功能需要的库以及文件（包含统计功能）
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.3.4'
 
     //核心功能
     compile 'com.tencent.ilivesdk:ilivesdk:1.7.2.0.4'
@@ -87,14 +83,11 @@ dependencies {
 
     //EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
-    //log
-    compile 'log4j:log4j:1.2.17'
-    compile 'de.mindpipe.android:android-logging-log4j:1.0.2'
 
     compile 'com.zhy:okhttputils:2.6.2'
 
     compile 'com.github.rey5137:material:1.2.4'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'liji.library.dev:citypickerview:2.1.2'
 
     //完整的信鸽依赖三个都必须有，如果发生依赖冲突请根据对应的依赖版本号选择高版本的依赖。（使用jcenter自动接入请确认libs 中没有信鸽的相关jar包）
     //是否需要信鸽采集安装列表 自行二选一
@@ -103,11 +96,7 @@ dependencies {
     //不采集安装列表
 //    compile 'com.tencent.xinge:xinge:3.1.2-b-alpha'
     //wup包
-    compile 'com.tencent.wup:wup:1.0.0.E-alpha'
+//    compile 'com.tencent.wup:wup:1.0.0.E-alpha'
     //mid包
     compile 'com.tencent.mid:mid:3.9.0-alpha'
-}
-
-repositories {
-    mavenCentral()
 }
