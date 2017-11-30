@@ -55,6 +55,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 
+    compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
 
     //Glide
@@ -96,7 +97,7 @@ dependencies {
     //不采集安装列表
 //    compile 'com.tencent.xinge:xinge:3.1.2-b-alpha'
     //wup包
-//    compile 'com.tencent.wup:wup:1.0.0.E-alpha'
+    compile 'com.tencent.wup:wup:1.0.0.E-alpha'//可能混淆有异常，需注释掉
     //mid包
     compile 'com.tencent.mid:mid:3.9.0-alpha'
 }

@@ -145,7 +145,7 @@ public class ClipDollRecordFragment extends BaseFragment implements OnRefreshLis
                 if (EmptyUtils.isNotEmpty(clipDollRecordBeanArrayList) && clipDollRecordBeanArrayList.size() != 0) {
                     baseRecyclerViewAdapter.addDatas(clipDollRecordBeanArrayList);
                 } else {
-                    ToastUtils.showShort("没有更多数据了");
+                    ToastUtils.showShort("没有更多了");
                 }
             }
         }

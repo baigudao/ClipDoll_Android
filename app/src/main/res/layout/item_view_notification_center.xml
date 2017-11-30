@@ -15,18 +15,18 @@
 
         <com.happy.moment.clip.doll.view.CircleImageView
             android:id="@+id/iv_user_photo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:src="@drawable/avatar"/>
+            android:src="@mipmap/ic_launcher"/>
 
         <TextView
             android:id="@+id/tv_notification_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="14dp"
             android:layout_toRightOf="@id/iv_user_photo"
             android:text="我爱抓娃娃"
             android:textColor="@color/main_text_color"
@@ -39,18 +39,19 @@
             android:layout_below="@id/tv_notification_title"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/iv_user_photo"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:text="你邀请的xxx加入了我爱抓娃娃，你获得邀请币60个。。。"/>
+            android:maxLines="2"
+            android:text="你邀请的xxx加入了我爱抓娃娃，你获得邀请币60个。。。"
+            android:textSize="13sp"/>
 
         <TextView
             android:id="@+id/tv_notification_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="16dp"
             android:layout_toRightOf="@id/tv_notification_title"
             android:text="2017/05/23 23:45:34"/>
 

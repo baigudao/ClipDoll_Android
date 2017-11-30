@@ -1,6 +1,7 @@
 package com.happy.moment.clip.doll.activity;
 
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,6 +50,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private static final int HOME_ROOM_LIST_DATA_TYPE = 1;
 
+    private NestedScrollView nestedScrollView;
+
     private SmartRefreshLayout smartRefreshLayout;
     private RecyclerView recyclerView;
     private int refresh_or_load;//0或1
@@ -57,7 +60,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //        BarUtils.setStatusBarColor(MainActivity.this, getResources().getColor(R.color.main_text_color));
         setContentView(R.layout.activity_main);
 
         initView();
@@ -75,6 +77,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         findViewById(R.id.tv_exchange).setOnClickListener(this);
         findViewById(R.id.iv_exchange).setOnClickListener(this);
+
+        nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
 
         smartRefreshLayout = (SmartRefreshLayout) findViewById(R.id.smartRefreshLayout);
         smartRefreshLayout.setEnableRefresh(true);
@@ -280,7 +284,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
-        initData();
+        //此时没有重新加载数据，只是做了返回nestedScrollView顶部的操作
+        smartRefreshLayout.finishLoadmore();
+        nestedScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                nestedScrollView.fullScroll(View.FOCUS_UP);
+            }
+        });
     }
 
     private void loginTXLive() {

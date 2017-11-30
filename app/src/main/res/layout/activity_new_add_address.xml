@@ -267,7 +267,7 @@
             android:layout_marginRight="15dp"
             android:background="@null"
             android:hint="填写详细地址"
-            android:maxLength="30"
+            android:maxLength="50"
             android:textColorHint="@color/fifth_text_color"
             android:textSize="16sp"/>
 

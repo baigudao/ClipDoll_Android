@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.happy.moment.clip.doll.R;
@@ -103,8 +104,8 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     if (EmptyUtils.isNotEmpty(homeRoomBean)) {
                         Glide.with(mContext)
                                 .load(homeRoomBean.getRoomPicUrl())
-                                .placeholder(R.drawable.wawa_default)
-                                .error(R.drawable.wawa_default)
+                                .placeholder(R.drawable.wawa_default0)
+                                .error(R.drawable.wawa_default0)
                                 .into(holder.iv_item1);
                         int roomState = homeRoomBean.getRoomState();
                         switch (roomState) {
@@ -170,11 +171,6 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                 if (EmptyUtils.isNotEmpty(messageNotificationBeanArrayList)) {
                     MessageNotificationBean messageNotificationBean = messageNotificationBeanArrayList.get(position);
                     if (EmptyUtils.isNotEmpty(messageNotificationBean)) {
-                        Glide.with(mContext)
-                                .load(SPUtils.getInstance().getString(Constants.HEADIMG))
-                                .placeholder(R.drawable.avatar)
-                                .error(R.drawable.avatar)
-                                .into(holder.iv_item1);
                         holder.tv_item1.setText(messageNotificationBean.getMessageContent());
                         holder.tv_item2.setText(TimeUtils.millis2String(messageNotificationBean.getCreateTime(), new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")));
                     }
@@ -287,7 +283,13 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
             this.itemView = itemView;
             switch (dataType) {
                 case HOME_ROOM_LIST_DATA_TYPE:
+                    int size = (ScreenUtils.getScreenWidth() - 90) / 2;
+
                     iv_item1 = (ImageView) itemView.findViewById(R.id.iv_room);
+                    ViewGroup.LayoutParams layoutParams = iv_item1.getLayoutParams();
+                    layoutParams.height = size;
+                    layoutParams.width = size;
+                    iv_item1.setLayoutParams(layoutParams);
 
                     tv_item1 = (TextView) itemView.findViewById(R.id.tv_state_playing);//游戏中
                     tv_item2 = (TextView) itemView.findViewById(R.id.tv_state_free);//空闲中

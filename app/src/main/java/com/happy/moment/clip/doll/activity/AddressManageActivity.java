@@ -22,6 +22,7 @@ import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.bean.AddressBean;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
+import com.rey.material.app.Dialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -41,7 +42,6 @@ import okhttp3.Call;
 public class AddressManageActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btn_new_add_address;
-    private static final int ADDRESS_LIST_DATA_TYPE = 6;
     private RecyclerView recyclerView;
 
     private LinearLayout ll_no_data;
@@ -290,47 +290,65 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
                 holder.ll_address_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        OkHttpUtils.post()
-                                .url(Constants.getUserAddressDeleteUrl())
-                                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                                .addParams("addressId", String.valueOf(addressBean.getAddressId()))
-                                .build()
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        LogUtils.e(e.toString());
-                                    }
+                        final Dialog dialog = new Dialog(AddressManageActivity.this);
+                        dialog.setTitle("你确定要删除该地址吗？");
+                        dialog.negativeAction("取消").positiveAction("确定");
 
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        JSONObject jsonObject = null;
-                                        try {
-                                            jsonObject = new JSONObject(response);
-                                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
-                                            int code = jsonObjectResHead.optInt("code");
-                                            String msg = jsonObjectResHead.optString("msg");
-                                            String req = jsonObjectResHead.optString("req");
-                                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
-                                            if (code == 1) {
-                                                int success = jsonObjectResBody.optInt("success");
-                                                if (success == 1) {
-                                                    addressBeanArrayList.remove(position);
-                                                    notifyDataSetChanged();
-                                                    if (addressBeanArrayList.size() == 0) {
-                                                        getDataFromNet();
-                                                    }
-                                                } else {
-                                                    ToastUtils.showShort("删除失败");
-                                                }
-                                            } else {
-                                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                                ToastUtils.showShort("请求数据失败" + msg);
+                        dialog.negativeActionClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.cancel();
+                            }
+                        });
+                        dialog.positiveActionClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                OkHttpUtils.post()
+                                        .url(Constants.getUserAddressDeleteUrl())
+                                        .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                                        .addParams("addressId", String.valueOf(addressBean.getAddressId()))
+                                        .build()
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onError(Call call, Exception e, int id) {
+                                                LogUtils.e(e.toString());
+                                                dialog.cancel();
                                             }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
+
+                                            @Override
+                                            public void onResponse(String response, int id) {
+                                                JSONObject jsonObject = null;
+                                                try {
+                                                    jsonObject = new JSONObject(response);
+                                                    JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                                                    int code = jsonObjectResHead.optInt("code");
+                                                    String msg = jsonObjectResHead.optString("msg");
+                                                    String req = jsonObjectResHead.optString("req");
+                                                    JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                                                    if (code == 1) {
+                                                        int success = jsonObjectResBody.optInt("success");
+                                                        if (success == 1) {
+                                                            dialog.cancel();
+                                                            addressBeanArrayList.remove(position);
+                                                            notifyDataSetChanged();
+                                                            if (addressBeanArrayList.size() == 0) {
+                                                                getDataFromNet();
+                                                            }
+                                                        } else {
+                                                            ToastUtils.showShort("删除失败");
+                                                        }
+                                                    } else {
+                                                        LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                                        ToastUtils.showShort("请求数据失败" + msg);
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+                        dialog.show();
                     }
                 });
             }
