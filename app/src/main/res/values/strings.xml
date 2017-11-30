@@ -26,7 +26,6 @@
     <string name="str_log_upload_hit">0-当天，1-昨天，2-前天，以此类推</string>
     <string name="str_log_upload_tips">输入要上报的日志的日期</string>
 
-
     <!-- 标题 -->
     <string name="str_menu_host">开播</string>
     <string name="str_menu_guest">观看</string>
@@ -69,7 +68,7 @@
     <string name="cancel">取消</string>
     <string name="close">关闭</string>
     <string name="start_clip_btn">开始抓取</string>
-    <string name="start_button">开启抓娃娃之旅</string>
+    <string name="start_button">开启快乐之旅</string>
     <string name="login_successful">登录成功</string>
     <string name="reject">拒绝</string>
     <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
@@ -78,4 +77,5 @@
         <item>内置美颜</item>
         <item>插件美颜</item>
     </string-array>
+
 </resources>

@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.happy.moment.clip.doll.BaseApplication;
 import com.happy.moment.clip.doll.fragment.BaseFragment;
 import com.happy.moment.clip.doll.util.Constants;
@@ -34,6 +35,8 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //知道当前页面在哪个Activity中
+        LogUtils.e("当前页面处于：" + getClass().getSimpleName());
     }
 
     public DisplayMetrics getDisplaymetrics() {

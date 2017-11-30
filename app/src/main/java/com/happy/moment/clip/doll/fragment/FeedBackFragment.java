@@ -7,8 +7,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -27,7 +29,7 @@ import okhttp3.Call;
  * E-mail:971060378@qq.com
  */
 
-public class FeedBackFragment extends BaseFragment {
+public class FeedBackFragment extends BaseFragment implements View.OnFocusChangeListener {
 
     private EditText et_put_feed_back;
     private TextView tv_word_num;
@@ -35,6 +37,8 @@ public class FeedBackFragment extends BaseFragment {
 
     private static final int MAX_NUM = 500;
     private ClipboardManager cm;
+
+    private RelativeLayout rl_input_word;
 
     @Override
     protected int getLayoutId() {
@@ -49,7 +53,11 @@ public class FeedBackFragment extends BaseFragment {
 
         et_put_feed_back = (EditText) view.findViewById(R.id.et_put_feed_back);
         et_put_feed_back.addTextChangedListener(watcher);
+        et_put_feed_back.setOnFocusChangeListener(this);
         tv_word_num = (TextView) view.findViewById(R.id.tv_word_num);
+
+        rl_input_word = (RelativeLayout) view.findViewById(R.id.rl_input_word);
+        rl_input_word.setOnClickListener(this);
 
         btn_commit = (Button) view.findViewById(R.id.btn_commit);
         btn_commit.setOnClickListener(this);
@@ -57,6 +65,8 @@ public class FeedBackFragment extends BaseFragment {
         view.findViewById(R.id.btn_copy2).setOnClickListener(this);
 
         cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+
+        KeyboardUtils.clickBlankArea2HideSoftInput();
     }
 
     @Override
@@ -66,14 +76,13 @@ public class FeedBackFragment extends BaseFragment {
                 goBack();
                 break;
             case R.id.btn_commit:
-                ToastUtils.showShort("提交");
                 commitContent();
                 break;
             case R.id.btn_copy1:
                 // 从API11开始android推荐使用android.content.ClipboardManager
                 // 为了兼容低版本我们这里使用旧版的android.text.ClipboardManager，虽然提示deprecated，但不影响使用。
                 // 将文本内容放到系统剪贴板里。
-                cm.setText("jianshejihu");
+                cm.setText("woaizhuawa");
                 ToastUtils.showShort("复制到剪贴板成功");
                 break;
             case R.id.btn_copy2:
@@ -82,6 +91,12 @@ public class FeedBackFragment extends BaseFragment {
                 // 将文本内容放到系统剪贴板里。
                 cm.setText("jianshejihu@12.cn");
                 ToastUtils.showShort("复制到剪贴板成功");
+                break;
+            case R.id.rl_input_word:
+                et_put_feed_back.setFocusable(true);
+                et_put_feed_back.setFocusableInTouchMode(true);
+                et_put_feed_back.requestFocus();
+                KeyboardUtils.showSoftInput(getActivity());
                 break;
             default:
                 break;
@@ -117,48 +132,13 @@ public class FeedBackFragment extends BaseFragment {
                                 ToastUtils.showShort("提交成功！");
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败:"+msg);
+                                ToastUtils.showShort("请求数据失败:" + msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
-
-        //获取用户信息
-        //        OkHttpUtils.post()
-        //                .url(Constants.getUserInfo())
-        //                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-        //                .addParams(Constants.USERID, String.valueOf(SPUtils.getInstance().getInt(Constants.USERID)))
-        //                .build()
-        //                .execute(new StringCallback() {
-        //                    @Override
-        //                    public void onError(Call call, Exception e, int id) {
-        //                        LogUtils.e(e.toString());
-        //                    }
-        //
-        //                    @Override
-        //                    public void onResponse(String response, int id) {
-        //                        LogUtils.e(response);
-        //                    }
-        //                });
-
-        //获取用户余额
-        //        OkHttpUtils.post()
-        //                .url(Constants.getUserBalance())
-        //                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-        //                .build()
-        //                .execute(new StringCallback() {
-        //                    @Override
-        //                    public void onError(Call call, Exception e, int id) {
-        //                        LogUtils.e(e.toString());
-        //                    }
-        //
-        //                    @Override
-        //                    public void onResponse(String response, int id) {
-        //                        LogUtils.e(response);
-        //                    }
-        //                });
     }
 
     private TextWatcher watcher = new TextWatcher() {
@@ -194,4 +174,19 @@ public class FeedBackFragment extends BaseFragment {
             tv_word_num.setText(String.valueOf(num));
         }
     };
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            LogUtils.e("已经获取到了焦点");
+        } else {
+            LogUtils.e("已经失去焦点");
+        }
+    }
+
+    @Override
+    public void goBack() {
+        super.goBack();
+        KeyboardUtils.hideSoftInput(getActivity());
+    }
 }

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background_color"
-    android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background_color"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -82,82 +81,62 @@
 
     </RelativeLayout>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/smartRefreshLayout"
+    <com.happy.moment.clip.doll.view.MyScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v4.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <com.youth.banner.Banner
-                    android:id="@+id/banner"
+                <LinearLayout
+                    android:id="@+id/ll_no_data"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="10dp"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="40dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="一起来抓娃娃"
-                        android:textColor="#333333"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/tv_exchange"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:clickable="true"
-                        android:text="换一组"
-                        android:textColor="@drawable/background_text_color_change"
-                        android:textSize="15sp"/>
+                    android:layout_height="300dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageView
-                        android:id="@+id/iv_exchange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@id/tv_exchange"
-                        android:clickable="true"
-                        android:src="@drawable/home_icon_switch"/>
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/order_icon_image"/>
 
-                </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:text="还没添加地址，快去添加新地址吧"/>
+
+                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="9dp"
-                    android:layout_marginRight="9dp"
-                    android:layout_marginTop="30dp"/>
+                    android:layout_height="wrap_content"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+            <Button
+                android:id="@+id/btn_new_add_address"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/weixin_login_background"
+                android:text="+ 新增地址"
+                android:textSize="16sp"/>
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        </LinearLayout>
+
+    </com.happy.moment.clip.doll.view.MyScrollView>
 
 </LinearLayout>

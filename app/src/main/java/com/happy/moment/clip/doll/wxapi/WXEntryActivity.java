@@ -49,7 +49,6 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         super.onCreate(savedInstanceState);
         mWeixinAPI = WXAPIFactory.createWXAPI(this, Constants.APP_ID, true);
         mWeixinAPI.handleIntent(this.getIntent(), this);
-
     }
 
     @Override
@@ -72,12 +71,18 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         int result = 0;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                LogUtils.e("ERR_OK");
                 //发送成功
-                SendAuth.Resp sendResp = (SendAuth.Resp) resp;
-                if (sendResp != null) {
-                    String code = sendResp.code;
-                    getDataFromNet(code);
+                LogUtils.e("ERR_OK");
+                int type = resp.getType();//1：微信登录；2：微信分享
+                if (type == 1) {
+                    SendAuth.Resp sendResp = (SendAuth.Resp) resp;
+                    if (sendResp != null) {
+                        String code = sendResp.code;
+                        getDataFromNet(code);
+                    }
+                } else {
+                    hideLoadingDialog();
+                    finish();
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
@@ -155,7 +160,6 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                                     if (EmptyUtils.isNotEmpty(SPUtils.getInstance().getString(Constants.SESSION))) {
                                         SPUtils.getInstance().put(Constants.IS_USER_LOGIN, true);
                                     }
-
                                     gotoPager(MainActivity.class, null);
                                     finish();
                                     ToastUtils.showShort(R.string.login_successful);

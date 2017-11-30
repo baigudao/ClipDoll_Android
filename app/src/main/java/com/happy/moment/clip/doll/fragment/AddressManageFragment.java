@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
@@ -39,6 +40,8 @@ public class AddressManageFragment extends BaseFragment {
     private static final int ADDRESS_LIST_DATA_TYPE = 6;
     private RecyclerView recyclerView;
 
+    private LinearLayout ll_no_data;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_address_manage;
@@ -54,6 +57,7 @@ public class AddressManageFragment extends BaseFragment {
         btn_new_add_address.setOnClickListener(this);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        ll_no_data = (LinearLayout) view.findViewById(R.id.ll_no_data);
     }
 
     @Override
@@ -65,6 +69,8 @@ public class AddressManageFragment extends BaseFragment {
             case R.id.btn_new_add_address:
                 DataManager.getInstance().setData1("NEW_ADD_TYPE");
                 gotoPager(NewAddAddressFragment.class, null);
+                //                ((BaseActivity)mContext).getVisibleFragment().goBack();
+                //                gotoPager(TestFragment.class,null);
                 break;
             default:
                 break;
@@ -74,10 +80,13 @@ public class AddressManageFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
-            //显示出来时
-            getDataFromNet();
+        if (hidden) {
+            LogUtils.e("隐藏了");
+        } else {
+            LogUtils.e("显示出来了");
         }
+        //显示出来时
+        //            getDataFromNet();
     }
 
     @Override
@@ -124,6 +133,8 @@ public class AddressManageFragment extends BaseFragment {
         if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
             JSONArray jsonArray = jsonObjectResBody.optJSONArray("addressList");
             if (jsonArray.length() > 0) {
+                ll_no_data.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 Gson gson = new Gson();
                 ArrayList<AddressBean> addressBeanArrayList = gson.fromJson(jsonArray.toString(), new TypeToken<ArrayList<AddressBean>>() {
                 }.getType());
@@ -132,6 +143,10 @@ public class AddressManageFragment extends BaseFragment {
                     recyclerView.setAdapter(baseRecyclerViewAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
                 }
+            } else {
+                //没有数据
+                ll_no_data.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         }
     }

@@ -11,34 +11,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.TimeUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.happy.moment.clip.doll.R;
-import com.happy.moment.clip.doll.activity.EmptyActivity;
-import com.happy.moment.clip.doll.bean.AddressBean;
 import com.happy.moment.clip.doll.bean.ClipDollRecordBean;
 import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.bean.LiveRoomLuckyUserBean;
 import com.happy.moment.clip.doll.bean.MessageNotificationBean;
 import com.happy.moment.clip.doll.bean.SpendCoinRecordBean;
 import com.happy.moment.clip.doll.bean.WaitingSendBean;
-import com.happy.moment.clip.doll.fragment.NewAddAddressFragment;
 import com.happy.moment.clip.doll.util.Constants;
-import com.happy.moment.clip.doll.util.DataManager;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * Created by Devin on 2017/11/17 18:22
@@ -52,7 +39,6 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
     private static final int CLIP_DOLL_RECORD_LIVE_DATA_TYPE = 3;
     private static final int SPEND_COIN_RECORD_DATA_TYPE = 4;
     private static final int WAITING_SEND_DATA_TYPE = 5;
-    private static final int ADDRESS_LIST_DATA_TYPE = 6;
     private static final int NOTIFICATION_CENTER_DATA_TYPE = 16;
 
     private Context mContext;
@@ -99,9 +85,6 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                 break;
             case WAITING_SEND_DATA_TYPE:
                 viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_waiting_send, null));
-                break;
-            case ADDRESS_LIST_DATA_TYPE:
-                viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_address, null));
                 break;
             default:
                 viewHolder = null;
@@ -256,172 +239,6 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     }
                 }
                 break;
-            case ADDRESS_LIST_DATA_TYPE:
-                final ArrayList<AddressBean> addressBeanArrayList = (ArrayList<AddressBean>) mList;
-                if (EmptyUtils.isNotEmpty(addressBeanArrayList)) {
-                    final AddressBean addressBean = addressBeanArrayList.get(position);
-                    if (EmptyUtils.isNotEmpty(addressBean)) {
-                        holder.tv_item1.setText(addressBean.getUserName());
-                        holder.tv_item2.setText(addressBean.getPhone());
-                        holder.tv_item3.setText(addressBean.getProvince() + "省" + addressBean.getCity() + "市" + addressBean.getStreet());
-
-                        //渲染
-                        int isDefault = addressBean.getIsDefault();
-                        if (isDefault == 0) {
-                            holder.iv_item1.setVisibility(View.VISIBLE);
-                            holder.iv_item2.setVisibility(View.INVISIBLE);
-                        } else if (isDefault == 1) {
-                            holder.iv_item1.setVisibility(View.INVISIBLE);
-                            holder.iv_item2.setVisibility(View.VISIBLE);
-                        }
-
-                        //设为默认地址
-                        holder.iv_item1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                holder.iv_item1.setVisibility(View.INVISIBLE);
-                                holder.iv_item2.setVisibility(View.VISIBLE);
-                                //请求网络
-                                OkHttpUtils.post()
-                                        .url(Constants.getUserAddressSaveUrl())
-                                        .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                                        .addParams("addressId", String.valueOf(addressBean.getAddressId()))
-                                        .addParams("isDefault", String.valueOf(1))
-                                        .build()
-                                        .execute(new StringCallback() {
-                                            @Override
-                                            public void onError(Call call, Exception e, int id) {
-                                                LogUtils.e(e.toString());
-                                            }
-
-                                            @Override
-                                            public void onResponse(String response, int id) {
-                                                JSONObject jsonObject = null;
-                                                try {
-                                                    jsonObject = new JSONObject(response);
-                                                    JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
-                                                    int code = jsonObjectResHead.optInt("code");
-                                                    String msg = jsonObjectResHead.optString("msg");
-                                                    String req = jsonObjectResHead.optString("req");
-                                                    JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
-                                                    if (code == 1) {
-                                                        int success = jsonObjectResBody.optInt("success");
-                                                        if (success == 1) {
-                                                            LogUtils.e("设为默认地址成功");
-                                                        }
-                                                    } else {
-                                                        LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                                        ToastUtils.showShort("请求数据失败" + msg);
-                                                    }
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
-                            }
-                        });
-                        holder.iv_item2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                holder.iv_item1.setVisibility(View.VISIBLE);
-                                holder.iv_item2.setVisibility(View.INVISIBLE);
-                                //请求网络
-                                OkHttpUtils.post()
-                                        .url(Constants.getUserAddressSaveUrl())
-                                        .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                                        .addParams("addressId", String.valueOf(addressBean.getAddressId()))
-                                        .addParams("isDefault", String.valueOf(0))
-                                        .build()
-                                        .execute(new StringCallback() {
-                                            @Override
-                                            public void onError(Call call, Exception e, int id) {
-                                                LogUtils.e(e.toString());
-                                            }
-
-                                            @Override
-                                            public void onResponse(String response, int id) {
-                                                JSONObject jsonObject = null;
-                                                try {
-                                                    jsonObject = new JSONObject(response);
-                                                    JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
-                                                    int code = jsonObjectResHead.optInt("code");
-                                                    String msg = jsonObjectResHead.optString("msg");
-                                                    String req = jsonObjectResHead.optString("req");
-                                                    JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
-                                                    if (code == 1) {
-                                                        int success = jsonObjectResBody.optInt("success");
-                                                        if (success == 1) {
-                                                            LogUtils.e("取消默认地址成功");
-                                                        }
-                                                    } else {
-                                                        LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                                        ToastUtils.showShort("请求数据失败" + msg);
-                                                    }
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
-                            }
-                        });
-
-                        holder.linearLayout1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                DataManager.getInstance().setData1("EDIT_TYPE");
-                                DataManager.getInstance().setData2(addressBean);
-                                ((EmptyActivity) mContext).gotoPager(NewAddAddressFragment.class, null);
-                            }
-                        });
-                        holder.linearLayout2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                OkHttpUtils.post()
-                                        .url(Constants.getUserAddressDeleteUrl())
-                                        .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                                        .addParams("addressId", String.valueOf(addressBean.getAddressId()))
-                                        .build()
-                                        .execute(new StringCallback() {
-                                            @Override
-                                            public void onError(Call call, Exception e, int id) {
-                                                LogUtils.e(e.toString());
-                                            }
-
-                                            @Override
-                                            public void onResponse(String response, int id) {
-                                                LogUtils.e(response);
-                                                JSONObject jsonObject = null;
-                                                try {
-                                                    jsonObject = new JSONObject(response);
-                                                    JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
-                                                    int code = jsonObjectResHead.optInt("code");
-                                                    String msg = jsonObjectResHead.optString("msg");
-                                                    String req = jsonObjectResHead.optString("req");
-                                                    JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
-                                                    if (code == 1) {
-                                                        int success = jsonObjectResBody.optInt("success");
-                                                        if (success == 1) {
-                                                            addressBeanArrayList.remove(position);
-                                                            notifyDataSetChanged();
-                                                        } else {
-                                                            ToastUtils.showShort("删除失败");
-                                                        }
-                                                    } else {
-                                                        LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                                        ToastUtils.showShort("请求数据失败" + msg);
-                                                    }
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
-                            }
-                        });
-                    }
-                }
-                break;
             default:
                 break;
         }
@@ -567,17 +384,6 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                             }
                         }
                     });
-                    break;
-                case ADDRESS_LIST_DATA_TYPE:
-                    tv_item1 = (TextView) itemView.findViewById(R.id.tv_address_name);//姓名
-                    tv_item2 = (TextView) itemView.findViewById(R.id.tv_address_phone);//电话
-                    tv_item3 = (TextView) itemView.findViewById(R.id.tv_address_place);//地址
-
-                    iv_item1 = (ImageView) itemView.findViewById(R.id.iv_address_choose_no);//设置默认地址
-                    iv_item2 = (ImageView) itemView.findViewById(R.id.iv_address_choose_yes);//设置默认地址
-
-                    linearLayout1 = (LinearLayout) itemView.findViewById(R.id.ll_address_edit);
-                    linearLayout2 = (LinearLayout) itemView.findViewById(R.id.ll_address_delete);
                     break;
                 default:
                     break;

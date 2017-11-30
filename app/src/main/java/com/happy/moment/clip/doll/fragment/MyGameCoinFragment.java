@@ -5,16 +5,23 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.bean.PriceListBean;
 import com.happy.moment.clip.doll.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import okhttp3.Call;
 
@@ -36,6 +43,8 @@ public class MyGameCoinFragment extends BaseFragment {
 
     private int priceId;
     private TextView tv_remain_coin;
+
+    private ArrayList<PriceListBean> priceListBeanArrayList;
 
     @Override
     protected int getLayoutId() {
@@ -102,7 +111,7 @@ public class MyGameCoinFragment extends BaseFragment {
                 gotoPager(SpendCoinRecordFragment.class, null);
                 break;
             case R.id.ll_coin_recharge:
-                recharge();
+                recharge();//充值
                 break;
             case R.id.rl_100:
                 changeBackgroundColor(rl_100, R.color.main_color);
@@ -183,7 +192,6 @@ public class MyGameCoinFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        LogUtils.e(response);
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response);
@@ -193,7 +201,12 @@ public class MyGameCoinFragment extends BaseFragment {
                             String req = jsonObjectResHead.optString("req");
                             JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
                             if (code == 1) {
-                                ToastUtils.showShort("充值成功！");
+                                String remain_coin_string = tv_remain_coin.getText().toString();
+                                int remain_coin = Integer.valueOf(remain_coin_string);
+                                int recharge_coin = priceListBeanArrayList.get(priceId - 1).getLqbNum();
+                                int remain_coin_total = remain_coin + recharge_coin;
+
+                                tv_remain_coin.setText(String.valueOf(remain_coin_total));
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
                                 ToastUtils.showShort("请求数据失败:" + msg);
@@ -230,6 +243,7 @@ public class MyGameCoinFragment extends BaseFragment {
                             if (code == 1) {
                                 int balance = jsonObjectResBody.optInt("balance");
                                 tv_remain_coin.setText(String.valueOf(balance));
+                                handlerPriceListData(jsonObjectResBody);
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
                                 ToastUtils.showShort("请求数据失败:" + msg);
@@ -239,5 +253,16 @@ public class MyGameCoinFragment extends BaseFragment {
                         }
                     }
                 });
+    }
+
+    private void handlerPriceListData(JSONObject jsonObjectResBody) {
+        if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
+            JSONArray jsonArray = jsonObjectResBody.optJSONArray("lqbPriceList");
+            if (jsonArray.length() > 0) {
+                Gson gson = new Gson();
+                priceListBeanArrayList = gson.fromJson(jsonArray.toString(), new TypeToken<ArrayList<PriceListBean>>() {
+                }.getType());
+            }
+        }
     }
 }

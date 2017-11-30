@@ -17,20 +17,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/background_color"
+        android:background="@color/pure_white_color"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/titleText"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/pure_white_color"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:text="@string/share_to"
-            android:textColor="@color/sixth_text_color"
-            android:textSize="15sp"/>
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/share_to"
+                android:textColor="@color/sixth_text_color"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp"
+                android:layout_toRightOf="@id/titleText"
+                android:text="邀请更多好友，获赠更多金币"
+                android:textColor="@color/seventh_text_color"
+                android:textSize="11sp"/>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,49 +57,41 @@
             android:paddingTop="10dp">
 
             <LinearLayout
-                android:id="@+id/llWechatMoments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ssdk_oks_classic_wechatmoments"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingTop="5dp"
-                    android:text="@string/ssdk_wechatmoments"
-                    android:textColor="@color/sixth_text_color"
-                    android:textSize="11sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/llWeChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <ImageView
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ssdk_oks_classic_wechat"/>
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_share_wechat"/>
+
+                    <TextView
+                        android:id="@+id/tv_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="35dp"
+                        android:background="@drawable/background_room_list"
+                        android:gravity="center"
+                        android:text="获赠金币"
+                        android:textColor="@color/pure_white_color"
+                        android:textSize="11sp"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
                     android:paddingTop="5dp"
                     android:text="@string/ssdk_wechat"
                     android:textColor="@color/sixth_text_color"
@@ -92,30 +100,69 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llSina"
+                android:id="@+id/llWechatMoments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:orientation="vertical">
 
-                <ImageView
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ssdk_oks_classic_sinaweibo"/>
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_share_friends"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="35dp"
+                        android:background="@drawable/background_room_list"
+                        android:gravity="center"
+                        android:text="获赠金币"
+                        android:textColor="@color/pure_white_color"
+                        android:textSize="11sp"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:paddingTop="5dp"
-                    android:text="@string/ssdk_sinaweibo"
+                    android:text="@string/ssdk_wechatmoments"
                     android:textColor="@color/sixth_text_color"
                     android:textSize="11sp"/>
+
             </LinearLayout>
+
+            <!--<LinearLayout-->
+            <!--android:id="@+id/llSina"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_marginLeft="40dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/ssdk_oks_classic_sinaweibo"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:paddingTop="5dp"-->
+            <!--android:text="@string/ssdk_sinaweibo"-->
+            <!--android:textColor="@color/sixth_text_color"-->
+            <!--android:textSize="11sp"/>-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 

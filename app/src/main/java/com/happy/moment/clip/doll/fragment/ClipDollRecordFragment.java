@@ -3,6 +3,7 @@ package com.happy.moment.clip.doll.fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
@@ -44,6 +45,8 @@ public class ClipDollRecordFragment extends BaseFragment implements OnRefreshLis
     private BaseRecyclerViewAdapter baseRecyclerViewAdapter;
     private int refresh_or_load;//0或1
 
+    private LinearLayout ll_no_data;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_clip_doll_record;
@@ -56,6 +59,7 @@ public class ClipDollRecordFragment extends BaseFragment implements OnRefreshLis
         view.findViewById(R.id.iv_share).setVisibility(View.GONE);
 
         recyclerView_clip_doll_record = (RecyclerView) view.findViewById(R.id.recyclerView_clip_doll_record);
+        ll_no_data = (LinearLayout) view.findViewById(R.id.ll_no_data);
         page = 1;
 
         smartRefreshLayout = (SmartRefreshLayout) view.findViewById(R.id.smartRefreshLayout);
@@ -122,7 +126,7 @@ public class ClipDollRecordFragment extends BaseFragment implements OnRefreshLis
                                 }
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败:"+msg);
+                                ToastUtils.showShort("请求数据失败:" + msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -150,7 +154,9 @@ public class ClipDollRecordFragment extends BaseFragment implements OnRefreshLis
     private void handlerDataForClipDollRecord(JSONObject jsonObjectResBody) {
         if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
             JSONArray jsonArrayForClipDoll = jsonObjectResBody.optJSONArray("pageData");
-            if (EmptyUtils.isNotEmpty(jsonArrayForClipDoll)) {
+            if (jsonArrayForClipDoll.length() > 0) {
+                ll_no_data.setVisibility(View.GONE);
+                recyclerView_clip_doll_record.setVisibility(View.VISIBLE);
                 Gson gson = new Gson();
                 ArrayList<ClipDollRecordBean> clipDollRecordBeanArrayList = gson.fromJson(jsonArrayForClipDoll.toString(), new TypeToken<ArrayList<ClipDollRecordBean>>() {
                 }.getType());
@@ -159,6 +165,10 @@ public class ClipDollRecordFragment extends BaseFragment implements OnRefreshLis
                     recyclerView_clip_doll_record.setAdapter(baseRecyclerViewAdapter);
                     recyclerView_clip_doll_record.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
                 }
+            } else {
+                //没有数据
+                ll_no_data.setVisibility(View.VISIBLE);
+                recyclerView_clip_doll_record.setVisibility(View.GONE);
             }
         }
     }

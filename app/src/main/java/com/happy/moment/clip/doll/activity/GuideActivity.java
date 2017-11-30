@@ -35,7 +35,6 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
     private ArrayList<ImageView> imageViews;
     private int leftMax;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

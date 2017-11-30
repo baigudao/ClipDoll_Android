@@ -70,8 +70,10 @@ public class Constants {
     private static final String myNotifyUrl = BASE_URL + "message/getMyNotify/v1";//我的通知
     private static final String verifyInviteUrl = BASE_URL + "inviteAward/verifyInviteCode/v1";//邀请有奖
     private static final String logoutUrl = BASE_URL + "user/account/logout/v1";//登录注销
+
     private static final String rechargePriceList = BASE_URL + "recharge/getLqbPriceByPlatformType/v1";//获取价目表
     private static final String rechargeUrl = BASE_URL + "recharge/rechargeLqb/v1";//充值
+
     private static final String waitingSendUrl = BASE_URL + "order/unsentProducts/v1";//待发货
     private static final String sendOverUrl = BASE_URL + "order/sentedProducts/v1";//待发货
 

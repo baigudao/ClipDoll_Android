@@ -7,6 +7,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.activity.AddressManageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,8 @@ public class MyOrderFragment extends BaseFragment {
                 goBack();
                 break;
             case R.id.tv_cost_record:
-                gotoPager(AddressManageFragment.class,null);
+                //                gotoPager(AddressManageFragment.class,null);
+                gotoPager(AddressManageActivity.class,null);//暂定方案
                 break;
             case R.id.btn_wait_send:
                 position = 0;

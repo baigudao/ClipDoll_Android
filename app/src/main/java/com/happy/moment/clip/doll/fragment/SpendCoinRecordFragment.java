@@ -103,7 +103,6 @@ public class SpendCoinRecordFragment extends BaseFragment implements OnRefreshLi
 
                     @Override
                     public void onResponse(String response, int id) {
-                        LogUtils.e(response);
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response);
@@ -156,7 +155,7 @@ public class SpendCoinRecordFragment extends BaseFragment implements OnRefreshLi
     private void handlerDataForSpendCoinRecord(JSONObject jsonObjectResBody) {
         if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
             JSONArray jsonArray = jsonObjectResBody.optJSONArray("pageData");
-            if (EmptyUtils.isNotEmpty(jsonArray)) {
+            if (jsonArray.length() > 0) {
                 recyclerView.setVisibility(View.VISIBLE);
                 ll_no_data.setVisibility(View.GONE);
                 Gson gson = new Gson();

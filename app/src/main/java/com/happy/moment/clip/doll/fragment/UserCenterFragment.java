@@ -4,13 +4,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.activity.LoginActivity;
 import com.happy.moment.clip.doll.util.Constants;
+import com.happy.moment.clip.doll.util.DataManager;
 import com.rey.material.app.Dialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -121,7 +125,7 @@ public class UserCenterFragment extends BaseFragment {
                 break;
             case R.id.btn_exit_login:
                 final Dialog dialog = new Dialog(mContext);
-                dialog.setTitle("你确定要退出应用吗？");
+                dialog.setTitle("你确定要退出登录吗？");
                 dialog.negativeAction("取消").positiveAction("确定");
 
                 dialog.negativeActionClickListener(new View.OnClickListener() {
@@ -146,7 +150,7 @@ public class UserCenterFragment extends BaseFragment {
 
                                     @Override
                                     public void onResponse(String response, int id) {
-                                        LogUtils.e(response);
+                                        //LogUtils.e(response);  {"resHead":{"msg":"success","code":1,"req":"/wawa_api/user/account/logout/v1"},"resBody":{}}
                                         JSONObject jsonObject = null;
                                         try {
                                             jsonObject = new JSONObject(response);
@@ -156,6 +160,21 @@ public class UserCenterFragment extends BaseFragment {
                                             String req = jsonObjectResHead.optString("req");
                                             JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
                                             if (code == 1) {
+                                                //清空ticket和userId
+                                                SPUtils.getInstance().put(Constants.SESSION, "");
+                                                //清空sig
+                                                SPUtils.getInstance().put(Constants.TLSSIGN, "");
+                                                //清空第三方微信登录返回的用户信息
+                                                SPUtils.getInstance().put(Constants.HEADIMG, "");
+                                                SPUtils.getInstance().put(Constants.INVITECODE, "");
+                                                SPUtils.getInstance().put(Constants.NICKNAME, "");
+                                                SPUtils.getInstance().put(Constants.USERID, 0);
+                                                DataManager.getInstance().setUserInfo(null);
+                                                //清空登录状态
+                                                SPUtils.getInstance().put(Constants.IS_USER_LOGIN, false);
+
+                                                ActivityUtils.finishAllActivities();
+                                                gotoPager(LoginActivity.class, null);
                                                 ToastUtils.showShort("退出登录成功！");
                                             } else {
                                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
@@ -237,12 +256,14 @@ public class UserCenterFragment extends BaseFragment {
     }
 
     private void initHeadView() {
-        Glide.with(mContext)
-                .load(SPUtils.getInstance().getString(Constants.HEADIMG))
-                .placeholder(R.drawable.avatar)
-                .error(R.drawable.avatar)
-                .into(iv_user_photo);
-        LogUtils.e(SPUtils.getInstance().getString(Constants.HEADIMG));
+        String string_head_img = SPUtils.getInstance().getString(Constants.HEADIMG);
+        if (EmptyUtils.isNotEmpty(string_head_img)) {
+            Glide.with(mContext)
+                    .load(string_head_img)
+                    .placeholder(R.drawable.avatar)
+                    .error(R.drawable.avatar)
+                    .into(iv_user_photo);
+        }
         tv_user_name.setText(SPUtils.getInstance().getString(Constants.NICKNAME));
         tv_id_num.setText("ID:" + SPUtils.getInstance().getInt(Constants.USERID));
     }

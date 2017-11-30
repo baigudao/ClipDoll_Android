@@ -91,41 +91,67 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         BarUtils.setStatusBarColor(ClipDollDetailActivity.this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_clip_doll_detail);
 
-        //        View decorView = getWindow().getDecorView();
-        //        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        //                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        //                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        //                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        //                | View.SYSTEM_UI_FLAG_FULLSCREEN
-        //                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        initView();
+    }
+
+    private void initView() {
         //屏幕常亮
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //一屏显示
+        int height = ScreenUtils.getScreenHeight() - BarUtils.getStatusBarHeight() - 50;
+        RelativeLayout rl_fill_screen = (RelativeLayout) findViewById(R.id.rl_fill_screen);
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) rl_fill_screen.getLayoutParams();
+        layoutParams.height = height;
+        rl_fill_screen.setLayoutParams(layoutParams);
 
-        initView();
+        //头部视图
+        findViewById(R.id.ll_close).setOnClickListener(this);
+        findViewById(R.id.iv_share).setOnClickListener(this);
 
-        //进入界面后5s开始抓取娃娃，模拟排队耗时
-        time = 5;
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ClipDollDetailActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        --time;
-                        if (time <= 0) {
-                            startClipDoll();
-                            timer.cancel();
-                        }
-                    }
-                });
-            }
-        }, 1000, 1000);
+        //主要视图
+        arv_root = (AVRootView) findViewById(R.id.arv_root);
+        ILVLiveManager.getInstance().setAvVideoView(arv_root);
+        arv_root.setAutoOrientation(false);
+        isFront = true;
+        //有画面之后的回调
+        arv_root.setSubCreatedListener(this);
+
+        //操作相关视图
+        rl_start_clip_and_recharge = (RelativeLayout) findViewById(R.id.rl_start_clip_and_recharge);
+        rl_operation = (RelativeLayout) findViewById(R.id.rl_operation);
+        tv_cost_coin_num = (TextView) findViewById(R.id.tv_cost_coin_num);
+        tv_coin_num = (TextView) findViewById(R.id.tv_coin_num);
+        tv_start_clip_doll = (TextView) findViewById(R.id.tv_start_clip_doll);
+        ll_start_clip_doll = (LinearLayout) findViewById(R.id.ll_start_clip_doll);
+        ll_start_clip_doll.setOnClickListener(this);
+        findViewById(R.id.ll_coin_recharge).setOnClickListener(this);
+        tv_timer = (TextView) findViewById(R.id.tv_timer);
+        findViewById(R.id.iv_live_room_camera).setOnClickListener(this);
+
+        //上下左右下抓操作按钮视图
+        action_btn_left = (ImageButton) findViewById(R.id.action_btn_left);
+        action_btn_left.setOnTouchListener(this);
+        action_btn_bottom = (ImageButton) findViewById(R.id.action_btn_bottom);
+        action_btn_bottom.setOnTouchListener(this);
+        action_btn_top = (ImageButton) findViewById(R.id.action_btn_top);
+        action_btn_top.setOnTouchListener(this);
+        action_btn_right = (ImageButton) findViewById(R.id.action_btn_right);
+        action_btn_right.setOnTouchListener(this);
+        action_start_clip = (ImageButton) findViewById(R.id.action_start_clip);
+        action_start_clip.setOnClickListener(this);
+
+        //底部视图的初始化
+        recyclerView_lucky = (RecyclerView) findViewById(R.id.recyclerView_lucky);
+        iv_product_pic = (ImageView) findViewById(R.id.iv_product_pic);
+
+        //默认显示
+        beforeStartGameView();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
         joinRoom();
 
         //得到余额
@@ -263,76 +289,328 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         });
     }
 
-    /**
-     * 轮到自己抓娃娃了，显示开始抓取按钮
-     */
-    private void startClipDoll() {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_close:
+                goBack();
+                break;
+            case R.id.iv_live_room_camera:
+                //这里切换摄像头
+                if (isFront) {
+                    arv_root.swapVideoView(0, 1);// 与大屏交换
+                    isFront = false;
+                } else {
+                    arv_root.swapVideoView(1, 0);// 与大屏交换
+                    isFront = true;
+                }
+                break;
+            case R.id.ll_start_clip_doll:
+                //请求开始游戏接口
+                requestBeginGame();
+                break;
+            case R.id.ll_coin_recharge:
+                gotoPager(MyGameCoinFragment.class, null);
+                break;
+            case R.id.action_start_clip:
+                //下抓
+                wawaPlayer.controlClaw(TXWawaPlayer.CTL_CATCH);
+                startClipDollView();
+                break;
+            case R.id.iv_share:
+                //gameOver();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void requestBeginGame() {
+        OkHttpUtils.post()
+                .url(Constants.getApplyBeginGame())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .addParams(Constants.GROUPID, SPUtils.getInstance().getString("groupId"))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                int success = jsonObjectResBody.optInt("success");
+                                switch (success) {
+                                    case 0:
+                                        String alertMsg = jsonObjectResBody.optString("alertMsg");
+                                        ToastUtils.showShort(alertMsg);
+                                        break;
+                                    case 1:
+                                        final String wsUrl = jsonObjectResBody.optString("wsUrl");
+                                        final int playId = jsonObjectResBody.optInt("playId");
+                                        wawaPlayer = new TXWawaPlayer(ClipDollDetailActivity.this);
+                                        //playId: 唯一标识一次游戏;wsUrl: 需要从业务后台服务器获取
+                                        wawaPlayer.startQueue(String.valueOf(playId), wsUrl, new TXWawaCallBack() {
+                                            @Override
+                                            public void onSuccess(Object o) {
+                                                LogUtils.e("success");
+                                            }
+
+                                            @Override
+                                            public void onError(int i, String s) {
+                                                LogUtils.e("error");
+                                            }
+                                        });
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    //=====================================================================下面固定================
+    private void beforeStartGameView() {
+        rl_start_clip_and_recharge.setVisibility(View.VISIBLE);
+        rl_operation.setVisibility(View.GONE);
         ll_start_clip_doll.setEnabled(true);
         tv_start_clip_doll.setTextColor(getResources().getColor(R.color.seventh_text_color));
         tv_cost_coin_num.setTextColor(getResources().getColor(R.color.seventh_text_color));
     }
 
-    private void initView() {
-        //一屏显示
-        int height = ScreenUtils.getScreenHeight() - BarUtils.getStatusBarHeight() - 50;
-        RelativeLayout rl_fill_screen = (RelativeLayout) findViewById(R.id.rl_fill_screen);
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) rl_fill_screen.getLayoutParams();
-        layoutParams.height = height;
-        rl_fill_screen.setLayoutParams(layoutParams);
+    private void startGameShowView() {
+        //显示操作按钮，隐藏开始抓取和充值按钮
+        rl_start_clip_and_recharge.setVisibility(View.GONE);
+        rl_operation.setVisibility(View.VISIBLE);
+        action_btn_left.setEnabled(true);
+        action_btn_bottom.setEnabled(true);
+        action_btn_top.setEnabled(true);
+        action_btn_right.setEnabled(true);
+        action_start_clip.setEnabled(true);
 
-        arv_root = (AVRootView) findViewById(R.id.arv_root);
-        ILVLiveManager.getInstance().setAvVideoView(arv_root);
-        arv_root.setAutoOrientation(false);
-        isFront = true;
-        //有画面之后的回调
-        arv_root.setSubCreatedListener(this);
+        //显示倒计时
+        mTotalTime = 30;
+        mTimer = new Timer();
+        initTimerTask();
+        mTimer.schedule(mTask, 1000, 1000);
 
-        findViewById(R.id.ll_close).setOnClickListener(this);
+        tv_timer.setVisibility(View.VISIBLE);
+    }
 
-        findViewById(R.id.iv_share).setOnClickListener(this);
-
-        findViewById(R.id.iv_live_room_camera).setOnClickListener(this);
-
-        tv_timer = (TextView) findViewById(R.id.tv_timer);
-
-        rl_start_clip_and_recharge = (RelativeLayout) findViewById(R.id.rl_start_clip_and_recharge);
-        rl_start_clip_and_recharge.setVisibility(View.VISIBLE);
-        rl_operation = (RelativeLayout) findViewById(R.id.rl_operation);
-        rl_operation.setVisibility(View.GONE);
-
-        tv_cost_coin_num = (TextView) findViewById(R.id.tv_cost_coin_num);
-
-        tv_coin_num = (TextView) findViewById(R.id.tv_coin_num);
-
-        tv_start_clip_doll = (TextView) findViewById(R.id.tv_start_clip_doll);
-
-        ll_start_clip_doll = (LinearLayout) findViewById(R.id.ll_start_clip_doll);
+    /**
+     * 不激活开始抓取按钮
+     */
+    private void showStartClipAndRecharge() {
         ll_start_clip_doll.setEnabled(false);
         tv_start_clip_doll.setTextColor(getResources().getColor(R.color.pure_white_color));
         tv_cost_coin_num.setTextColor(getResources().getColor(R.color.pure_white_color));
-        ll_start_clip_doll.setOnClickListener(this);
+    }
 
-        findViewById(R.id.ll_coin_recharge).setOnClickListener(this);
+    /**
+     * 下抓
+     */
+    private void startClipDollView() {
+        tv_timer.setVisibility(View.GONE);
+        mTimer.cancel();
+        //不激活操作按钮
+        action_start_clip.setEnabled(false);
+        action_btn_left.setEnabled(false);
+        action_btn_top.setEnabled(false);
+        action_btn_right.setEnabled(false);
+        action_btn_bottom.setEnabled(false);
+    }
 
-        action_btn_left = (ImageButton) findViewById(R.id.action_btn_left);
-        action_btn_left.setEnabled(true);
-        action_btn_left.setOnTouchListener(this);
-        action_btn_bottom = (ImageButton) findViewById(R.id.action_btn_bottom);
-        action_btn_bottom.setEnabled(true);
-        action_btn_bottom.setOnTouchListener(this);
-        action_btn_top = (ImageButton) findViewById(R.id.action_btn_top);
-        action_btn_top.setEnabled(true);
-        action_btn_top.setOnTouchListener(this);
-        action_btn_right = (ImageButton) findViewById(R.id.action_btn_right);
-        action_btn_right.setEnabled(true);
-        action_btn_right.setOnTouchListener(this);
-        action_start_clip = (ImageButton) findViewById(R.id.action_start_clip);
-        action_start_clip.setEnabled(true);
-        action_start_clip.setOnClickListener(this);
+    private void showResultDialog() {
+        //        View view = View.inflate(ClipDollDetailActivity.this, R.layout.dialog_clip_doll_result_yes, null);
+        //        AlertDialog.Builder builder = new AlertDialog.Builder(ClipDollDetailActivity.this, R.style.dialog);
+        //        builder.setView(view);
+        //        builder.create().show();
+        TransparentDialog transparentDialog = new TransparentDialog(this, R.style.dialog);//创建Dialog并设置样式主题
+        transparentDialog.setCanceledOnTouchOutside(true);//设置点击Dialog外部任意区域关闭Dialog
+        transparentDialog.show();
+    }
 
-        //底部视图的初始化
-        recyclerView_lucky = (RecyclerView) findViewById(R.id.recyclerView_lucky);
-        iv_product_pic = (ImageView) findViewById(R.id.iv_product_pic);
+    @Override
+    public void OnWait(int i) {
+        LogUtils.e("OnWait");
+    }
+
+    @Override
+    public void OnReady() {
+        LogUtils.e("OnReady");
+        wawaPlayer.startGame(new TXWawaCallBack<Integer>() {
+            @Override
+            public void onSuccess(Integer integer) {
+                startGameShowView();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                LogUtils.e("开始游戏出错" + s);
+            }
+        });
+    }
+
+    @Override
+    public void OnState(int i) {
+        LogUtils.e("OnState");
+    }
+
+    @Override
+    public void OnResult(boolean b) {
+        if (b) {
+            ToastUtils.showShort("恭喜你，抓到了娃娃");
+            beforeStartGameView();
+        } else {
+            ToastUtils.showShort("很遗憾，没有抓到");
+            beforeStartGameView();
+        }
+        wawaPlayer.quitGame();
+    }
+
+    @Override
+    public void OnTime(int i) {
+        LogUtils.e("OnTime");
+    }
+
+    @Override
+    public void OnClose(int i, int i1, String s) {
+        LogUtils.e("OnClose");
+    }
+
+    @Override
+    public void OnControlRTT(int i) {
+        LogUtils.e("OnControlRTT");
+    }
+
+    @Override
+    public void onSubViewCreated() {
+        if (arv_root.getViewByIndex(0) != null) { //主摄像头画面
+            arv_root.getViewByIndex(0).setRotate(true);
+            arv_root.getViewByIndex(0).setRotation(270);
+        }
+        if (arv_root.getViewByIndex(1) != null) { //副摄像头画面
+            arv_root.getViewByIndex(1).setPosHeight(0);
+            arv_root.getViewByIndex(1).setPosWidth(0);
+            arv_root.getViewByIndex(1).setRotate(true);
+            arv_root.getViewByIndex(1).setPosTop(350);
+            arv_root.getViewByIndex(1).setRotation(270);
+        }
+
+        //统计:主摄像头
+        arv_root.getViewByIndex(0).setVideoListener(new VideoListener() {
+            @Override
+            public void onFirstFrameRecved(int width, int height, int angle, String identifier) {
+                LogUtils.e("onFirstFrameRecved");
+            }
+
+            @Override
+            public void onHasVideo(String identifier, int srcType) {
+                LogUtils.e("onHasVideo");
+            }
+
+            @Override
+            public void onNoVideo(String identifier, int srcType) {
+                LogUtils.e(identifier);
+            }
+        });
+
+        //统计:副摄像头
+        arv_root.getViewByIndex(1).setVideoListener(new VideoListener() {
+            @Override
+            public void onFirstFrameRecved(int width, int height, int angle, String identifier) {
+                LogUtils.e("onFirstFrameRecved");
+            }
+
+            @Override
+            public void onHasVideo(String identifier, int srcType) {
+                LogUtils.e("onHasVideo");
+            }
+
+            @Override
+            public void onNoVideo(String identifier, int srcType) {
+                LogUtils.e(identifier);
+            }
+        });
+
+        arv_root.bindIdAndView(0, VIDEO_SRC_TYPE_CAMERA, SPUtils.getInstance().getString("frontPushId"));
+        arv_root.bindIdAndView(1, VIDEO_SRC_TYPE_CAMERA, SPUtils.getInstance().getString("sidePushId"));
+    }
+
+    //Activity的回调
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ILVLiveManager.getInstance().onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ILVLiveManager.getInstance().onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ILVLiveManager.getInstance().onDestory();
+    }
+
+    private void gameOver() {
+        OkHttpUtils.post()
+                .url(Constants.getGameOverUrl())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .addParams(Constants.GROUPID, SPUtils.getInstance().getString("groupId"))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LogUtils.e(response);
+                        ToastUtils.showShort("游戏结束");
+                    }
+                });
+    }
+
+    private void initTimerTask() {
+        mTask = new TimerTask() {
+            @Override
+            public void run() {
+                ClipDollDetailActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        --mTotalTime;
+                        tv_timer.setText(String.valueOf(mTotalTime) + "s");
+                        if (mTotalTime <= 9) {
+                            tv_timer.setTextSize(40);
+                        }
+                        if (mTotalTime <= 0) {
+                            startClipDollView();
+                        }
+                    }
+                });
+            }
+        };
     }
 
     @Override
@@ -413,302 +691,5 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
             }
         }
         return false;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ll_close:
-                goBack();
-                break;
-            case R.id.iv_live_room_camera:
-                //这里切换摄像头
-                if (isFront) {
-                    arv_root.swapVideoView(0, 1);// 与大屏交换
-                    isFront = false;
-                } else {
-                    arv_root.swapVideoView(1, 0);// 与大屏交换
-                    isFront = true;
-                }
-                break;
-            case R.id.ll_start_clip_doll:
-                //请求开始游戏接口
-                requestBeginGame();
-                break;
-            case R.id.ll_coin_recharge:
-                gotoPager(MyGameCoinFragment.class, null);
-                break;
-            case R.id.action_start_clip:
-                //下抓
-                wawaPlayer.controlClaw(TXWawaPlayer.CTL_CATCH);
-                tv_timer.setVisibility(View.GONE);
-                //不激活操作按钮
-                action_start_clip.setEnabled(false);
-                action_btn_left.setEnabled(false);
-                action_btn_top.setEnabled(false);
-                action_btn_right.setEnabled(false);
-                action_btn_bottom.setEnabled(false);
-                break;
-            case R.id.iv_share:
-                gameOver();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void gameOver() {
-        OkHttpUtils.post()
-                .url(Constants.getGameOverUrl())
-                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                .addParams(Constants.GROUPID, SPUtils.getInstance().getString("groupId"))
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LogUtils.e(e.toString());
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        LogUtils.e(response);
-                        ToastUtils.showShort("游戏结束");
-                    }
-                });
-    }
-
-    private void startGameShowView() {
-        //显示操作按钮，隐藏开始抓取和充值按钮
-        tv_timer.setVisibility(View.VISIBLE);
-        rl_operation.setVisibility(View.VISIBLE);
-        rl_start_clip_and_recharge.setVisibility(View.INVISIBLE);
-        //显示倒计时
-        mTotalTime = 30;
-        mTimer = new Timer();
-        initTimerTask();
-        mTimer.schedule(mTask, 1000, 1000);
-    }
-
-    private void requestBeginGame() {
-        OkHttpUtils.post()
-                .url(Constants.getApplyBeginGame())
-                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                .addParams(Constants.GROUPID, SPUtils.getInstance().getString("groupId"))
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        LogUtils.e(e.toString());
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        JSONObject jsonObject = null;
-                        try {
-                            jsonObject = new JSONObject(response);
-                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
-                            int code = jsonObjectResHead.optInt("code");
-                            String msg = jsonObjectResHead.optString("msg");
-                            String req = jsonObjectResHead.optString("req");
-                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
-                            if (code == 1) {
-                                int success = jsonObjectResBody.optInt("success");
-                                switch (success) {
-                                    case 0:
-                                        String alertMsg = jsonObjectResBody.optString("alertMsg");
-                                        ToastUtils.showShort(alertMsg);
-                                        break;
-                                    case 1:
-                                        final String wsUrl = jsonObjectResBody.optString("wsUrl");
-                                        final int playId = jsonObjectResBody.optInt("playId");
-                                        wawaPlayer = new TXWawaPlayer(ClipDollDetailActivity.this);
-                                        //playId: 唯一标识一次游戏;wsUrl: 需要从业务后台服务器获取
-                                        wawaPlayer.startQueue(String.valueOf(playId), wsUrl, new TXWawaCallBack() {
-                                            @Override
-                                            public void onSuccess(Object o) {
-                                                LogUtils.e("success");
-                                            }
-
-                                            @Override
-                                            public void onError(int i, String s) {
-                                                LogUtils.e("error");
-                                            }
-                                        });
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            } else {
-                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                ToastUtils.showShort("请求数据失败:" + msg);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        ILVLiveManager.getInstance().onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ILVLiveManager.getInstance().onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ILVLiveManager.getInstance().onDestory();
-    }
-
-    private void initTimerTask() {
-        mTask = new TimerTask() {
-            @Override
-            public void run() {
-                ClipDollDetailActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        --mTotalTime;
-                        tv_timer.setText(String.valueOf(mTotalTime) + "s");
-                        if (mTotalTime <= 9) {
-                            tv_timer.setTextSize(40);
-                        }
-                        if (mTotalTime <= 0) {
-                            mTimer.cancel();
-                            //不激活操作按钮
-                            action_start_clip.setEnabled(false);
-                            action_btn_left.setEnabled(false);
-                            action_btn_top.setEnabled(false);
-                            action_btn_right.setEnabled(false);
-                            action_btn_bottom.setEnabled(false);
-                            //弹出结果对话框
-                            //                            showResultDialog();
-                        }
-                    }
-                });
-            }
-        };
-    }
-
-    private void showResultDialog() {
-        //        View view = View.inflate(ClipDollDetailActivity.this, R.layout.dialog_clip_doll_result_yes, null);
-        //        AlertDialog.Builder builder = new AlertDialog.Builder(ClipDollDetailActivity.this, R.style.dialog);
-        //        builder.setView(view);
-        //        builder.create().show();
-
-        TransparentDialog transparentDialog = new TransparentDialog(this, R.style.dialog);//创建Dialog并设置样式主题
-        transparentDialog.setCanceledOnTouchOutside(true);//设置点击Dialog外部任意区域关闭Dialog
-        transparentDialog.show();
-    }
-
-    @Override
-    public void OnWait(int i) {
-        LogUtils.e("OnWait");
-    }
-
-    @Override
-    public void OnReady() {
-        LogUtils.e("OnReady");
-        wawaPlayer.startGame(new TXWawaCallBack<Integer>() {
-            @Override
-            public void onSuccess(Integer integer) {
-                startGameShowView();
-            }
-
-            @Override
-            public void onError(int i, String s) {
-                LogUtils.e("开始游戏出错" + s);
-            }
-        });
-    }
-
-    @Override
-    public void OnState(int i) {
-        LogUtils.e("OnState");
-    }
-
-    @Override
-    public void OnResult(boolean b) {
-        if (b) {
-            ToastUtils.showShort("恭喜你，抓到了娃娃");
-        } else {
-            ToastUtils.showShort("很遗憾，没有抓到");
-        }
-        wawaPlayer.quitGame();
-    }
-
-    @Override
-    public void OnTime(int i) {
-        LogUtils.e("OnTime");
-    }
-
-    @Override
-    public void OnClose(int i, int i1, String s) {
-        LogUtils.e("OnClose");
-    }
-
-    @Override
-    public void OnControlRTT(int i) {
-        LogUtils.e("OnControlRTT");
-    }
-
-    @Override
-    public void onSubViewCreated() {
-        if (arv_root.getViewByIndex(0) != null) { //主摄像头画面
-            arv_root.getViewByIndex(0).setRotate(true);
-            arv_root.getViewByIndex(0).setRotation(270);
-        }
-        if (arv_root.getViewByIndex(1) != null) { //副摄像头画面
-            arv_root.getViewByIndex(1).setPosHeight(0);
-            arv_root.getViewByIndex(1).setPosWidth(0);
-            arv_root.getViewByIndex(1).setRotate(true);
-            arv_root.getViewByIndex(1).setPosTop(350);
-            arv_root.getViewByIndex(1).setRotation(270);
-        }
-
-        //统计:主摄像头
-        arv_root.getViewByIndex(0).setVideoListener(new VideoListener() {
-            @Override
-            public void onFirstFrameRecved(int width, int height, int angle, String identifier) {
-                LogUtils.e("onFirstFrameRecved");
-            }
-
-            @Override
-            public void onHasVideo(String identifier, int srcType) {
-                LogUtils.e("onHasVideo");
-            }
-
-            @Override
-            public void onNoVideo(String identifier, int srcType) {
-                LogUtils.e(identifier);
-            }
-        });
-
-        //统计:副摄像头
-        arv_root.getViewByIndex(1).setVideoListener(new VideoListener() {
-            @Override
-            public void onFirstFrameRecved(int width, int height, int angle, String identifier) {
-                LogUtils.e("onFirstFrameRecved");
-            }
-
-            @Override
-            public void onHasVideo(String identifier, int srcType) {
-                LogUtils.e("onHasVideo");
-            }
-
-            @Override
-            public void onNoVideo(String identifier, int srcType) {
-                LogUtils.e(identifier);
-            }
-        });
-
-        arv_root.bindIdAndView(0, VIDEO_SRC_TYPE_CAMERA, SPUtils.getInstance().getString("frontPushId"));
-        arv_root.bindIdAndView(1, VIDEO_SRC_TYPE_CAMERA, SPUtils.getInstance().getString("sidePushId"));
     }
 }

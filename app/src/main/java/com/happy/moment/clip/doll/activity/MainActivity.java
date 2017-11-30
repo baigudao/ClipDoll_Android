@@ -4,12 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -24,7 +22,6 @@ import com.happy.moment.clip.doll.fragment.NotificationCenterFragment;
 import com.happy.moment.clip.doll.fragment.UserCenterFragment;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.GlideImageLoader;
-import com.happy.moment.clip.doll.view.SharePlatformPopupWindow;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -46,14 +43,7 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 
-import static com.blankj.utilcode.util.SnackbarUtils.getView;
-
 public class MainActivity extends BaseActivity implements View.OnClickListener, OnRefreshListener, OnLoadmoreListener, BaseRecyclerViewAdapter.OnItemClickListener {
-
-    private String share_img;
-    private String share_title;
-    private String share_txt;
-    private String share_url;
 
     private Banner banner;
 
@@ -67,7 +57,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BarUtils.setStatusBarColor(MainActivity.this, getResources().getColor(R.color.main_color));
+        //        BarUtils.setStatusBarColor(MainActivity.this, getResources().getColor(R.color.main_text_color));
         setContentView(R.layout.activity_main);
 
         initView();
@@ -108,7 +98,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
         //设置轮播时间
-        banner.setDelayTime(3000);
+        banner.setDelayTime(4000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
         //设置banner的点击事件
@@ -129,8 +119,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.id.iv_exchange:
             case R.id.tv_exchange:
                 getHomeRoomListData();
-                //分享
-                //            showSharePlatformPopWindow();
                 break;
             case R.id.iv_share:
                 gotoPager(NotificationCenterFragment.class, null);
@@ -312,32 +300,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 }
             });
         }
-    }
-
-    private void showSharePlatformPopWindow() {
-        SharePlatformPopupWindow sharePlatformPopWindow = new SharePlatformPopupWindow(MainActivity.this, new SharePlatformPopupWindow.SharePlatformListener() {
-            @Override
-            public void onSinaWeiboClicked() {
-                //                showShare(MainActivity.this, "SinaWeibo", true);
-            }
-
-            @Override
-            public void onWeChatClicked() {
-                //                showShare(MainActivity.this, "Wechat", true);
-            }
-
-            @Override
-            public void onWechatMomentsClicked() {
-                //                showShare(MainActivity.this, "WechatMoments", true);
-            }
-
-            @Override
-            public void onCancelBtnClicked() {
-
-            }
-        });
-        sharePlatformPopWindow.initView();
-        sharePlatformPopWindow.showAtLocation(getView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
     private long startTime = 0;
