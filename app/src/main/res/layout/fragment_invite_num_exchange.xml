@@ -184,16 +184,6 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="290dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
-            android:background="@android:color/transparent"
-            android:clickable="true"
-            android:visibility="gone"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -202,7 +192,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="40dp"
-            android:text="输入好友的邀请码，即可获赠50个游戏币"
+            android:text="输入好友的邀请码，即可获赠20个游戏币"
             android:textColor="@color/main_text_color"
             android:textSize="16sp"/>
 

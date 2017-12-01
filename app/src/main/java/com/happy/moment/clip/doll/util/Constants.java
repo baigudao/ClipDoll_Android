@@ -6,8 +6,8 @@ public class Constants {
     public static final String APP_ID = "wx5419793b4eeff9be";//微信开放平台AppID
     public static final String APP_SECRET = "d44b28417caa330d12128338ecfea664";//微信开放平台AppID
     public static final String FRAGMENT_NAME = "fragment_name";
-    public static final int LIVE_APPID = 1400048722;
-    public static final int ACCOUNT_TYPE = 19064;
+    public static final int LIVE_APPID = 1400048722;//  1400051630
+    public static final int ACCOUNT_TYPE = 19064;//  19613
     public static final String IS_ENTER_GUIDE_VIEW = "is_enter_guide_view";
     public static final String IS_USER_LOGIN = "is_user_login";
     public static final String LOGINTYPE = "loginType";

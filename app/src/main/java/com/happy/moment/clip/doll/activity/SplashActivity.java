@@ -36,6 +36,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BarUtils.setStatusBarAlpha(SplashActivity.this);
+        BarUtils.hideNavBar(SplashActivity.this);
         setContentView(R.layout.activity_splash);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

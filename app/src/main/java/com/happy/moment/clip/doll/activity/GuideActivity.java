@@ -44,6 +44,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
     private void initView() {
         BarUtils.setStatusBarAlpha(GuideActivity.this);
+        BarUtils.hideNavBar(GuideActivity.this);
         setContentView(R.layout.activity_guide);
 
         ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);

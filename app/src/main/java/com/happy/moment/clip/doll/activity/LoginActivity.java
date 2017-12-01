@@ -34,6 +34,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BarUtils.setStatusBarColor(LoginActivity.this, getResources().getColor(R.color.main_color));
+        BarUtils.hideNavBar(LoginActivity.this);
         setContentView(R.layout.activity_login);
 
         ll_weixin_login = (LinearLayout) findViewById(R.id.ll_weixin_login);

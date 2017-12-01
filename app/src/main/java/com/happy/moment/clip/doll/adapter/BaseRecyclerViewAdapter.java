@@ -283,7 +283,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
             this.itemView = itemView;
             switch (dataType) {
                 case HOME_ROOM_LIST_DATA_TYPE:
-                    int size = (ScreenUtils.getScreenWidth() - 90) / 2;
+                    int size = (ScreenUtils.getScreenWidth() - 80) / 2;
 
                     iv_item1 = (ImageView) itemView.findViewById(R.id.iv_room);
                     ViewGroup.LayoutParams layoutParams = iv_item1.getLayoutParams();
