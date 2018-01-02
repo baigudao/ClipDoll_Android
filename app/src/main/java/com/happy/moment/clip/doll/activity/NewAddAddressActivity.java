@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
@@ -136,10 +137,10 @@ public class NewAddAddressActivity extends BaseActivity implements View.OnClickL
     }
 
     private void editAddress() {
-        //        if (!RegexUtils.isMobileExact(getPhone())) {
-        //            ToastUtils.showShort("请输入正确的手机号码");
-        //            return;
-        //        }
+        if (!RegexUtils.isMobileExact(getPhone())) {
+            ToastUtils.showShort("请输入正确的手机号码");
+            return;
+        }
         OkHttpUtils.post()
                 .url(Constants.getUserAddressSaveUrl())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
@@ -185,10 +186,10 @@ public class NewAddAddressActivity extends BaseActivity implements View.OnClickL
     }
 
     private void saveAddress() {
-        //        if (!RegexUtils.isMobileExact(getPhone())) {
-        //            ToastUtils.showShort("请输入正确的手机号码");
-        //            return;
-        //        }
+        if (!RegexUtils.isMobileExact(getPhone())) {
+            ToastUtils.showShort("请输入正确的手机号码");
+            return;
+        }
         OkHttpUtils.post()
                 .url(Constants.getUserAddressSaveUrl())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))

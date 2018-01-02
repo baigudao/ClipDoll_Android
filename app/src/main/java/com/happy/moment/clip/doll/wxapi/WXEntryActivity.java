@@ -23,6 +23,9 @@ import com.happy.moment.clip.doll.activity.MainActivity;
 import com.happy.moment.clip.doll.bean.UserInfo;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -150,11 +153,15 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                                     Gson gson = new Gson();
                                     UserInfo userInfo = gson.fromJson(jsonObjectUserInfo.toString(), UserInfo.class);
                                     //存储第三方微信登录返回的用户信息
+                                    SPUtils.getInstance().put(Constants.FIRSTLOGIN, userInfo.getFirstLogin());
                                     SPUtils.getInstance().put(Constants.HEADIMG, userInfo.getHeadImg());
                                     SPUtils.getInstance().put(Constants.INVITECODE, userInfo.getInviteCode());
                                     SPUtils.getInstance().put(Constants.NICKNAME, userInfo.getNickName());
                                     SPUtils.getInstance().put(Constants.USERID, userInfo.getUserId());
                                     DataManager.getInstance().setUserInfo(userInfo);
+
+                                    //配置信鸽推送
+                                    configXGPush();
 
                                     //存储登录状态
                                     if (EmptyUtils.isNotEmpty(SPUtils.getInstance().getString(Constants.SESSION))) {
@@ -195,9 +202,25 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         String path = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
                 + Constants.APP_ID
                 + "&secret="
-                + Constants.APP_SECRET
+                //                + Constants.APP_SECRET
                 + "&code="
                 + code
                 + "&grant_type=authorization_code";
+    }
+
+    private void configXGPush() {
+        XGPushConfig.enableDebug(this, true);
+        XGPushManager.setTag(this, "XINGE");
+        XGPushManager.registerPush(this, String.valueOf(SPUtils.getInstance().getInt(Constants.USERID)), new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object o, int i) {
+                LogUtils.e("注册成功，设备token为：" + o);
+            }
+
+            @Override
+            public void onFail(Object o, int i, String s) {
+                LogUtils.e("注册失败，错误码：" + i + ",错误信息：" + s);
+            }
+        });
     }
 }

@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
+            android:padding="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/home_icon_us"
             android:visibility="gone"/>
@@ -60,29 +61,31 @@
             android:textSize="18sp"
             android:textStyle="bold"/>
 
-        <ImageView
-            android:id="@+id/iv_share"
+        <RelativeLayout
+            android:id="@+id/rl_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:clickable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/icon__share"/>
+            android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tv_cost_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:clickable="true"
-            android:text="消费记录"
-            android:textColor="@color/main_text_color"
-            android:textSize="16sp"
-            android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/iv_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/news"/>
+
+            <View
+                android:id="@+id/view_red_point"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_alignRight="@id/iv_notification"
+                android:background="@drawable/notification_point_red"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -141,9 +144,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_game_coin"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="50dp"
                 android:clickable="true">
 
@@ -159,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_game_coin"
-                    android:text="我的游戏币"
+                    android:text="我的娃娃币"
                     android:textColor="@color/main_text_color"
                     android:textSize="18sp"/>
 
@@ -167,9 +171,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_clip_doll_record"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:clickable="true">
 
@@ -193,9 +198,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_order"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:clickable="true">
 
@@ -225,9 +231,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_prize"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
                 android:clickable="true">
 
@@ -251,9 +258,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_invite_num"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:clickable="true">
 
@@ -282,10 +290,72 @@
                 android:background="@color/divider_color"/>
 
             <RelativeLayout
-                android:id="@+id/rl_background_music"
-                android:layout_width="wrap_content"
+                android:id="@+id/rl_my_income"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/iv_my_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/personal_icon_rmb"/>
+
+                <TextView
+                    android:id="@+id/tv_my_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/iv_my_income"
+                    android:text="我要赚钱"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="18sp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_become_cooperative_partner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="30dp"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/iv_become_cooperative_partner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/personal_icon_partner"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/iv_become_cooperative_partner"
+                    android:text="成为合作伙伴"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="18sp"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/divider_color"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_background_music"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
                 android:clickable="true">
 
@@ -328,9 +398,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_sound_effect"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:clickable="true">
 
@@ -379,9 +450,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_about_us"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
                 android:clickable="true">
 
@@ -405,9 +477,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_feed_back"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:clickable="true">
 
@@ -431,9 +504,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_score_prize"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:clickable="true"
                 android:visibility="gone">
@@ -458,9 +532,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_check_update"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:clickable="true">
 
@@ -484,12 +559,14 @@
 
             <Button
                 android:id="@+id/btn_exit_login"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="250dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="40dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/border_btn_exit_login"
+                android:elevation="0dp"
                 android:text="退出登录"
                 android:textSize="18sp"/>
 

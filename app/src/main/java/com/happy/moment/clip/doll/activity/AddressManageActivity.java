@@ -1,5 +1,6 @@
 package com.happy.moment.clip.doll.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,7 +24,6 @@ import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.bean.AddressBean;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
-import com.rey.material.app.Dialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -290,29 +291,33 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
                 holder.ll_address_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final Dialog dialog = new Dialog(AddressManageActivity.this);
-                        dialog.setTitle("你确定要删除该地址吗？");
-                        dialog.negativeAction("取消").positiveAction("确定");
-
-                        dialog.negativeActionClickListener(new View.OnClickListener() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(AddressManageActivity.this, R.style.AlertDialog_Logout);
+                        View view = View.inflate(AddressManageActivity.this, R.layout.dialog_delete_address_view, null);
+                        builder.setView(view);
+                        final AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        //设置对话框的大小
+                        alertDialog.getWindow().setLayout(SizeUtils.dp2px(350), LinearLayout.LayoutParams.WRAP_CONTENT);
+                        //监听事件
+                        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                dialog.cancel();
+                                alertDialog.dismiss();
                             }
                         });
-                        dialog.positiveActionClickListener(new View.OnClickListener() {
+                        view.findViewById(R.id.btn_make_sure).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 OkHttpUtils.post()
                                         .url(Constants.getUserAddressDeleteUrl())
                                         .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                                        .addParams("addressId", String.valueOf(addressBean.getAddressId()))
+                                        .addParams(Constants.ADDRESSID, String.valueOf(addressBean.getAddressId()))
                                         .build()
                                         .execute(new StringCallback() {
                                             @Override
                                             public void onError(Call call, Exception e, int id) {
                                                 LogUtils.e(e.toString());
-                                                dialog.cancel();
+                                                alertDialog.dismiss();
                                             }
 
                                             @Override
@@ -328,7 +333,7 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
                                                     if (code == 1) {
                                                         int success = jsonObjectResBody.optInt("success");
                                                         if (success == 1) {
-                                                            dialog.cancel();
+                                                            alertDialog.dismiss();
                                                             addressBeanArrayList.remove(position);
                                                             notifyDataSetChanged();
                                                             if (addressBeanArrayList.size() == 0) {
@@ -348,7 +353,6 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
                                         });
                             }
                         });
-                        dialog.show();
                     }
                 });
             }

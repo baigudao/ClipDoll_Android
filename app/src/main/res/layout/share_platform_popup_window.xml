@@ -37,6 +37,7 @@
                 android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/tv_title_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -76,7 +77,7 @@
                         android:src="@drawable/icon_share_wechat"/>
 
                     <TextView
-                        android:id="@+id/tv_state"
+                        android:id="@+id/tv_state1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="35dp"
@@ -117,6 +118,7 @@
                         android:src="@drawable/icon_share_friends"/>
 
                     <TextView
+                        android:id="@+id/tv_state2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="35dp"
@@ -138,31 +140,32 @@
 
             </LinearLayout>
 
-            <!--<LinearLayout-->
-            <!--android:id="@+id/llSina"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginBottom="10dp"-->
-            <!--android:layout_marginLeft="40dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:orientation="vertical">-->
+            <LinearLayout
+                android:id="@+id/ll_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:src="@drawable/ssdk_oks_classic_sinaweibo"/>-->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_share_save"/>
 
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:paddingTop="5dp"-->
-            <!--android:text="@string/ssdk_sinaweibo"-->
-            <!--android:textColor="@color/sixth_text_color"-->
-            <!--android:textSize="11sp"/>-->
-            <!--</LinearLayout>-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="5dp"
+                    android:text="保存本地"
+                    android:textColor="@color/sixth_text_color"
+                    android:textSize="11sp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -19,6 +19,7 @@ allprojects {
             dirs 'libs'
         }
         jcenter()
+        mavenCentral()
     }
 }
 

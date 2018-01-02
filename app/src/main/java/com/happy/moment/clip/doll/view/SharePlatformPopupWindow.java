@@ -26,11 +26,12 @@ public class SharePlatformPopupWindow extends PopupWindow implements View.OnClic
     protected Context context;
 
     public interface SharePlatformListener {
-        //        void onSinaWeiboClicked();
 
         void onWeChatClicked();
 
         void onWechatMomentsClicked();
+
+        void onSaveLocalClicked();
 
         void onCancelBtnClicked();
     }
@@ -91,9 +92,9 @@ public class SharePlatformPopupWindow extends PopupWindow implements View.OnClic
 
 
     public void initView() {
-        //        getContentView().findViewById(R.id.llSina).setOnClickListener(this);
         getContentView().findViewById(R.id.llWeChat).setOnClickListener(this);
         getContentView().findViewById(R.id.llWechatMoments).setOnClickListener(this);
+        getContentView().findViewById(R.id.ll_save).setOnClickListener(this);
         getContentView().findViewById(R.id.btnCancel).setOnClickListener(this);
     }
 
@@ -145,11 +146,6 @@ public class SharePlatformPopupWindow extends PopupWindow implements View.OnClic
     public void onClick(View v) {
         dismiss();
         switch (v.getId()) {
-            //            case R.id.llSina:
-            //                if (listener != null) {
-            //                    listener.onSinaWeiboClicked();
-            //                }
-            //                break;
             case R.id.llWeChat:
                 if (listener != null) {
                     listener.onWeChatClicked();
@@ -158,6 +154,11 @@ public class SharePlatformPopupWindow extends PopupWindow implements View.OnClic
             case R.id.llWechatMoments:
                 if (listener != null) {
                     listener.onWechatMomentsClicked();
+                }
+                break;
+            case R.id.ll_save:
+                if (listener != null) {
+                    listener.onSaveLocalClicked();
                 }
                 break;
             case R.id.btnCancel:

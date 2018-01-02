@@ -7,7 +7,7 @@ android {
         applicationId "com.happy.moment.clip.doll"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
+        versionCode 2
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -24,8 +24,12 @@ android {
         ]
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -38,6 +42,53 @@ android {
         main {
             jniLibs.srcDirs = ['libs']
         }
+    }
+
+    productFlavors {
+        android {
+        }
+        baidu {
+        }
+        tencent {
+        }
+        wandoujia {
+        }
+        xiaomi {
+        }
+        vivo {
+        }
+        sougou {
+        }
+        oppo {
+        }
+        meizu {
+        }
+        huawei {
+        }
+        s360 {
+        }
+        anzhi {
+        }
+        yingyonghui {
+        }
+        letv {
+        }
+        jifeng {
+        }
+        liantongle {
+        }
+        market91 {
+        }
+        samsung {
+        }
+        mumayi {
+        }
+        lenovo {
+        }
+    }
+
+    productFlavors.all { flavor ->
+        flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
     }
 }
 
@@ -54,50 +105,50 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
-
     //Glide
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+    //gson
     compile 'com.google.code.gson:gson:2.7'
     //android工具库
-    compile 'com.blankj:utilcode:1.9.3'
+    compile 'com.blankj:utilcode:1.9.10'
     //SmartRefreshLayout
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     //banner
     compile 'com.youth.banner:banner:1.4.10'
-
     //使用微信分享、登录、收藏、支付等功能需要的库以及文件（包含统计功能）
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:1.3.4'
-
     //核心功能
-    compile 'com.tencent.ilivesdk:ilivesdk:1.7.2.0.4'
+    compile 'com.tencent.ilivesdk:ilivesdk:1.7.2.1.4'
     //直播业务功能
     compile 'com.tencent.livesdk:livesdk:1.1.4'
     //娃娃机sdk依赖
     compile(name: 'wawasdk-release', ext: 'aar')
     compile(name: 'LiteAVSDK_Smart_3.5.2170', ext: 'aar')
-    compile "org.java-websocket:Java-WebSocket:1.3.5"
-
-    //EventBus
-    compile 'org.greenrobot:eventbus:3.0.0'
-
+    compile 'org.java-websocket:Java-WebSocket:1.3.5'
+    //网络请求
     compile 'com.zhy:okhttputils:2.6.2'
-
     compile 'com.github.rey5137:material:1.2.4'
+    //省市区选择
     compile 'liji.library.dev:citypickerview:2.1.2'
-
     //完整的信鸽依赖三个都必须有，如果发生依赖冲突请根据对应的依赖版本号选择高版本的依赖。（使用jcenter自动接入请确认libs 中没有信鸽的相关jar包）
     //是否需要信鸽采集安装列表 自行二选一
     //采集安装列表
-    compile 'com.tencent.xinge:xinge:3.1.2-a-alpha'
+    compile 'com.tencent.xinge:xinge:3.1.2-release'
     //不采集安装列表
-//    compile 'com.tencent.xinge:xinge:3.1.2-b-alpha'
+    //compile 'com.tencent.xinge:xinge:3.1.2-b-alpha'
     //wup包
-    compile 'com.tencent.wup:wup:1.0.0.E-alpha'//可能混淆有异常，需注释掉
+    //compile 'com.tencent.wup:wup:1.0.0.E-alpha'//可能混淆有异常，需注释掉
     //mid包
-    compile 'com.tencent.mid:mid:3.9.0-alpha'
+    compile 'com.tencent.mid:mid:3.9.0-release'
+    //友盟统计
+    compile files('libs/umeng-analytics-7.4.0.jar')
+    compile files('libs/umeng-common-1.4.0.jar')
+    //二维码
+    compile 'com.google.zxing:core:3.2.1'
+    compile 'com.journeyapps:zxing-android-embedded:3.3.0'
 }

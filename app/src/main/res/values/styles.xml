@@ -70,4 +70,9 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="AlertDialog_Logout" parent="@android:style/Theme.DeviceDefault.Dialog">
+        <!--该行代码就是设置AlertDialog的背景-->
+        <item name="android:background">@drawable/background_logout_view</item>
+    </style>
+
 </resources>

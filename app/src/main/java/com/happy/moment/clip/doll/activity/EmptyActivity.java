@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.LogUtils;
 import com.happy.moment.clip.doll.BaseApplication;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.fragment.BaseFragment;
@@ -21,6 +21,8 @@ public class EmptyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         BarUtils.setStatusBarColor(EmptyActivity.this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_empty);
+        //设置状态栏文字颜色及图标为深色
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         onNewIntent(getIntent());
     }
 
@@ -28,17 +30,12 @@ public class EmptyActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         String fragmentName = intent.getStringExtra(Constants.FRAGMENT_NAME);
         BaseFragment fragment = (BaseFragment) Fragment.instantiate(this, fragmentName);
-
-        LogUtils.e(fragment.getClass().getSimpleName());
         Bundle bundle = intent.getExtras();
         fragment.setArguments(bundle);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment currentFragment = getVisibleFragment();
         if (currentFragment != null) {
             ft.hide(currentFragment);
-            LogUtils.e(currentFragment.getClass().getSimpleName());
-        }else {
-            LogUtils.e("currentFragment为空");
         }
         ft.add(R.id.container, fragment, fragmentName);
         ft.addToBackStack(null);

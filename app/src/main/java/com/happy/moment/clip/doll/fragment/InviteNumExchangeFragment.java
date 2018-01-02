@@ -2,6 +2,7 @@ package com.happy.moment.clip.doll.fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.util.Constants;
+import com.happy.moment.clip.doll.view.ExchangeInviteNumPopupWindow;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -24,11 +26,17 @@ import okhttp3.Call;
 /**
  * Created by Devin on 2017/11/18 21:11
  * E-mail:971060378@qq.com
+ * <p>
+ * //需求
+ * //1，开始输入前，不管点击哪个输入框，光标都显示在第一个
+ * //2，依次向下输入，中间可删除前面的输入
+ * //3，输入完成后，不管点击哪个输入框，光标都显示在最后，并且依次删除
  */
 
 public class InviteNumExchangeFragment extends BaseFragment {
 
     private Button btn_exchange;
+    private Button btn_invite_more;
 
     private EditText et_invite_num1;
     private EditText et_invite_num2;
@@ -38,6 +46,8 @@ public class InviteNumExchangeFragment extends BaseFragment {
     private EditText et_invite_num6;
 
     private int flag;
+
+    private TextView tv_has_exchange;
 
     @Override
     protected int getLayoutId() {
@@ -84,10 +94,65 @@ public class InviteNumExchangeFragment extends BaseFragment {
         et_invite_num6.setOnClickListener(this);
         et_invite_num6.addTextChangedListener(watcher);
 
-        //需求
-        //1，开始输入前，不管点击哪个输入框，光标都显示在第一个
-        //2，依次向下输入，中间可删除前面的输入
-        //3，输入完成后，不管点击哪个输入框，光标都显示在最后，并且依次删除
+        tv_has_exchange = (TextView) view.findViewById(R.id.tv_has_exchange);
+        btn_invite_more = (Button) view.findViewById(R.id.btn_invite_more);
+        btn_invite_more.setOnClickListener(this);
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        OkHttpUtils.post()
+                .url(Constants.getInviteCodeUrl())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                int success = jsonObjectResBody.optInt("success");
+                                if (success == 1) {
+                                    KeyboardUtils.hideSoftInput(getActivity());
+                                    String inviteCode = jsonObjectResBody.optString("inviteCode");
+                                    et_invite_num1.setText(String.valueOf(inviteCode.charAt(0)));
+                                    et_invite_num2.setText(String.valueOf(inviteCode.charAt(1)));
+                                    et_invite_num3.setText(String.valueOf(inviteCode.charAt(2)));
+                                    et_invite_num4.setText(String.valueOf(inviteCode.charAt(3)));
+                                    et_invite_num5.setText(String.valueOf(inviteCode.charAt(4)));
+                                    et_invite_num6.setText(String.valueOf(inviteCode.charAt(5)));
+                                    handlerEditTextStatus(false, et_invite_num1);
+                                    handlerEditTextStatus(false, et_invite_num2);
+                                    handlerEditTextStatus(false, et_invite_num3);
+                                    handlerEditTextStatus(false, et_invite_num4);
+                                    handlerEditTextStatus(false, et_invite_num5);
+                                    handlerEditTextStatus(false, et_invite_num6);
+                                    //设置view
+                                    tv_has_exchange.setVisibility(View.VISIBLE);
+                                    btn_exchange.setVisibility(View.GONE);
+                                    btn_invite_more.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -106,6 +171,9 @@ public class InviteNumExchangeFragment extends BaseFragment {
             case R.id.et_invite_num6:
                 handlerEditTextStatus(true, et_invite_num1);
                 break;
+            case R.id.btn_invite_more:
+                gotoPager(InvitePrizeFragment.class, null);
+                break;
             default:
                 break;
         }
@@ -121,7 +189,7 @@ public class InviteNumExchangeFragment extends BaseFragment {
         OkHttpUtils.post()
                 .url(Constants.getVerifyInviteUrl())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                .addParams(Constants.FROMINVITECODE, "dr78by")
+                .addParams(Constants.FROMINVITECODE, invite_code)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -131,7 +199,6 @@ public class InviteNumExchangeFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        LogUtils.e(response);
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response);
@@ -141,7 +208,21 @@ public class InviteNumExchangeFragment extends BaseFragment {
                             String req = jsonObjectResHead.optString("req");
                             JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
                             if (code == 1) {
+                                int success = jsonObjectResBody.optInt("success");
+                                if (success == 1) {
+                                    //设置EditText不可输入和常显示
+                                    handlerEditTextStatus(false, et_invite_num1);
+                                    handlerEditTextStatus(false, et_invite_num2);
+                                    handlerEditTextStatus(false, et_invite_num3);
+                                    handlerEditTextStatus(false, et_invite_num4);
+                                    handlerEditTextStatus(false, et_invite_num5);
+                                    handlerEditTextStatus(false, et_invite_num6);
+                                    tv_has_exchange.setVisibility(View.VISIBLE);
+                                    btn_exchange.setVisibility(View.GONE);
+                                    btn_invite_more.setVisibility(View.VISIBLE);
 
+                                    showDialog();
+                                }
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
                                 ToastUtils.showShort("请求数据失败:" + msg);
@@ -151,6 +232,21 @@ public class InviteNumExchangeFragment extends BaseFragment {
                         }
                     }
                 });
+    }
+
+    private void showDialog() {
+        ExchangeInviteNumPopupWindow exchangeInviteNumPopupWindow = new ExchangeInviteNumPopupWindow(mContext, new ExchangeInviteNumPopupWindow.ExchangeInviteNumListener() {
+            @Override
+            public void onCancelClicked() {
+            }
+
+            @Override
+            public void onGoToInviteClicked() {
+                gotoPager(InvitePrizeFragment.class, null);
+            }
+        });
+        exchangeInviteNumPopupWindow.initView();
+        exchangeInviteNumPopupWindow.showAtLocation(getView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
     private TextWatcher watcher = new TextWatcher() {

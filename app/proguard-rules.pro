@@ -24,6 +24,15 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keep class com.google.gson.stream.** { *; }
+-keep class com.happy.moment.clip.doll.bean.LiveRoomLuckyUserBean.**{*;}
+
+
+
+-keep class com.blankj.utilcode.** { *; }
+-keepclassmembers class com.blankj.utilcode.** { *; }
+-dontwarn com.blankj.utilcode.**
+
 #地区3级联动选择器
 -keep class com.lljjcoder.**{
 *;

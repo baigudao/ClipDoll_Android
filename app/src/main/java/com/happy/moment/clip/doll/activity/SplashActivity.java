@@ -25,10 +25,11 @@ public class SplashActivity extends BaseActivity {
 
     private static final String[] APP_NEED_PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION,//定位
-            Manifest.permission.RECORD_AUDIO, //录音
-            Manifest.permission.CALL_PHONE,//打电话
+            //            Manifest.permission.RECORD_AUDIO, //录音
+            //            Manifest.permission.CALL_PHONE,//打电话
             Manifest.permission.WRITE_EXTERNAL_STORAGE, //读写
-            Manifest.permission.CAMERA};//照相
+            //            Manifest.permission.CAMERA//照相
+    };
 
     private static final int EXTERNAL_STORAGE_REQ_CODE = 10;//权限请求码
 
@@ -90,49 +91,6 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void afterRequestPermission() {
-        //        String device_identifier = SPUtils.getInstance().getString(Constant.DEVICE_IDENTIFIER);
-        //        if (EmptyUtils.isEmpty(device_identifier)) {
-        //            String device_id = CommonUtil.getDeviceId(this);//设备id
-        //            String device_resolution = ScreenUtils.getScreenWidth() + "*" + ScreenUtils.getScreenHeight();//设备分辨率
-        //            String device_sys_version = Constant.DEVICE_ANDROID + Build.VERSION.SDK_INT;//版本号
-        //            String device_type = String.valueOf(Constant.DEVICE_TYPE_ANDROID);//设备类型Apple/Android
-        //
-        //            OkHttpUtils.post()
-        //                    .url(Constant.getRegisterApp())
-        //                    .addParams(Constant.DEVICE_ID, device_id)
-        //                    .addParams(Constant.DEVICE_RESOLUTION, device_resolution)
-        //                    .addParams(Constant.DEVICE_SYS_VERSION, device_sys_version)
-        //                    .addParams(Constant.DEVICE_TYPE, device_type)
-        //                    .build()
-        //                    .execute(new StringCallback() {
-        //                        @Override
-        //                        public void onError(Call call, Exception e, int id) {
-        //
-        //                        }
-        //
-        //                        @Override
-        //                        public void onResponse(String response, int id) {
-        //                            JSONObject jsonObject = null;
-        //                            try {
-        //                                jsonObject = new JSONObject(response);
-        //                                int status = jsonObject.optInt("status");
-        //                                JSONObject jsonObjectData = jsonObject.optJSONObject("data");
-        //                                if (status == 1) {
-        //                                    //app注册，返回设备唯一标识，并保存
-        //                                    String device_identifier = jsonObjectData.optString(Constant.DEVICE_IDENTIFIER);
-        //                                    SPUtils.getInstance().put(Constant.DEVICE_IDENTIFIER, device_identifier);
-        //                                } else {
-        //                                    String code = jsonObject.optString("code");
-        //                                    String msg = jsonObjectData.optString("msg");
-        //                                    ToastUtils.showShort("请求数据失败,请检查网络:" + code + " - " + msg);
-        //                                }
-        //                            } catch (JSONException e) {
-        //                                e.printStackTrace();
-        //                            }
-        //                        }
-        //                    });
-        //        }
-
         boolean isEnterGuideView = SPUtils.getInstance().getBoolean(Constants.IS_ENTER_GUIDE_VIEW);
         boolean is_user_login = SPUtils.getInstance().getBoolean(Constants.IS_USER_LOGIN);
         if (isEnterGuideView) {

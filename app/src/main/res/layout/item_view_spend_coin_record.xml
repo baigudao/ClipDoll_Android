@@ -10,7 +10,7 @@
         android:layout_height="85dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/border_notification_background_view">
 
         <TextView
@@ -19,6 +19,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="60dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="充值游戏币：200币"
             android:textColor="@color/main_text_color"/>
 

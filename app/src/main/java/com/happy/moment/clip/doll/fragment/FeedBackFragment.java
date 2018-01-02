@@ -89,7 +89,7 @@ public class FeedBackFragment extends BaseFragment implements View.OnFocusChange
                 // 从API11开始android推荐使用android.content.ClipboardManager
                 // 为了兼容低版本我们这里使用旧版的android.text.ClipboardManager，虽然提示deprecated，但不影响使用。
                 // 将文本内容放到系统剪贴板里。
-                cm.setText("jianshejihu@12.cn");
+                cm.setText("我爱抓娃娃正版包邮");
                 ToastUtils.showShort("复制到剪贴板成功");
                 break;
             case R.id.rl_input_word:
@@ -130,6 +130,7 @@ public class FeedBackFragment extends BaseFragment implements View.OnFocusChange
                             JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
                             if (code == 1) {
                                 ToastUtils.showShort("提交成功！");
+                                et_put_feed_back.setText("");
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
                                 ToastUtils.showShort("请求数据失败:" + msg);

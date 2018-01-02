@@ -39,14 +39,30 @@
 
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/ll_order_explain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:text="娃娃由商家统一发货，请填写有效地址"
-        android:textColor="@color/seventh_text_color"
-        android:textSize="14sp"/>
+        android:layout_gravity="right"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="6dp"
+            android:text="配送说明"
+            android:textSize="14sp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/order_explain"/>
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/rl_container"

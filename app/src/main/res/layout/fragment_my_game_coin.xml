@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:gravity="center"
-        android:text="100"
+        android:text="0"
         android:textColor="@color/seventh_text_color"
         android:textSize="40sp"
         android:textStyle="bold"/>
@@ -24,209 +24,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="剩余游戏币"
+        android:text="剩余娃娃币"
         android:textSize="16sp"/>
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:id="@+id/rl_100"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/recharge_background">
-
-            <TextView
-                android:id="@+id/tv_100"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="100"
-                android:textColor="@color/main_text_color"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_100"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="首充10元送100"
-                android:textColor="@color/main_text_color"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_200"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/recharge_background">
-
-            <TextView
-                android:id="@+id/tv_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="200"
-                android:textColor="@color/main_text_color"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_200"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="首充20元送200"
-                android:textColor="@color/main_text_color"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_500"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginRight="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/recharge_background">
-
-            <TextView
-                android:id="@+id/tv_500"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="500"
-                android:textColor="@color/main_text_color"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_500"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="首充50元送300"
-                android:textColor="@color/main_text_color"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:id="@+id/rl_1000"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/recharge_background">
-
-            <TextView
-                android:id="@+id/tv_1000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="1000"
-                android:textColor="@color/main_text_color"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_1000"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="首充100元送500"
-                android:textColor="@color/main_text_color"
-                android:textSize="13sp"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_2000"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/recharge_background">
-
-            <TextView
-                android:id="@+id/tv_2000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="200"
-                android:textColor="@color/main_text_color"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_2000"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="首充300元送1000"
-                android:textColor="@color/main_text_color"
-                android:textSize="13sp"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_5000"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginRight="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/recharge_background">
-
-            <TextView
-                android:id="@+id/tv_5000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="500"
-                android:textColor="@color/main_text_color"
-                android:textSize="25sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_5000"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="首充500元送2000"
-                android:textColor="@color/main_text_color"
-                android:textSize="13sp"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -241,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <ImageView

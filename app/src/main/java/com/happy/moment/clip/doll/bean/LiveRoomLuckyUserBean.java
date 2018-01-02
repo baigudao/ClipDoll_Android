@@ -8,25 +8,27 @@ package com.happy.moment.clip.doll.bean;
 public class LiveRoomLuckyUserBean extends BaseBean {
 
     /**
-     * createTime : 2017-11-24 14:20:47
-     * groupId : 348312
-     * lastUpdateTime : 2017-11-24 14:21:19
-     * playId : 10000189
-     * productId : 1
-     * recordTimeDesc : 2小时前
-     * result : true
-     * roomId : 1
-     * user : {"headImg":"http://wx.qlogo.cn/mmopen/vi_32/gFw8ozHiag7rQWRz2E0uk3Y0MN4YQK3IZbZHxGvCOdqaWEmYS5elHtIxZxAXRS2PqDuIQW5hgxicuV8Na3fTU6jw/0","inviteCode":"NL1TMH","nickName":"李怀龙","state":0,"userId":1000002}
-     * userId : 1000002
+     * createTime : 2017-12-09 14:13:36
+     * gameId : 8ddb3cb9df54cdae6c524890b1047568
+     * groupId : 1103
+     * lastUpdateTime : 2017-12-09 14:13:52
+     * playId : 10002160
+     * productId : 5
+     * recordTimeDesc : 3小时前
+     * result : 1
+     * roomId : 10003
+     * user : {"firstLogin":1,"headImg":"http://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epM1USJXN2WicBH83uia3tsUVzWbPOKQTCdXaH9SSQGvxSR4PKJt9LAzSFp8Xia1ib7JwgRcYP5uzyfng/0","inviteCode":"O3U74K","lastLoginTime":1512804410000,"nickName":"coon","state":0,"userId":1000019}
+     * userId : 1000019
      */
 
     private String createTime;
+    private String gameId;
     private String groupId;
     private String lastUpdateTime;
     private int playId;
     private int productId;
     private String recordTimeDesc;
-    private boolean result;
+    private int result;
     private int roomId;
     private UserBean user;
     private int userId;
@@ -37,6 +39,14 @@ public class LiveRoomLuckyUserBean extends BaseBean {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
 
     public String getGroupId() {
@@ -79,11 +89,11 @@ public class LiveRoomLuckyUserBean extends BaseBean {
         this.recordTimeDesc = recordTimeDesc;
     }
 
-    public boolean isResult() {
+    public int getResult() {
         return result;
     }
 
-    public void setResult(boolean result) {
+    public void setResult(int result) {
         this.result = result;
     }
 
@@ -113,18 +123,30 @@ public class LiveRoomLuckyUserBean extends BaseBean {
 
     public static class UserBean {
         /**
-         * headImg : http://wx.qlogo.cn/mmopen/vi_32/gFw8ozHiag7rQWRz2E0uk3Y0MN4YQK3IZbZHxGvCOdqaWEmYS5elHtIxZxAXRS2PqDuIQW5hgxicuV8Na3fTU6jw/0
-         * inviteCode : NL1TMH
-         * nickName : 李怀龙
+         * firstLogin : 1
+         * headImg : http://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83epM1USJXN2WicBH83uia3tsUVzWbPOKQTCdXaH9SSQGvxSR4PKJt9LAzSFp8Xia1ib7JwgRcYP5uzyfng/0
+         * inviteCode : O3U74K
+         * lastLoginTime : 1512804410000
+         * nickName : coon
          * state : 0
-         * userId : 1000002
+         * userId : 1000019
          */
 
+        private int firstLogin;
         private String headImg;
         private String inviteCode;
+        private long lastLoginTime;
         private String nickName;
         private int state;
         private int userId;
+
+        public int getFirstLogin() {
+            return firstLogin;
+        }
+
+        public void setFirstLogin(int firstLogin) {
+            this.firstLogin = firstLogin;
+        }
 
         public String getHeadImg() {
             return headImg;
@@ -140,6 +162,14 @@ public class LiveRoomLuckyUserBean extends BaseBean {
 
         public void setInviteCode(String inviteCode) {
             this.inviteCode = inviteCode;
+        }
+
+        public long getLastLoginTime() {
+            return lastLoginTime;
+        }
+
+        public void setLastLoginTime(long lastLoginTime) {
+            this.lastLoginTime = lastLoginTime;
         }
 
         public String getNickName() {

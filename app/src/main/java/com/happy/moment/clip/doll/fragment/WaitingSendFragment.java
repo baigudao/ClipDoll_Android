@@ -16,6 +16,9 @@ import com.happy.moment.clip.doll.activity.MainActivity;
 import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
 import com.happy.moment.clip.doll.bean.WaitingSendBean;
 import com.happy.moment.clip.doll.util.Constants;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -32,10 +35,13 @@ import okhttp3.Call;
  * E-mail:971060378@qq.com
  */
 
-public class WaitingSendFragment extends BaseFragment {
+public class WaitingSendFragment extends BaseFragment implements OnRefreshListener {
 
     private RecyclerView recyclerView;
     private LinearLayout ll_no_data;
+
+    private SmartRefreshLayout smartRefreshLayout;
+    private int mPage;
 
     private static final int WAITING_SEND_DATA_TYPE = 5;
 
@@ -49,7 +55,12 @@ public class WaitingSendFragment extends BaseFragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         ll_no_data = (LinearLayout) view.findViewById(R.id.ll_no_data);
 
+        smartRefreshLayout = (SmartRefreshLayout) view.findViewById(R.id.smartRefreshLayout);
+        smartRefreshLayout.setOnRefreshListener(this);
+        smartRefreshLayout.setEnableLoadmore(false);
         view.findViewById(R.id.btn_go_clip_doll).setOnClickListener(this);
+
+        mPage = 1;
     }
 
     @Override
@@ -70,7 +81,7 @@ public class WaitingSendFragment extends BaseFragment {
                 .url(Constants.getWaitingSendUrl())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
                 .addParams(Constants.PAGESIZE, "10")
-                .addParams(Constants.PAGENUM, "1")
+                .addParams(Constants.PAGENUM, String.valueOf(mPage))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -89,6 +100,7 @@ public class WaitingSendFragment extends BaseFragment {
                             String req = jsonObjectResHead.optString("req");
                             JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
                             if (code == 1) {
+                                smartRefreshLayout.finishRefresh();
                                 handlerDataForWaitingSend(jsonObjectResBody);
                             } else {
                                 LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
@@ -121,5 +133,11 @@ public class WaitingSendFragment extends BaseFragment {
                 recyclerView.setVisibility(View.GONE);
             }
         }
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        mPage = 1;
+        getDataFromNet();
     }
 }

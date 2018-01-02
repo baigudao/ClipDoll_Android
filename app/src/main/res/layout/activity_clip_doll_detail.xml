@@ -114,17 +114,44 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:background="@color/main_color"/>
+                        android:background="@drawable/wawa_loading"/>
 
                     <ImageView
                         android:id="@+id/iv_live_room_camera"
-                        android:layout_width="50dp"
-                        android:layout_height="35dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:clickable="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/liveroom_btn_camera"/>
+                        android:src="@drawable/liveroom_btn_camera"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tv_waiting_game_result"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/background_live_room_user_name"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="正在等待游戏结果..."
+                        android:textColor="@color/pure_white_color"
+                        android:textSize="15sp"
+                        android:visibility="gone"/>
+
+                    <ImageView
+                        android:id="@+id/iv_background_music"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="25dp"
+                        android:clickable="true"
+                        android:src="@drawable/background_music_open"/>
 
                     <TextView
                         android:id="@+id/tv_timer"
@@ -139,74 +166,108 @@
                         android:textStyle="bold"
                         android:visibility="gone"/>
 
+                    <!--当前房间在线人数-->
                     <RelativeLayout
-                        android:layout_width="185dp"
-                        android:layout_height="40dp"
+                        android:id="@+id/rl_live_room_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="30dp"
                         android:background="@drawable/background_users_waiting"
                         android:visibility="gone">
 
-                        <com.happy.moment.clip.doll.view.CircleImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:src="@drawable/avatar"/>
+                        <RelativeLayout
+                            android:id="@+id/rl_users"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="8dp">
 
-                        <com.happy.moment.clip.doll.view.CircleImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="30dp"
-                            android:src="@drawable/avatar"/>
+                            <com.happy.moment.clip.doll.view.CircleImageView
+                                android:id="@+id/iv_user_1"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/avatar"/>
 
-                        <com.happy.moment.clip.doll.view.CircleImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="50dp"
-                            android:src="@drawable/avatar"/>
+                            <com.happy.moment.clip.doll.view.CircleImageView
+                                android:id="@+id/iv_user_2"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="20dp"
+                                android:src="@drawable/avatar"/>
 
-                        <com.happy.moment.clip.doll.view.CircleImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="70dp"
-                            android:src="@drawable/avatar"/>
+                            <com.happy.moment.clip.doll.view.CircleImageView
+                                android:id="@+id/iv_user_3"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="40dp"
+                                android:src="@drawable/avatar"/>
+
+
+                            <com.happy.moment.clip.doll.view.CircleImageView
+                                android:id="@+id/iv_user_4"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="60dp"
+                                android:src="@drawable/avatar"/>
+
+                        </RelativeLayout>
 
                         <TextView
+                            android:id="@+id/tv_user_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_toRightOf="@id/rl_users"
                             android:text="999人在线"
-                            android:textColor="@color/half_pure_white_color"
-                            android:textSize="16sp"/>
+                            android:textColor="@color/pure_white_color"
+                            android:textSize="14sp"/>
 
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/tv_room_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="70dp"
+                        android:text="房间ID：000000"
+                        android:textColor="@color/pure_white_color"
+                        android:textSize="9sp"/>
+
+                    <!--当前房间玩家-->
                     <LinearLayout
+                        android:id="@+id/ll_live_room_player"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:orientation="vertical"
                         android:visibility="gone">
 
                         <TextView
-                            android:layout_width="80dp"
-                            android:layout_height="25dp"
+                            android:id="@+id/tv_live_room_player_name"
+                            android:layout_width="70dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="center_horizontal"
-                            android:background="@color/pure_white_color"
+                            android:background="@drawable/background_live_room_user_name"
+                            android:ellipsize="end"
                             android:gravity="center"
+                            android:maxLines="1"
                             android:text="alex渡边孔"
-                            android:textSize="16sp"/>
+                            android:textColor="@color/pure_white_color"
+                            android:textSize="11sp"/>
 
                         <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:id="@+id/iv_live_room_player"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/wawa_default_user"/>
 
@@ -214,7 +275,7 @@
 
                 </RelativeLayout>
 
-                <!--操作按钮视图-->
+                <!--开始、充值按钮视图-->
                 <RelativeLayout
                     android:id="@+id/rl_start_clip_and_recharge"
                     android:layout_width="match_parent"
@@ -226,7 +287,7 @@
                     <LinearLayout
                         android:id="@+id/ll_start_clip_doll"
                         android:layout_width="150dp"
-                        android:layout_height="70dp"
+                        android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/background_start_clip_doll"
                         android:clickable="true"
@@ -281,7 +342,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="8dp"
-                                android:text="1000"
+                                android:text="0"
                                 android:textSize="16sp"/>
 
                         </LinearLayout>
@@ -314,52 +375,54 @@
 
                 </RelativeLayout>
 
+                <!--操作按钮视图-->
                 <RelativeLayout
                     android:id="@+id/rl_operation"
                     android:layout_width="match_parent"
-                    android:layout_height="260dp"
+                    android:layout_height="180dp"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="40dp"
                     android:visibility="gone">
 
                     <ImageButton
                         android:id="@+id/action_btn_left"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="25dp"
                         android:background="@drawable/background_action_btn_left"/>
 
                     <ImageButton
                         android:id="@+id/action_btn_bottom"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:layout_below="@id/action_btn_left"
                         android:layout_toRightOf="@id/action_btn_left"
                         android:background="@drawable/background_action_btn_bottom"/>
 
                     <ImageButton
                         android:id="@+id/action_btn_top"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:layout_above="@id/action_btn_left"
                         android:layout_toRightOf="@id/action_btn_left"
                         android:background="@drawable/background_action_btn_top"/>
 
                     <ImageButton
                         android:id="@+id/action_btn_right"
-                        android:layout_width="65dp"
-                        android:layout_height="65dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:layout_alignTop="@id/action_btn_left"
                         android:layout_toRightOf="@id/action_btn_top"
                         android:background="@drawable/background_action_btn_right"/>
 
                     <ImageButton
                         android:id="@+id/action_start_clip"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="15dp"
+                        android:layout_marginRight="25dp"
                         android:background="@drawable/background_action_start_clip"/>
 
                 </RelativeLayout>

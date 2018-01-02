@@ -1,11 +1,14 @@
 package com.happy.moment.clip.doll.fragment;
 
+import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SizeUtils;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.activity.AddressManageActivity;
 
@@ -41,6 +44,8 @@ public class MyOrderFragment extends BaseFragment {
         tv_cost_record.setText("地址管理");
         tv_cost_record.setOnClickListener(this);
 
+        view.findViewById(R.id.ll_order_explain).setOnClickListener(this);
+
         mBaseFragment = new ArrayList<>();
         mBaseFragment.add(new WaitingSendFragment());
         mBaseFragment.add(new SendOverFragment());
@@ -64,8 +69,7 @@ public class MyOrderFragment extends BaseFragment {
                 goBack();
                 break;
             case R.id.tv_cost_record:
-                //                gotoPager(AddressManageFragment.class,null);
-                gotoPager(AddressManageActivity.class,null);//暂定方案
+                gotoPager(AddressManageActivity.class, null);//暂定方案
                 break;
             case R.id.btn_wait_send:
                 position = 0;
@@ -79,9 +83,29 @@ public class MyOrderFragment extends BaseFragment {
                 btn_wait_send.setChecked(false);
                 switchFragment(fromFragment, getFragment());
                 break;
+            case R.id.ll_order_explain:
+                orderExplainDialog();
+                break;
             default:
                 break;
         }
+    }
+
+    private void orderExplainDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog_Logout);
+        View view = View.inflate(mContext, R.layout.dialog_order_explain_view, null);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        //设置对话框的大小
+        alertDialog.getWindow().setLayout(SizeUtils.dp2px(340), LinearLayout.LayoutParams.WRAP_CONTENT);
+        //监听事件
+        view.findViewById(R.id.btn_i_know).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
     }
 
     /**

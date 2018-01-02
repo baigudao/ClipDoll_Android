@@ -1,5 +1,7 @@
 package com.happy.moment.clip.doll.bean;
 
+import java.util.List;
+
 /**
  * Created by Devin on 2017/11/18 11:59
  * E-mail:971060378@qq.com
@@ -8,74 +10,30 @@ package com.happy.moment.clip.doll.bean;
 public class HomeRoomBean extends BaseBean {
 
     /**
-     * frontPullFlvUrl : http://16145.liveplay.myqcloud.com/live/16145_d95f3c35f184debb1980ed6569e0c673.flv
-     * frontPullHlsUrl : http://16145.liveplay.myqcloud.com/live/16145_d95f3c35f184debb1980ed6569e0c673.m3u8
-     * frontPullRtmpUrl : rtmp://16145.liveplay.myqcloud.com/live/16145_d95f3c35f184debb1980ed6569e0c673
-     * frontPushId : live_1_front_push_1510577069
      * gamePrice : 1
      * gameTime : 30
-     * groupId : 348312
-     * product : {"productId":1,"state":0,"toyId":"1","toyName":"鹦鹉兄弟","toyPicUrl":"http://cachu-test.b0.upaiyun.com/r4rqic5e4hbjxqanld2e956fi0fyqswf.jpg"}
-     * productId : 1
-     * roomId : 1
-     * roomName : LIVE_ROOM_1001
-     * roomPicUrl : http://wawa-1255388722.cosgz.myqcloud.com/img/wawa.jpg
+     * groupId : 2010
+     * onlineState : 1
+     * product : {"detailPics":["http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg","http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg","http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg"],"productDetails":"http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg,http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg,http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg","productId":11,"state":0,"toyId":"2010","toyName":"2010","toyPicUrl":"http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg"}
+     * productId : 11
+     * roomId : 10000011
+     * roomName : 2010
+     * roomPicUrl : http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg
      * roomState : 0
-     * sidePullFlvUrl : http://16145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0.flv
-     * sidePullHlsUrl : http://1145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0.m3u8
-     * sidePullRtmpUrl : rtmp://16145.liveplay.myqcloud.com/live/16145_8d6771eec114973f09a9a1a69b2a25a0
-     * sidePushId : live_1_side_push_1510577079
+     * working : 1
      */
 
-    private String frontPullFlvUrl;
-    private String frontPullHlsUrl;
-    private String frontPullRtmpUrl;
-    private String frontPushId;
     private int gamePrice;
     private int gameTime;
     private String groupId;
+    private int onlineState;
     private ProductBean product;
     private int productId;
     private int roomId;
     private String roomName;
     private String roomPicUrl;
     private int roomState;
-    private String sidePullFlvUrl;
-    private String sidePullHlsUrl;
-    private String sidePullRtmpUrl;
-    private String sidePushId;
-
-    public String getFrontPullFlvUrl() {
-        return frontPullFlvUrl;
-    }
-
-    public void setFrontPullFlvUrl(String frontPullFlvUrl) {
-        this.frontPullFlvUrl = frontPullFlvUrl;
-    }
-
-    public String getFrontPullHlsUrl() {
-        return frontPullHlsUrl;
-    }
-
-    public void setFrontPullHlsUrl(String frontPullHlsUrl) {
-        this.frontPullHlsUrl = frontPullHlsUrl;
-    }
-
-    public String getFrontPullRtmpUrl() {
-        return frontPullRtmpUrl;
-    }
-
-    public void setFrontPullRtmpUrl(String frontPullRtmpUrl) {
-        this.frontPullRtmpUrl = frontPullRtmpUrl;
-    }
-
-    public String getFrontPushId() {
-        return frontPushId;
-    }
-
-    public void setFrontPushId(String frontPushId) {
-        this.frontPushId = frontPushId;
-    }
+    private int working;
 
     public int getGamePrice() {
         return gamePrice;
@@ -99,6 +57,14 @@ public class HomeRoomBean extends BaseBean {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public int getOnlineState() {
+        return onlineState;
+    }
+
+    public void setOnlineState(int onlineState) {
+        this.onlineState = onlineState;
     }
 
     public ProductBean getProduct() {
@@ -149,52 +115,40 @@ public class HomeRoomBean extends BaseBean {
         this.roomState = roomState;
     }
 
-    public String getSidePullFlvUrl() {
-        return sidePullFlvUrl;
+    public int getWorking() {
+        return working;
     }
 
-    public void setSidePullFlvUrl(String sidePullFlvUrl) {
-        this.sidePullFlvUrl = sidePullFlvUrl;
-    }
-
-    public String getSidePullHlsUrl() {
-        return sidePullHlsUrl;
-    }
-
-    public void setSidePullHlsUrl(String sidePullHlsUrl) {
-        this.sidePullHlsUrl = sidePullHlsUrl;
-    }
-
-    public String getSidePullRtmpUrl() {
-        return sidePullRtmpUrl;
-    }
-
-    public void setSidePullRtmpUrl(String sidePullRtmpUrl) {
-        this.sidePullRtmpUrl = sidePullRtmpUrl;
-    }
-
-    public String getSidePushId() {
-        return sidePushId;
-    }
-
-    public void setSidePushId(String sidePushId) {
-        this.sidePushId = sidePushId;
+    public void setWorking(int working) {
+        this.working = working;
     }
 
     public static class ProductBean {
         /**
-         * productId : 1
+         * detailPics : ["http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg","http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg","http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg"]
+         * productDetails : http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg,http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg,http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg
+         * productId : 11
          * state : 0
-         * toyId : 1
-         * toyName : 鹦鹉兄弟
-         * toyPicUrl : http://cachu-test.b0.upaiyun.com/r4rqic5e4hbjxqanld2e956fi0fyqswf.jpg
+         * toyId : 2010
+         * toyName : 2010
+         * toyPicUrl : http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg
          */
 
+        private String productDetails;
         private int productId;
         private int state;
         private String toyId;
         private String toyName;
         private String toyPicUrl;
+        private List<String> detailPics;
+
+        public String getProductDetails() {
+            return productDetails;
+        }
+
+        public void setProductDetails(String productDetails) {
+            this.productDetails = productDetails;
+        }
 
         public int getProductId() {
             return productId;
@@ -234,6 +188,14 @@ public class HomeRoomBean extends BaseBean {
 
         public void setToyPicUrl(String toyPicUrl) {
             this.toyPicUrl = toyPicUrl;
+        }
+
+        public List<String> getDetailPics() {
+            return detailPics;
+        }
+
+        public void setDetailPics(List<String> detailPics) {
+            this.detailPics = detailPics;
         }
     }
 }

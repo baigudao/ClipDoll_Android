@@ -8,6 +8,11 @@
     android:clipToPadding="true"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@color/background_color"/>
+
     <!--titlebar-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
+            android:padding="8dp"
             android:scaleType="centerCrop"
             android:src="@drawable/home_icon_us"
             android:visibility="gone"/>
@@ -59,29 +65,31 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-        <ImageView
-            android:id="@+id/iv_share"
+        <RelativeLayout
+            android:id="@+id/rl_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:clickable="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/icon__share"/>
+            android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tv_cost_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:clickable="true"
-            android:text="消费记录"
-            android:textColor="@color/main_text_color"
-            android:textSize="16sp"
-            android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/iv_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/news"/>
+
+            <View
+                android:id="@+id/view_red_point"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_alignRight="@id/iv_notification"
+                android:background="@drawable/notification_point_red"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -109,6 +117,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
+                    android:background="@drawable/wawa_default1"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"

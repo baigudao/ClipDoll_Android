@@ -155,8 +155,8 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/border_about_us_background_view"
                     android:gravity="center"
-                    android:text="jianshejihu@12.cn"
-                    android:textSize="16sp"/>
+                    android:text="我爱抓娃娃正版包邮"
+                    android:textSize="13sp"/>
 
                 <Button
                     android:id="@+id/btn_copy2"

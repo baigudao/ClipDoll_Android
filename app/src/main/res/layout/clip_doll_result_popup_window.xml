@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+
+    <View
+        android:id="@+id/view_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="@android:color/black"
+        android:orientation="vertical"/>
+
+    <RelativeLayout
+        android:id="@+id/pop_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/iv_clip_doll_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:scaleType="fitXY"
+            android:src="@drawable/liveroom_image_happy"/>
+
+        <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="120dp"
+            android:clickable="true"
+            android:src="@drawable/icon_close"/>
+
+        <TextView
+            android:id="@+id/tv_clip_doll_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"
+            android:text="恭喜你抓到一个宝贝"
+            android:textColor="@color/warning_color"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/tv_clip_doll_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="190dp"
+            android:text="已放入您的宝贝库"
+            android:textColor="@color/main_text_color"
+            android:textSize="18sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="230dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_go_to_invite"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/background_invite_num_exchange_enable_yes"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="分享赚取游戏币"/>
+
+            <Button
+                android:id="@+id/btn_try_aging"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/weixin_login_background"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="再来一局（10）"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

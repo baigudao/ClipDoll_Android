@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/iv_user_photo"
             android:text="我爱抓娃娃"
             android:textColor="@color/main_text_color"
@@ -34,7 +34,7 @@
 
         <TextView
             android:id="@+id/tv_notification_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_notification_title"
             android:layout_marginLeft="10dp"
@@ -51,9 +51,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="12dp"
             android:layout_toRightOf="@id/tv_notification_title"
-            android:text="2017/05/23 23:45:34"/>
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="2017/05/23 23:45:34"
+            android:textSize="12sp"/>
+
+        <View
+            android:id="@+id/view_red_point"
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignRight="@id/iv_notification"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/notification_point_red"/>
 
     </RelativeLayout>
 

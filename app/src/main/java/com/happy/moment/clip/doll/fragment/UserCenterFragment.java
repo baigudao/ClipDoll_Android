@@ -1,7 +1,9 @@
 package com.happy.moment.clip.doll.fragment;
 
+import android.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ActivityUtils;
@@ -9,13 +11,14 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.activity.LoginActivity;
+import com.happy.moment.clip.doll.activity.MyIncomeActivity;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
-import com.rey.material.app.Dialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -40,6 +43,11 @@ public class UserCenterFragment extends BaseFragment {
     private TextView tv_user_name;
     private TextView tv_id_num;
 
+    private View view_red_point;
+    private int role;
+
+    private TextView tv_my_income;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_user_center;
@@ -49,13 +57,14 @@ public class UserCenterFragment extends BaseFragment {
     protected void initView(View view) {
         view.findViewById(R.id.ll_close).setOnClickListener(this);
         ((TextView) view.findViewById(R.id.tv_bar_title)).setText("");
-        ImageView iv_share = (ImageView) view.findViewById(R.id.iv_share);
-        iv_share.setImageResource(R.drawable.news);
-        iv_share.setOnClickListener(this);
+        view.findViewById(R.id.rl_notification).setOnClickListener(this);
+        view_red_point = view.findViewById(R.id.view_red_point);
 
         iv_user_photo = (ImageView) view.findViewById(R.id.iv_user_photo);
         tv_user_name = (TextView) view.findViewById(R.id.tv_user_name);
         tv_id_num = (TextView) view.findViewById(R.id.tv_id_num);
+
+        tv_my_income = (TextView) view.findViewById(R.id.tv_my_income);
 
         view.findViewById(R.id.rl_game_coin).setOnClickListener(this);
         view.findViewById(R.id.rl_clip_doll_record).setOnClickListener(this);
@@ -66,6 +75,8 @@ public class UserCenterFragment extends BaseFragment {
         view.findViewById(R.id.rl_feed_back).setOnClickListener(this);
         view.findViewById(R.id.rl_score_prize).setOnClickListener(this);
         view.findViewById(R.id.rl_check_update).setOnClickListener(this);
+        view.findViewById(R.id.rl_my_income).setOnClickListener(this);
+        view.findViewById(R.id.rl_become_cooperative_partner).setOnClickListener(this);
 
         music_btn_toggle_on = (ImageView) view.findViewById(R.id.music_btn_toggle_on);
         music_btn_toggle_on.setOnClickListener(this);
@@ -75,9 +86,19 @@ public class UserCenterFragment extends BaseFragment {
         sound_btn_toggle_on.setOnClickListener(this);
         sound_btn_toggle_off = (ImageView) view.findViewById(R.id.sound_btn_toggle_off);
         sound_btn_toggle_off.setOnClickListener(this);
-        //默认显示开的状态
-        showImageView(music_btn_toggle_on, music_btn_toggle_off);
-        showImageView(sound_btn_toggle_on, sound_btn_toggle_off);
+
+        //背景音乐
+        if (!SPUtils.getInstance().getBoolean(Constants.IS_PLAY_BACKGROUND_MUSIC)) {
+            showImageView(music_btn_toggle_on, music_btn_toggle_off);
+        } else {
+            showImageView(music_btn_toggle_off, music_btn_toggle_on);
+        }
+        //背景音效
+        if (!SPUtils.getInstance().getBoolean(Constants.IS_PLAY_BACKGROUND_SOUND)) {
+            showImageView(sound_btn_toggle_on, sound_btn_toggle_off);
+        } else {
+            showImageView(sound_btn_toggle_off, sound_btn_toggle_on);
+        }
 
         view.findViewById(R.id.btn_exit_login).setOnClickListener(this);
     }
@@ -93,7 +114,7 @@ public class UserCenterFragment extends BaseFragment {
             case R.id.ll_close:
                 goBack();
                 break;
-            case R.id.iv_share:
+            case R.id.rl_notification:
                 gotoPager(NotificationCenterFragment.class, null);
                 break;
             case R.id.rl_game_coin:
@@ -111,6 +132,21 @@ public class UserCenterFragment extends BaseFragment {
             case R.id.rl_invite_num:
                 gotoPager(InviteNumExchangeFragment.class, null);
                 break;
+            case R.id.rl_my_income://代理分销
+                switch (role) {//0.普通用户,1.分销商
+                    case 0:
+                        gotoPager(MyIncomeActivity.class, null);
+                        break;
+                    case 1:
+                        gotoPager(MyIncomeDetailFragment.class, null);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case R.id.rl_become_cooperative_partner:
+                gotoPager(BecomeCooperativePartnerFragment.class, null);
+                break;
             case R.id.rl_about_us:
                 gotoPager(AboutUsFragment.class, null);
                 break;
@@ -124,20 +160,24 @@ public class UserCenterFragment extends BaseFragment {
                 checkUpdate();
                 break;
             case R.id.btn_exit_login:
-                final Dialog dialog = new Dialog(mContext);
-                dialog.setTitle("你确定要退出登录吗？");
-                dialog.negativeAction("取消").positiveAction("确定");
-
-                dialog.negativeActionClickListener(new View.OnClickListener() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialog_Logout);
+                View view = View.inflate(mContext, R.layout.dialog_logout_view, null);
+                builder.setView(view);
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                //设置对话框的大小
+                alertDialog.getWindow().setLayout(SizeUtils.dp2px(350), LinearLayout.LayoutParams.WRAP_CONTENT);
+                //监听事件
+                view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.cancel();
+                        alertDialog.dismiss();
                     }
                 });
-                dialog.positiveActionClickListener(new View.OnClickListener() {
+                view.findViewById(R.id.btn_make_sure).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.cancel();
+                        alertDialog.dismiss();
                         OkHttpUtils.post()
                                 .url(Constants.getLogoutUrl())
                                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
@@ -150,7 +190,6 @@ public class UserCenterFragment extends BaseFragment {
 
                                     @Override
                                     public void onResponse(String response, int id) {
-                                        //LogUtils.e(response);  {"resHead":{"msg":"success","code":1,"req":"/wawa_api/user/account/logout/v1"},"resBody":{}}
                                         JSONObject jsonObject = null;
                                         try {
                                             jsonObject = new JSONObject(response);
@@ -187,27 +226,122 @@ public class UserCenterFragment extends BaseFragment {
                                 });
                     }
                 });
-                dialog.show();
                 break;
             case R.id.music_btn_toggle_on:
                 showImageView(music_btn_toggle_off, music_btn_toggle_on);
-                //                ToastUtils.showShort("关闭音乐");
+                SPUtils.getInstance().put(Constants.IS_PLAY_BACKGROUND_MUSIC, true);
                 break;
             case R.id.music_btn_toggle_off:
                 showImageView(music_btn_toggle_on, music_btn_toggle_off);
-                //                ToastUtils.showShort("打开音乐");
+                SPUtils.getInstance().put(Constants.IS_PLAY_BACKGROUND_MUSIC, false);
                 break;
             case R.id.sound_btn_toggle_on:
                 showImageView(sound_btn_toggle_off, sound_btn_toggle_on);
-                //                ToastUtils.showShort("关闭音效");
+                SPUtils.getInstance().put(Constants.IS_PLAY_BACKGROUND_SOUND, true);
                 break;
             case R.id.sound_btn_toggle_off:
                 showImageView(sound_btn_toggle_on, sound_btn_toggle_off);
-                //                ToastUtils.showShort("打开音效");
+                SPUtils.getInstance().put(Constants.IS_PLAY_BACKGROUND_SOUND, false);
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //控制首页通知图标上的红点的显示隐藏
+        showRedPoint();
+        //拉取最新的个人信息
+        getUserInfoFromNet();
+    }
+
+    private void getUserInfoFromNet() {
+        OkHttpUtils.get()
+                .url(Constants.getUserInfo())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .addParams(Constants.USERID, String.valueOf(SPUtils.getInstance().getInt(Constants.USERID)))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                JSONObject jsonObjectUserInfo = jsonObjectResBody.optJSONObject("userInfo");
+                                if (EmptyUtils.isNotEmpty(jsonObjectUserInfo)) {
+                                    role = jsonObjectUserInfo.optInt("role");
+                                    switch (role) {//0.普通用户,1.分销商
+                                        case 0:
+                                            tv_my_income.setText("我要赚钱");
+                                            break;
+                                        case 1:
+                                            tv_my_income.setText("我的收益");
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    private void showRedPoint() {
+        OkHttpUtils.post()
+                .url(Constants.getNotifyCountUrl())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                int notifyNum = jsonObjectResBody.optInt("notifyNum");
+                                if (notifyNum > 0) {
+                                    view_red_point.setVisibility(View.VISIBLE);
+                                } else {
+                                    view_red_point.setVisibility(View.GONE);
+                                }
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void checkUpdate() {

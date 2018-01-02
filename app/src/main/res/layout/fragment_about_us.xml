@@ -171,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="BD@52z.cn"
+                android:text="bd@52z.cn"
                 android:textColor="@color/main_text_color"
                 android:textIsSelectable="true"
                 android:textSize="16sp"/>

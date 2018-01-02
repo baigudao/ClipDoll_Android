@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="暂时没有任何通知"/>
+                    android:text="暂时没有任何消费记录"/>
 
             </LinearLayout>
 

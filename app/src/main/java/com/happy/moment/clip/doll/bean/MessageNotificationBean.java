@@ -8,12 +8,12 @@ package com.happy.moment.clip.doll.bean;
 public class MessageNotificationBean extends BaseBean {
 
     /**
-     * createTime : 1511254523000
-     * messageContent : 新用户注册成功，获赠'100003'游戏币，快去游戏吧
-     * messageId : 1
+     * createTime : 1512984026000
+     * messageContent : 邀请码兑换成功，30游戏币已经放入您的帐号，快去游戏吧
+     * messageId : 99
      * messageType : 0
      * readState : 0
-     * userId : 1000002
+     * userId : 1000009
      */
 
     private long createTime;
