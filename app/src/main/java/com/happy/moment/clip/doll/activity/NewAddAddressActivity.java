@@ -98,9 +98,9 @@ public class NewAddAddressActivity extends BaseActivity implements View.OnClickL
     private void initData() {
         type = (String) DataManager.getInstance().getData1();
         DataManager.getInstance().setData1(null);
-        if (type.equals("NEW_ADD_TYPE")) {
+        if (EmptyUtils.isNotEmpty(type) && type.equals("NEW_ADD_TYPE")) {
             LogUtils.e("新增地址");
-        } else if (type.equals("EDIT_TYPE")) {
+        } else if (EmptyUtils.isNotEmpty(type) && type.equals("EDIT_TYPE")) {
             addressBean = (AddressBean) DataManager.getInstance().getData2();
             DataManager.getInstance().setData2(null);
             if (EmptyUtils.isNotEmpty(addressBean)) {

@@ -172,6 +172,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_invite_prize_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_invite_num"

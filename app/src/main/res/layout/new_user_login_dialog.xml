@@ -11,14 +11,32 @@
         android:layout_centerInParent="true"
         android:background="@drawable/background_new_user_login">
 
-        <ImageView
-            android:id="@+id/iv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="#00000000"
-            android:scaleType="fitXY"
-            android:src="@drawable/home_image_tanchuang"/>
+        <RelativeLayout
+            android:id="@+id/rl_iv"
+            android:layout_width="200dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="130dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/home_image_tanchuang"/>
+
+            <TextView
+                android:id="@+id/tv_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="3dp"
+                android:text="60"
+                android:textColor="@color/seventh_text_color"
+                android:textSize="38sp"/>
+
+        </RelativeLayout>
+
 
         <ImageView
             android:id="@+id/iv_cancel"
@@ -30,18 +48,40 @@
             android:clickable="true"
             android:src="@drawable/icon_close"/>
 
-        <TextView
+        <LinearLayout
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv1"
+            android:layout_below="@id/rl_iv"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
-            android:text="新人奖励，获赠60游戏币，快去游戏吧！"
-            android:textColor="@color/main_text_color"
-            android:textSize="17sp"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="新人奖励，获赠"
+                android:textColor="@color/main_text_color"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/tv_center_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60"
+                android:textColor="@color/main_text_color"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="游戏币，快去游戏吧！"
+                android:textColor="@color/main_text_color"
+                android:textSize="17sp"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv2"

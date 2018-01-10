@@ -14,8 +14,9 @@ import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.activity.MainActivity;
 import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
-import com.happy.moment.clip.doll.bean.WaitingSendBean;
+import com.happy.moment.clip.doll.bean.SendOverBean;
 import com.happy.moment.clip.doll.util.Constants;
+import com.happy.moment.clip.doll.util.DataManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -35,7 +36,7 @@ import okhttp3.Call;
  * E-mail:971060378@qq.com
  */
 
-public class SendOverFragment extends BaseFragment implements OnRefreshListener {
+public class SendOverFragment extends BaseFragment implements OnRefreshListener, BaseRecyclerViewAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
     private LinearLayout ll_no_data;
@@ -78,7 +79,7 @@ public class SendOverFragment extends BaseFragment implements OnRefreshListener 
 
     private void getDataFromNet() {
         OkHttpUtils.get()
-                .url(Constants.getSendOverUrl())
+                .url(Constants.getSentProductsUrl())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
                 .addParams(Constants.PAGENUM, String.valueOf(mPage))
                 .addParams(Constants.PAGESIZE, "10")
@@ -120,12 +121,13 @@ public class SendOverFragment extends BaseFragment implements OnRefreshListener 
                 ll_no_data.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 Gson gson = new Gson();
-                ArrayList<WaitingSendBean> waitingSendBeanArrayList = gson.fromJson(jsonArray.toString(), new TypeToken<ArrayList<WaitingSendBean>>() {
+                ArrayList<SendOverBean> sendOverBeanArrayList = gson.fromJson(jsonArray.toString(), new TypeToken<ArrayList<SendOverBean>>() {
                 }.getType());
-                if (EmptyUtils.isNotEmpty(waitingSendBeanArrayList)) {
-                    BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(mContext, waitingSendBeanArrayList, SEND_OVER_DATA_TYPE);
+                if (EmptyUtils.isNotEmpty(sendOverBeanArrayList)) {
+                    BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(mContext, sendOverBeanArrayList, SEND_OVER_DATA_TYPE);
                     recyclerView.setAdapter(baseRecyclerViewAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                    baseRecyclerViewAdapter.setOnItemClickListener(this);
                 }
             } else {
                 ll_no_data.setVisibility(View.VISIBLE);
@@ -138,5 +140,16 @@ public class SendOverFragment extends BaseFragment implements OnRefreshListener 
     public void onRefresh(RefreshLayout refreshlayout) {
         mPage = 1;
         getDataFromNet();
+    }
+
+    @Override
+    public void onItemClick(Object data, int position) {
+        if (data.getClass().getSimpleName().equals("SendOverBean")) {
+            SendOverBean sendOverBean = (SendOverBean) data;
+            if (EmptyUtils.isNotEmpty(sendOverBean)) {
+                DataManager.getInstance().setData1(sendOverBean.getOrderId());
+                gotoPager(OrderDetailFragment.class,null);
+            }
+        }
     }
 }

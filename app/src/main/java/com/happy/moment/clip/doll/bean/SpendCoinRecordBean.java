@@ -8,18 +8,19 @@ package com.happy.moment.clip.doll.bean;
 public class SpendCoinRecordBean extends BaseBean {
 
     /**
-     * balance : 4919
-     * createTime : 2017-11-24 11:45:23
-     * currentId : e66bfe39d0c911e790f2246e96754b22
+     * balance : 90704
+     * createTime : 2018-01-08 17:25:38
+     * currentId : af29cea94f7748aa9aa08092bd8bfd45
      * currentType : 0
-     * details : 抓取娃娃'鹦鹉兄弟',消费游戏币 : 1币
+     * details : 抓取娃娃100000,消费娃娃币 : 1币
      * expendOrIncome : 0
      * isDelete : 0
-     * lastUpdateTime : 2017-11-24 11:45:23
+     * lastUpdateTime : 2018-01-08 17:25:38
      * lqbAmount : -1
-     * relationId : 10000170
+     * relationId : 387
      * state : 1
-     * userId : 1000002
+     * title : 游戏消费
+     * userId : 1000039
      */
 
     private int balance;
@@ -33,6 +34,7 @@ public class SpendCoinRecordBean extends BaseBean {
     private int lqbAmount;
     private int relationId;
     private int state;
+    private String title;
     private int userId;
 
     public int getBalance() {
@@ -121,6 +123,14 @@ public class SpendCoinRecordBean extends BaseBean {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getUserId() {

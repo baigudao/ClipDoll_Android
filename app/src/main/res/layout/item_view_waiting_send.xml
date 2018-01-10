@@ -43,8 +43,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/iv_user_photo"
-            android:text="1个"
-            android:textColor="@color/seventh_text_color"/>
+            android:text="1个"/>
 
         <TextView
             android:id="@+id/tv_clip_doll_state"
@@ -53,7 +52,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:text="待发货"
+            android:text="寄存中"
             android:textColor="@color/main_text_color"
             android:textSize="14sp"/>
 

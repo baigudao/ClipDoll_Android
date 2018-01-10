@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/background_color"
-              android:orientation="vertical">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smartRefreshLayout"
@@ -17,7 +17,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
 
             <LinearLayout
                 android:id="@+id/ll_no_data"
@@ -53,4 +53,36 @@
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/background_advance_gradually_alpha"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_exchange"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_background_share_invite_num"
+            android:text="兑换娃娃币"
+            android:textColor="@color/main_color"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/btn_application"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_go_clip_doll"
+            android:text="申请发货"
+            android:textColor="@color/main_text_color"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
@@ -37,6 +38,7 @@ public class BecomeCooperativePartnerFragment extends BaseFragment {
         cooperative_partner.height = size;
         iv_cooperative_partner.setLayoutParams(cooperative_partner);
 
+        ((TextView)view.findViewById(R.id.tv_weixin_num)).setText(SPUtils.getInstance().getString("CONTACT_WAY"));
         view.findViewById(R.id.btn_copy).setOnClickListener(this);
 
         cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -49,7 +51,7 @@ public class BecomeCooperativePartnerFragment extends BaseFragment {
                 goBack();
                 break;
             case R.id.btn_copy:
-                cm.setText("motiyasi");
+                cm.setText(SPUtils.getInstance().getString("CONTACT_WAY"));
                 ToastUtils.showShort("复制到剪贴板成功");
                 break;
             default:

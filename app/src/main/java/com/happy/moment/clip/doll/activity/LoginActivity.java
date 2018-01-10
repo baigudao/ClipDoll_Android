@@ -3,6 +3,7 @@ package com.happy.moment.clip.doll.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
@@ -45,7 +46,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         //注册微信
         regToWX();
 
-        findViewById(R.id.btn_register_login).setOnClickListener(this);//手机注册登录
+        Button btn_register_login = (Button) findViewById(R.id.btn_register_login);
+        btn_register_login.setVisibility(View.GONE);
+        btn_register_login.setOnClickListener(this);//手机注册登录
     }
 
     @Override
@@ -81,7 +84,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         } else
             ToastUtils.showShort("用户未安装微信");
     }
-
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

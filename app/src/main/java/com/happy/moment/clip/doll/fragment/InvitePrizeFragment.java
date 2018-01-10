@@ -37,6 +37,15 @@ public class InvitePrizeFragment extends BaseFragment {
         ((TextView) view.findViewById(R.id.tv_bar_title)).setText("邀请奖励");
         view.findViewById(R.id.iv_share).setVisibility(View.GONE);
 
+        String inviting_awards = SPUtils.getInstance().getString("INVITING_AWARDS");
+        String exchange_awards = SPUtils.getInstance().getString("EXCHANGE_AWARDS");
+        String max_reward = SPUtils.getInstance().getString("MAX_REWARD");
+        if (inviting_awards.equals(exchange_awards)) {
+            ((TextView) view.findViewById(R.id.tv_invite_prize_text)).setText("邀请好友完成注册，你和朋友都将获得" + inviting_awards + "个娃娃币。邀请越多获赠越多，最多" + max_reward + "币。");
+        } else {
+            ((TextView) view.findViewById(R.id.tv_invite_prize_text)).setText("邀请好友完成注册，你将获得" + exchange_awards + "个娃娃币，你的朋友将获得" + inviting_awards + "个娃娃币。邀请越多获赠越多，最多" + max_reward + "币。");
+        }
+
         view.findViewById(R.id.btn_share_num).setOnClickListener(this);
 
         String invite_code = SPUtils.getInstance().getString(Constants.INVITECODE);

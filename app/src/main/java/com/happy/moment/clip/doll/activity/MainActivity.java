@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.EmptyUtils;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
+import com.happy.moment.clip.doll.bean.AllCommonParamBean;
 import com.happy.moment.clip.doll.bean.BannerBean;
 import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.fragment.BannerFragment;
@@ -163,39 +165,59 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-        //是否首次登录
-        int firstLogin = SPUtils.getInstance().getInt(Constants.FIRSTLOGIN);
-        //0.是(跳注册奖励弹窗) 1.否
-        if (firstLogin == 0) {
-            SPUtils.getInstance().put(Constants.FIRSTLOGIN, 1);
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog_Logout);
-            View view_ = View.inflate(MainActivity.this, R.layout.new_user_login_dialog, null);
-            builder.setView(view_);
-            final AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            //设置对话框的大小
-            alertDialog.getWindow().setLayout(SizeUtils.dp2px(300), LinearLayout.LayoutParams.WRAP_CONTENT);
-            //监听事件
-            view_.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                }
-            });
-            view_.findViewById(R.id.btn_go_to_invite).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                    gotoPager(InvitePrizeFragment.class, null);
-                }
-            });
-            view_.findViewById(R.id.btn_start_game).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                }
-            });
-        }
+        //获取所有公共配置
+        OkHttpUtils.get()
+                .url(Constants.getAllCommonParam())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                int success = jsonObjectResBody.optInt("success");
+                                if (success == 1) {
+                                    JSONObject jsonObjectResData = jsonObjectResBody.optJSONObject("resData");
+                                    if (EmptyUtils.isNotEmpty(jsonObjectResData)) {
+                                        AllCommonParamBean allCommonParamBean = new Gson().fromJson(jsonObjectResData.toString(), AllCommonParamBean.class);
+                                        if (EmptyUtils.isNotEmpty(allCommonParamBean)) {
+                                            //处理数据
+                                            SPUtils.getInstance().put("AUTO_EXCHANGE_TIME", allCommonParamBean.getAutoExchangeTime());//系统自动兑换娃娃币的时间
+                                            SPUtils.getInstance().put("CONTACT_WAY", allCommonParamBean.getContactway());//联系客服微信
+                                            SPUtils.getInstance().put("EXCHANGE_AWARDS", allCommonParamBean.getExchangeAwards());//兑换奖励
+                                            SPUtils.getInstance().put("EXPRESS_FEE", allCommonParamBean.getExpressFee());//快递费
+                                            SPUtils.getInstance().put("EXPRESS_FEE_PARAM", allCommonParamBean.getExpressFeeParam());//无用
+                                            SPUtils.getInstance().put("HOW_MACH_FREE", allCommonParamBean.getHowmachFree());//几件包邮
+                                            SPUtils.getInstance().put("INVITING_AWARDS", allCommonParamBean.getInvitingAwards());//邀请奖励
+                                            SPUtils.getInstance().put("MAX_REWARD", allCommonParamBean.getMaxReward());//最多兑换币额
+                                            SPUtils.getInstance().put("NEW_REWARD", allCommonParamBean.getNewReward());//新人奖励
+
+                                            //是否首次登录
+                                            isFirstLogin();
+                                        }
+                                    }
+                                }
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
         //控制首页通知图标上的红点的显示隐藏
         OkHttpUtils.post()
@@ -234,6 +256,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         }
                     }
                 });
+    }
+
+    private void isFirstLogin() {
+        //是否首次登录
+        int firstLogin = SPUtils.getInstance().getInt(Constants.FIRSTLOGIN);
+        //0.是(跳注册奖励弹窗) 1.否
+        if (firstLogin == 0) {
+            SPUtils.getInstance().put(Constants.FIRSTLOGIN, 1);
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog_Logout);
+            View view_ = View.inflate(MainActivity.this, R.layout.new_user_login_dialog, null);
+            ((TextView) view_.findViewById(R.id.tv_num)).setText(SPUtils.getInstance().getString("NEW_REWARD"));
+            ((TextView) view_.findViewById(R.id.tv_center_num)).setText(SPUtils.getInstance().getString("NEW_REWARD"));
+            builder.setView(view_);
+            final AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            //设置对话框的大小
+            alertDialog.getWindow().setLayout(SizeUtils.dp2px(300), LinearLayout.LayoutParams.WRAP_CONTENT);
+            //监听事件
+            view_.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+            view_.findViewById(R.id.btn_go_to_invite).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                    gotoPager(InvitePrizeFragment.class, null);
+                }
+            });
+            view_.findViewById(R.id.btn_start_game).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+        }
     }
 
     private void getHomeBannerData() {

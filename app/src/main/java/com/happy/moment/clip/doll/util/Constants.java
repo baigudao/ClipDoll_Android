@@ -97,6 +97,14 @@ public class Constants {
     private static final String waitingSendUrl = BASE_URL + "order/unsentProducts/v1";//待发货
     private static final String sendOverUrl = BASE_URL + "order/sentedProducts/v1";//待发货
 
+    private static final String unsentProductsUrl = BASE_URL + "order/unsentProducts/v2";//待发货订单-新版本-寄存库
+    private static final String sentProductsUrl = BASE_URL + "order/sentedProducts/v2";//发货库
+    private static final String exchangeProductUrl = BASE_URL + "order/exchangeProduct/v1";//兑换娃娃币
+    private static final String orderDetailUrl = BASE_URL + "order/getOrderDetail/v1";//订单详情
+    private static final String applySendUrl = BASE_URL + "order/applyAhipments/v1";//申请发货
+
+    private static final String weChatUnifyPayUrl = BASE_URL + "pay/wechat/unifiedOrder";//微信支付 - 统一下单
+
     private static final String userAddressSaveUrl = BASE_URL + "user/address/save/v1";//保存地址
     private static final String userAddressListUrl = BASE_URL + "user/address/list/v1";//地址列表
     private static final String userAddressDeleteUrl = BASE_URL + "user/address/delete/v1";//删除地址
@@ -122,6 +130,9 @@ public class Constants {
 
     private static final String openAgentUrl = BASE_URL + "channel/agenter/apply/v1";//开启代理权
     private static final String myIncomeUrl = BASE_URL + "user/agenter/info/v1";//分销商-我的收益
+
+    private static final String allCommonParam = BASE_URL + "common/param/getCommonParamAll/v1";//获取所有公共配置
+
 
     public static String getHomeRoomListUrl() {
         return homeRoomListUrl;
@@ -293,5 +304,33 @@ public class Constants {
 
     public static String getMyIncomeUrl() {
         return myIncomeUrl;
+    }
+
+    public static String getAllCommonParam() {
+        return allCommonParam;
+    }
+
+    public static String getUnsentProductsUrl() {
+        return unsentProductsUrl;
+    }
+
+    public static String getExchangeProductUrl() {
+        return exchangeProductUrl;
+    }
+
+    public static String getSentProductsUrl() {
+        return sentProductsUrl;
+    }
+
+    public static String getOrderDetailUrl() {
+        return orderDetailUrl;
+    }
+
+    public static String getApplySendUrl() {
+        return applySendUrl;
+    }
+
+    public static String getWeChatUnifyPayUrl() {
+        return weChatUnifyPayUrl;
     }
 }

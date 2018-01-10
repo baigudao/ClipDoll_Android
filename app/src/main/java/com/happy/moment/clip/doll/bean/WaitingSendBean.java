@@ -8,16 +8,22 @@ package com.happy.moment.clip.doll.bean;
 public class WaitingSendBean extends BaseBean {
 
     /**
-     * num : 1
-     * productId : 2
+     * createTime : 2018-01-08 02:41:05
+     * exchangeNum : 0
+     * exchangeType : 0
+     * playId : 315
+     * productId : 52
      * state : 0
-     * toyId : 160
-     * toyName : wawa1
-     * toyPicUrl : http://wawa-1255388722.cosgz.myqcloud.com/img/d71a5054jw8euqdybnb1ij20xc1e0tht.jpg
-     * userId : 1000002
+     * toyId : 100000
+     * toyName : 100000
+     * toyPicUrl : http://wawa-1255388722.cosgz.myqcloud.com/img/qeh1i3124123.jpg
+     * userId : 1000039
      */
 
-    private int num;
+    private String createTime;
+    private int exchangeNum;
+    private int exchangeType;
+    private int playId;
     private int productId;
     private int state;
     private String toyId;
@@ -25,12 +31,36 @@ public class WaitingSendBean extends BaseBean {
     private String toyPicUrl;
     private int userId;
 
-    public int getNum() {
-        return num;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getExchangeNum() {
+        return exchangeNum;
+    }
+
+    public void setExchangeNum(int exchangeNum) {
+        this.exchangeNum = exchangeNum;
+    }
+
+    public int getExchangeType() {
+        return exchangeType;
+    }
+
+    public void setExchangeType(int exchangeType) {
+        this.exchangeType = exchangeType;
+    }
+
+    public int getPlayId() {
+        return playId;
+    }
+
+    public void setPlayId(int playId) {
+        this.playId = playId;
     }
 
     public int getProductId() {

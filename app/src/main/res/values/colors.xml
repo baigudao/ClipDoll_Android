@@ -43,7 +43,8 @@
     <color name="colorBack">#181818</color>
     <color name="colorBackHover">#2A2A2A</color>
 
-    <color name="transparent">#00000000</color>
+    <color name="transparent">#FFFFFFFF</color>
+    <color name="half_transparent">#50FFFFFF</color>
     <color name="btn_no_enable_color">#bdbdbd</color>
 
 </resources>

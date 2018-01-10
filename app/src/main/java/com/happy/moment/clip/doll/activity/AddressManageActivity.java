@@ -49,6 +49,7 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
 
     private static final int REQUEST_CODE = 22;
     private ArrayList<AddressBean> addressBeanArrayList;
+    private String apply_send;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initData() {
+        apply_send = (String) DataManager.getInstance().getData1();
+        DataManager.getInstance().setData1(null);
         getDataFromNet();
     }
 
@@ -210,7 +213,6 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
                                             if (code == 1) {
                                                 int success = jsonObjectResBody.optInt("success");
                                                 if (success == 1) {
-                                                    LogUtils.e("设为默认地址成功");
                                                     for (int i = 0; i < getItemCount(); i++) {
                                                         recyclerView.getChildAt(i).findViewById(R.id.iv_address_choose_no).setVisibility(View.VISIBLE);
                                                         recyclerView.getChildAt(i).findViewById(R.id.iv_address_choose_yes).setVisibility(View.INVISIBLE);
@@ -355,6 +357,20 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
                         });
                     }
                 });
+
+                //在选地址的条件下
+                if (EmptyUtils.isNotEmpty(apply_send) && apply_send.equals("APPLY_SEND")) {
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            DataManager.getInstance().setData1("APPLY_SEND_RESULT");
+                            DataManager.getInstance().setData2(addressBean.getAddressId());
+                            DataManager.getInstance().setData3((addressBean.getProvince() + "省" + addressBean.getCity() + "市" + addressBean.getStreet() +
+                                    "\n" + addressBean.getUserName() + "  " + addressBean.getPhone()));
+                            goBack();
+                        }
+                    });
+                }
             }
         }
 

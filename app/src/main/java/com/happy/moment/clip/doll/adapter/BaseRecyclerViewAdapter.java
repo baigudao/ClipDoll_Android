@@ -28,6 +28,8 @@ import com.happy.moment.clip.doll.bean.GuestStateClipDollInfoBean;
 import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.bean.LiveRoomLuckyUserBean;
 import com.happy.moment.clip.doll.bean.MessageNotificationBean;
+import com.happy.moment.clip.doll.bean.OrderDetailBean;
+import com.happy.moment.clip.doll.bean.SendOverBean;
 import com.happy.moment.clip.doll.bean.SpendCoinRecordBean;
 import com.happy.moment.clip.doll.bean.WaitingSendBean;
 import com.happy.moment.clip.doll.util.Constants;
@@ -58,6 +60,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
     private static final int CLIP_DOLL_RECORD_USER_DATA_TYPE = 6;
     private static final int PRODUCT_INTRODUCE_DATA_TYPE = 7;
     private static final int SEND_OVER_DATA_TYPE = 8;
+    private static final int ORDER_DETAIL_PRODUCT_INFO_DATA_TYPE = 9;
     private static final int NOTIFICATION_CENTER_DATA_TYPE = 16;
 
     private Context mContext;
@@ -113,6 +116,9 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                 break;
             case PRODUCT_INTRODUCE_DATA_TYPE:
                 viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_product_introduce, null));
+                break;
+            case ORDER_DETAIL_PRODUCT_INFO_DATA_TYPE:
+                viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_order_detail_product_info, null));
                 break;
             default:
                 viewHolder = null;
@@ -275,32 +281,8 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                 if (EmptyUtils.isNotEmpty(spendCoinRecordBeanArrayList)) {
                     SpendCoinRecordBean spendCoinRecordBean = spendCoinRecordBeanArrayList.get(position);
                     if (EmptyUtils.isNotEmpty(spendCoinRecordBean)) {
-                        int currentType = spendCoinRecordBean.getCurrentType();
-                        switch (currentType) {
-                            case 0://游戏消费
-                                holder.tv_item1.setText("游戏消费");
-                                break;
-                            case 1:
-                                holder.tv_item1.setText("微信充值");
-                                break;
-                            case 2:
-                                holder.tv_item1.setText("充值奖励");
-                                break;
-                            case 3:
-                                holder.tv_item1.setText("首充奖励");
-                                break;
-                            case 4:
-                                holder.tv_item1.setText("活动奖励");
-                                break;
-                            case 5:
-                                holder.tv_item1.setText("虚拟充值");
-                                break;
-                            case 8:
-                                holder.tv_item1.setText("邀请奖励");
-                                break;
-                            default:
-                                break;
-                        }
+                        holder.tv_item1.setText(spendCoinRecordBean.getTitle());
+
                         holder.tv_item2.setText(spendCoinRecordBean.getDetails());
                         holder.tv_item3.setText(spendCoinRecordBean.getCreateTime());
                         int expendOrIncome = spendCoinRecordBean.getExpendOrIncome();
@@ -325,22 +307,23 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                                 .error(R.drawable.avatar)
                                 .into(holder.iv_item1);
                         holder.tv_item1.setText(waitingSendBean.getToyName());
-                        holder.tv_item2.setText(waitingSendBean.getNum() + "个");
+                        holder.tv_item2.setText(waitingSendBean.getCreateTime() + "抓中");
                     }
                 }
                 break;
             case SEND_OVER_DATA_TYPE:
-                ArrayList<WaitingSendBean> waitingSendBeanArrayList_ = (ArrayList<WaitingSendBean>) mList;
-                if (EmptyUtils.isNotEmpty(waitingSendBeanArrayList_)) {
-                    WaitingSendBean waitingSendBean = waitingSendBeanArrayList_.get(position);
-                    if (EmptyUtils.isNotEmpty(waitingSendBean)) {
+                ArrayList<SendOverBean> sendOverBeanArrayList = (ArrayList<SendOverBean>) mList;
+                if (EmptyUtils.isNotEmpty(sendOverBeanArrayList)) {
+                    SendOverBean sendOverBean = sendOverBeanArrayList.get(position);
+                    if (EmptyUtils.isNotEmpty(sendOverBean)) {
                         Glide.with(mContext)
-                                .load(waitingSendBean.getToyPicUrl())
+                                .load(sendOverBean.getToyPicUrl())
                                 .placeholder(R.drawable.avatar)
                                 .error(R.drawable.avatar)
                                 .into(holder.iv_item1);
-                        holder.tv_item1.setText(waitingSendBean.getToyName());
-                        holder.tv_item2.setText(waitingSendBean.getNum() + "个");
+                        holder.tv_item1.setText(sendOverBean.getOrderTitle());
+                        holder.tv_item2.setText(sendOverBean.getCreateTime());
+                        holder.tv_item3.setText(sendOverBean.getStateTitle());
                     }
                 }
                 break;
@@ -371,6 +354,21 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                                     }
 
                                 }); //方法中设置asBitmap可以设置回调类型
+                    }
+                }
+                break;
+            case ORDER_DETAIL_PRODUCT_INFO_DATA_TYPE:
+                ArrayList<OrderDetailBean.ProductListBean> orderDetailProductInfoBeanArrayList = (ArrayList<OrderDetailBean.ProductListBean>) mList;
+                if (EmptyUtils.isNotEmpty(orderDetailProductInfoBeanArrayList)) {
+                    OrderDetailBean.ProductListBean orderDetailProductInfoBean = orderDetailProductInfoBeanArrayList.get(position);
+                    if (EmptyUtils.isNotEmpty(orderDetailProductInfoBean)) {
+                        Glide.with(mContext)
+                                .load(orderDetailProductInfoBean.getToyPicUrl())
+                                .placeholder(R.drawable.wawa_default0)
+                                .error(R.drawable.wawa_default0)
+                                .into(holder.iv_item1);
+                        holder.tv_item1.setText(orderDetailProductInfoBean.getToyName());
+                        holder.tv_item2.setText(orderDetailProductInfoBean.getNum() + "个");
                     }
                 }
                 break;
@@ -537,6 +535,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
 
                     tv_item1 = (TextView) itemView.findViewById(R.id.tv_clip_doll_name);
                     tv_item2 = (TextView) itemView.findViewById(R.id.tv_clip_doll_num);
+                    tv_item3 = (TextView) itemView.findViewById(R.id.tv_clip_doll_state);
 
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -556,6 +555,12 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     //                    layoutParams_.width = size_;
                     //                    layoutParams_.height = WRAP_CONTENT;
                     //                    iv_item1.setLayoutParams(layoutParams_);
+                    break;
+                case ORDER_DETAIL_PRODUCT_INFO_DATA_TYPE:
+                    iv_item1 = (ImageView) itemView.findViewById(R.id.iv_product_pic);
+
+                    tv_item1 = (TextView) itemView.findViewById(R.id.tv_product_name);
+                    tv_item2 = (TextView) itemView.findViewById(R.id.tv_product_num);
                     break;
                 default:
                     break;

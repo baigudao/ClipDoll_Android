@@ -60,6 +60,8 @@ public class InviteNumExchangeFragment extends BaseFragment {
         ((TextView) view.findViewById(R.id.tv_bar_title)).setText("邀请码兑换");
         view.findViewById(R.id.iv_share).setVisibility(View.GONE);
 
+        ((TextView) view.findViewById(R.id.tv_invite_exchange_text)).setText("输入好友的邀请码，即可获赠" + SPUtils.getInstance().getString("EXCHANGE_AWARDS") + "个娃娃币");
+
         btn_exchange = (Button) view.findViewById(R.id.btn_exchange);
         btn_exchange.setOnClickListener(this);
 

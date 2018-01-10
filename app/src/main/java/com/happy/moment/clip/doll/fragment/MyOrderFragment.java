@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.activity.AddressManageActivity;
@@ -54,6 +55,9 @@ public class MyOrderFragment extends BaseFragment {
         btn_send_over = (RadioButton) view.findViewById(R.id.btn_send_over);
         btn_wait_send.setChecked(true);
         btn_send_over.setChecked(false);
+
+        ((TextView)view.findViewById(R.id.tv_auto_exchange_num)).setText(SPUtils.getInstance().getString("AUTO_EXCHANGE_TIME"));
+        ((TextView)view.findViewById(R.id.tv_over_top_num)).setText(SPUtils.getInstance().getString("HOW_MACH_FREE"));
 
         btn_wait_send.setOnClickListener(this);
         btn_send_over.setOnClickListener(this);

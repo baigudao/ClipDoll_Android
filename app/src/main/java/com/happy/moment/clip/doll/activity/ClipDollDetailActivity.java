@@ -355,7 +355,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
                                     @Override
                                     public void onResponse(String response, int id) {
-                                        LogUtils.e(response);
                                         JSONObject jsonObject = null;
                                         try {
                                             jsonObject = new JSONObject(response);
@@ -1312,6 +1311,9 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 });
                 break;
             case 2:
+                if(isFinishing()){
+                    return;
+                }
                 //结果对话框
                 tryAgingTime = 10;
                 //隐藏等待游戏结果的提示文字

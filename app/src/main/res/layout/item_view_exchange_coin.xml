@@ -6,12 +6,36 @@
               android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_item_send"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border_notification_background_view">
+        android:background="@drawable/border_notification_background_view"
+        android:clickable="true">
+
+        <RelativeLayout
+            android:id="@+id/rl_address_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp">
+
+            <ImageView
+                android:id="@+id/iv_address_choose_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/recharge_icon_unselected"/>
+
+            <ImageView
+                android:id="@+id/iv_address_choose_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/recharge_icon_unselect"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/iv_user_photo"
@@ -19,6 +43,7 @@
             android:layout_height="45dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/rl_address_choose"
             android:src="@drawable/avatar"/>
 
         <TextView
@@ -37,24 +62,13 @@
 
         <TextView
             android:id="@+id/tv_clip_doll_num"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_clip_doll_name"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/iv_user_photo"
             android:text="1个"/>
-
-        <TextView
-            android:id="@+id/tv_clip_doll_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:text="已发货"
-            android:textColor="@color/main_text_color"
-            android:textSize="14sp"/>
 
     </RelativeLayout>
 
