@@ -45,7 +45,9 @@ public class MyOrderFragment extends BaseFragment {
         tv_cost_record.setText("地址管理");
         tv_cost_record.setOnClickListener(this);
 
-        view.findViewById(R.id.ll_order_explain).setOnClickListener(this);
+        LinearLayout ll_order_explain = (LinearLayout) view.findViewById(R.id.ll_order_explain);
+        ll_order_explain.setVisibility(View.GONE);
+        ll_order_explain.setOnClickListener(this);
 
         mBaseFragment = new ArrayList<>();
         mBaseFragment.add(new WaitingSendFragment());
@@ -56,8 +58,8 @@ public class MyOrderFragment extends BaseFragment {
         btn_wait_send.setChecked(true);
         btn_send_over.setChecked(false);
 
-        ((TextView)view.findViewById(R.id.tv_auto_exchange_num)).setText(SPUtils.getInstance().getString("AUTO_EXCHANGE_TIME"));
-        ((TextView)view.findViewById(R.id.tv_over_top_num)).setText(SPUtils.getInstance().getString("HOW_MACH_FREE"));
+        ((TextView) view.findViewById(R.id.tv_auto_exchange_num)).setText(SPUtils.getInstance().getString("AUTO_EXCHANGE_TIME"));
+        ((TextView) view.findViewById(R.id.tv_over_top_num)).setText(SPUtils.getInstance().getString("HOW_MACH_FREE"));
 
         btn_wait_send.setOnClickListener(this);
         btn_send_over.setOnClickListener(this);

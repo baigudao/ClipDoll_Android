@@ -85,6 +85,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
         btn_get_verification_code.setOnClickListener(this);
 
         btn_open_permission = (Button) findViewById(R.id.btn_open_permission);
+        btn_open_permission.setText(EmptyUtils.isEmpty(SPUtils.getInstance().getString("AGENTER_APPLY_TEXT")) ? "29元开启分销代理" : SPUtils.getInstance().getString("AGENTER_APPLY_TEXT"));
         btn_open_permission.setOnClickListener(this);
 
         //注册微信支付

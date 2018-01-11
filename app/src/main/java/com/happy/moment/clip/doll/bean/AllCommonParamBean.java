@@ -8,8 +8,10 @@ package com.happy.moment.clip.doll.bean;
 public class AllCommonParamBean extends BaseBean {
 
     /**
-     * autoExchangeTime : 7
-     * contactway : 李怀龙
+     * agenterApplyPrice : 2900
+     * agenterApplyText : ￥29.00 开启代理权限
+     * autoExchangeTime : 1
+     * contactway : 17374647356
      * exchangeAwards : 15
      * expressFee : 10
      * expressFeeParam : 1
@@ -19,6 +21,8 @@ public class AllCommonParamBean extends BaseBean {
      * newReward : 60
      */
 
+    private String agenterApplyPrice;
+    private String agenterApplyText;
     private String autoExchangeTime;
     private String contactway;
     private String exchangeAwards;
@@ -28,6 +32,22 @@ public class AllCommonParamBean extends BaseBean {
     private String invitingAwards;
     private String maxReward;
     private String newReward;
+
+    public String getAgenterApplyPrice() {
+        return agenterApplyPrice;
+    }
+
+    public void setAgenterApplyPrice(String agenterApplyPrice) {
+        this.agenterApplyPrice = agenterApplyPrice;
+    }
+
+    public String getAgenterApplyText() {
+        return agenterApplyText;
+    }
+
+    public void setAgenterApplyText(String agenterApplyText) {
+        this.agenterApplyText = agenterApplyText;
+    }
 
     public String getAutoExchangeTime() {
         return autoExchangeTime;

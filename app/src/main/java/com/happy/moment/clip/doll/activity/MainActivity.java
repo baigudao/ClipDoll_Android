@@ -194,6 +194,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                                         AllCommonParamBean allCommonParamBean = new Gson().fromJson(jsonObjectResData.toString(), AllCommonParamBean.class);
                                         if (EmptyUtils.isNotEmpty(allCommonParamBean)) {
                                             //处理数据
+                                            SPUtils.getInstance().put("AGENTER_APPLY_TEXT", allCommonParamBean.getAgenterApplyText());//开启分销的价格文案
                                             SPUtils.getInstance().put("AUTO_EXCHANGE_TIME", allCommonParamBean.getAutoExchangeTime());//系统自动兑换娃娃币的时间
                                             SPUtils.getInstance().put("CONTACT_WAY", allCommonParamBean.getContactway());//联系客服微信
                                             SPUtils.getInstance().put("EXCHANGE_AWARDS", allCommonParamBean.getExchangeAwards());//兑换奖励
