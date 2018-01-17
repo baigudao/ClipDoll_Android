@@ -114,6 +114,7 @@ public class ExchangeCoinFragment extends BaseFragment implements OnRefreshListe
     protected void initData() {
         super.initData();
         getDataFromNet();
+        initBottomView();
     }
 
     private void getDataFromNet() {
@@ -205,10 +206,16 @@ public class ExchangeCoinFragment extends BaseFragment implements OnRefreshListe
         }
     }
 
+    private void initBottomView() {
+        tv_exchange_num.setText("0");
+        btn_make_sure_exchange.setEnabled(false);
+    }
+
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         mPage = 1;
         refresh_or_load = 0;
+        initBottomView();
         getDataFromNet();
     }
 
@@ -216,6 +223,7 @@ public class ExchangeCoinFragment extends BaseFragment implements OnRefreshListe
     public void onLoadmore(RefreshLayout refreshlayout) {
         ++mPage;
         refresh_or_load = 1;
+        initBottomView();
         getDataFromNet();
     }
 
@@ -401,8 +409,7 @@ public class ExchangeCoinFragment extends BaseFragment implements OnRefreshListe
                                         if (success == 1) {
                                             ToastUtils.showShort("兑换成功！");
                                             //恢复默认
-                                            tv_exchange_num.setText("0");
-                                            btn_make_sure_exchange.setEnabled(false);
+                                            initBottomView();
                                             getDataFromNet();
                                         }
                                     } else {

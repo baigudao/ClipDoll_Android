@@ -1683,7 +1683,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     private void weChatShare(int flag) {
         //初始化一个wxwebpageobject对象
         WXWebpageObject webpageObject = new WXWebpageObject();
-        webpageObject.webpageUrl = "http://wwh5.tuuban.com/room/" + homeRoomBean.getGroupId();
+        webpageObject.webpageUrl = "http://h5.52z.cn/room/" + homeRoomBean.getGroupId();
 
         //用wxwebpageobject对象初始化一个wxmediaMessage对象
         WXMediaMessage msg = new WXMediaMessage(webpageObject);

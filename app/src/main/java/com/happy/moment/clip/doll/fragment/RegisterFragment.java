@@ -180,7 +180,7 @@ public class RegisterFragment extends BaseFragment {
                                     if (code == 1) {
                                         int success = jsonObjectResBody.optInt("success");
                                         String alertMsg = jsonObjectResBody.optString("alertMsg");
-                                        switch (success){
+                                        switch (success) {
                                             case 0:
                                                 ToastUtils.showShort(alertMsg);
                                                 break;

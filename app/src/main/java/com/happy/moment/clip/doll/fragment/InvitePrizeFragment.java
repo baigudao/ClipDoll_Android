@@ -107,7 +107,7 @@ public class InvitePrizeFragment extends BaseFragment {
     private void weChatShare(int flag) {
         //初始化一个wxwebpageobject对象
         WXWebpageObject webpageObject = new WXWebpageObject();
-        webpageObject.webpageUrl = "http://wwh5.tuuban.com/invitation/" + SPUtils.getInstance().getInt(Constants.USERID);
+        webpageObject.webpageUrl = "http://h5.52z.cn/invitation/" + SPUtils.getInstance().getInt(Constants.USERID);//http://wwh5.tuuban.com
 
         //用wxwebpageobject对象初始化一个wxmediaMessage对象
         WXMediaMessage msg = new WXMediaMessage(webpageObject);

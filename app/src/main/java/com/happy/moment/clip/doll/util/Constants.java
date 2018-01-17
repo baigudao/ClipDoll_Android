@@ -110,7 +110,7 @@ public class Constants {
     private static final String userAddressDeleteUrl = BASE_URL + "user/address/delete/v1";//删除地址
 
     private static final String checkVersionUrl = BASE_URL + "version/checkAppVersionByVersion/v1";//获取版本信息
-    private static final String userProtocolUrl = "http://wwh5.tuuban.com/privacy";//用户协议
+    private static final String userProtocolUrl = "http://h5.52z.cn/privacy";//用户协议
 
     private static final String applyBeginGameUrl = BASE_URL + "live/room/applyBeginGameFromMDD/v1";//申请开始游戏(非腾讯)
     private static final String applyBeginGameUrlTX = BASE_URL + "live/room/applyBeginGame/v1";//申请开始游戏(腾讯的)
