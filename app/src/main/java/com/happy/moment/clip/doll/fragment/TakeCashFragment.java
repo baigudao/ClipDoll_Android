@@ -47,6 +47,8 @@ public class TakeCashFragment extends BaseFragment {
 
     private Bitmap bitmap_;
 
+    private MyIncomeBean myIncomeBean;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_take_cash;
@@ -78,7 +80,11 @@ public class TakeCashFragment extends BaseFragment {
                 goBack();
                 break;
             case R.id.btn_copy:
-                ToastUtils.showShort("复制到剪贴板成功");
+                if (EmptyUtils.isNotEmpty(myIncomeBean)) {
+                    String withdrawWechartAccount = myIncomeBean.getWithdrawWechartAccount();
+                    cm.setText(withdrawWechartAccount);
+                    ToastUtils.showShort("复制到剪贴板成功");
+                }
                 break;
             default:
                 break;
@@ -88,7 +94,7 @@ public class TakeCashFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
-        MyIncomeBean myIncomeBean = (MyIncomeBean) DataManager.getInstance().getData1();
+        myIncomeBean = (MyIncomeBean) DataManager.getInstance().getData1();
         DataManager.getInstance().setData1(null);
         if (EmptyUtils.isNotEmpty(myIncomeBean)) {
             String withdrawQrCode = myIncomeBean.getWithdrawQrCode();
@@ -130,7 +136,6 @@ public class TakeCashFragment extends BaseFragment {
             }
             if (EmptyUtils.isNotEmpty(withdrawWechartAccount)) {
                 tv_weixin_num.setText(withdrawWechartAccount);
-                cm.setText(withdrawWechartAccount);
             }
         }
     }

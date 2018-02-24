@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/background_color"
+              android:background="@color/new_eighth_background_color"
               android:orientation="vertical">
 
     <RelativeLayout
@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:scaleType="fitXY"
-            android:src="@drawable/wawa_default0"/>
+            android:src="@drawable/product_avatar"/>
 
         <TextView
             android:id="@+id/tv_product_name"
@@ -26,6 +26,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/iv_product_pic"
             android:text="娃娃"
+            android:textColor="@color/new_third_text_color"
             android:textSize="16sp"/>
 
         <TextView
@@ -36,6 +37,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:text="2个"
+            android:textColor="@color/new_third_text_color"
             android:textSize="18sp"/>
 
     </RelativeLayout>
@@ -45,6 +47,6 @@
         android:layout_height="1dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@color/divider_color"/>
+        android:background="@drawable/personal_icon_dashed"/>
 
 </LinearLayout>

@@ -2,121 +2,141 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/background_color"
+              android:background="@color/new_background_color"
               android:orientation="vertical">
 
     <include layout="@layout/title_bar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/btn_wait_send"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/half_border_background_left"
-            android:button="@null"
-            android:gravity="center"
-            android:text="寄存库"
-            android:textSize="15sp"/>
-
-        <RadioButton
-            android:id="@+id/btn_send_over"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/half_border_background_right"
-            android:button="@null"
-            android:gravity="center"
-            android:text="发货库"
-            android:textSize="15sp"/>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="15dp">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/background_new_order_white"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="娃娃满"
-                android:textSize="12sp"/>
+            <RadioButton
+                android:id="@+id/btn_wait_send"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/half_border_background_left"
+                android:button="@null"
+                android:gravity="center"
+                android:text="寄存库"
+                android:textColor="@drawable/background_text_color_order_title"
+                android:textSize="17sp"
+                android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/tv_over_top_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:textColor="@color/seventh_text_color"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="件包邮，超"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/tv_auto_exchange_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="7"
-                android:textColor="@color/seventh_text_color"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="天自动兑换娃娃币"
-                android:textSize="12sp"/>
+            <RadioButton
+                android:id="@+id/btn_send_over"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/half_border_background_right"
+                android:button="@null"
+                android:gravity="center"
+                android:text="发货库"
+                android:textColor="@drawable/background_text_color_order_title"
+                android:textSize="17sp"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_order_explain"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:clickable="true"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="15dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="6dp"
-                android:text="配送说明"
-                android:textSize="14sp"/>
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
 
-            <ImageView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="娃娃满"
+                    android:textColor="@color/new_third_text_color"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tv_over_top_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textColor="@color/seventh_text_color"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="件包邮，超"
+                    android:textColor="@color/new_third_text_color"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tv_auto_exchange_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7"
+                    android:textColor="@color/seventh_text_color"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="天自动兑换娃娃币"
+                    android:textColor="@color/new_third_text_color"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_order_explain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/order_explain"/>
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="6dp"
+                    android:text="配送说明"
+                    android:textSize="14sp"/>
 
-    </RelativeLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/order_explain"/>
 
-    <FrameLayout
-        android:id="@+id/rl_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/rl_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </LinearLayout>

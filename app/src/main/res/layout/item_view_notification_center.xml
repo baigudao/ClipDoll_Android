@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/background_color"
+              android:background="@color/new_second_background_color"
               android:orientation="vertical">
 
     <RelativeLayout
@@ -19,7 +19,7 @@
             android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/avatar"/>
 
         <TextView
             android:id="@+id/tv_notification_title"
@@ -29,7 +29,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/iv_user_photo"
             android:text="我爱抓娃娃"
-            android:textColor="@color/main_text_color"
+            android:textColor="@color/new_third_text_color"
             android:textSize="18sp"/>
 
         <TextView
@@ -50,9 +50,9 @@
             android:id="@+id/tv_notification_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="14dp"
             android:layout_toRightOf="@id/tv_notification_title"
             android:ellipsize="end"
             android:maxLines="1"

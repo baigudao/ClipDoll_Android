@@ -19,7 +19,7 @@ public class GlideImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setBackgroundColor(context.getResources().getColor(R.color.background_color));
+        imageView.setBackgroundColor(context.getResources().getColor(R.color.new_background_color));
         //Glide 加载图片简单用法
         Glide.with(context)
                 .load(path)

@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -25,7 +24,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    private LinearLayout ll_weixin_login;
+    private Button btn_weixin_login;
     private IWXAPI api;
 
     @Override
@@ -35,12 +34,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         BarUtils.hideNavBar(LoginActivity.this);
         setContentView(R.layout.activity_login);
 
-        ll_weixin_login = (LinearLayout) findViewById(R.id.ll_weixin_login);
-        ll_weixin_login.setOnClickListener(this);
+        btn_weixin_login = (Button) findViewById(R.id.btn_weixin_login);
+        btn_weixin_login.setOnClickListener(this);
         findViewById(R.id.tv_user_protocol).setOnClickListener(this);
         CheckBox material_check_box = (CheckBox) findViewById(R.id.material_check_box);
         material_check_box.setChecked(true);//默认选择
-        ll_weixin_login.setEnabled(true);//默认激活
+        btn_weixin_login.setEnabled(true);//默认激活
         material_check_box.setOnCheckedChangeListener(this);
 
         //注册微信
@@ -54,7 +53,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_weixin_login:
+            case R.id.btn_weixin_login:
                 wxLogin();
                 break;
             case R.id.tv_user_protocol:
@@ -88,9 +87,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            ll_weixin_login.setEnabled(true);
+            btn_weixin_login.setEnabled(true);
         } else {
-            ll_weixin_login.setEnabled(false);
+            btn_weixin_login.setEnabled(false);
         }
     }
 }

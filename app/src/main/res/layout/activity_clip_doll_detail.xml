@@ -3,19 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"
+    android:background="@drawable/liveroom_bg_g"
     android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:background="@color/main_color"/>
+        android:layout_height="15dp"/>
 
     <!--头部视图-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/main_color">
+        android:layout_height="55dp">
 
         <LinearLayout
             android:id="@+id/ll_close"
@@ -28,29 +26,11 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_gravity="center_vertical"
-                android:scaleType="centerCrop"
-                android:src="@drawable/icon_return"/>
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/close"
-                android:textSize="16sp"/>
+                android:src="@drawable/live_icon_close"/>
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_user_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/home_icon_us"
-            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_bar_title"
@@ -71,370 +51,347 @@
             android:layout_marginRight="15dp"
             android:clickable="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon__share"/>
-
-        <TextView
-            android:id="@+id/tv_cost_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:clickable="true"
-            android:text="消费记录"
-            android:textColor="@color/main_text_color"
-            android:textSize="16sp"
-            android:visibility="gone"/>
+            android:src="@drawable/icon_share"/>
 
     </RelativeLayout>
 
-    <com.happy.moment.clip.doll.view.MyScrollView
+    <!--主体视图-->
+    <RelativeLayout
+        android:id="@+id/rl_fill_screen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!--左侧跑马灯-->
+        <ImageView
+            android:id="@+id/iv_lamp_left"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:src="@drawable/liveroom_lamp"/>
 
-            <RelativeLayout
-                android:id="@+id/rl_fill_screen"
+        <!--右侧跑马灯-->
+        <ImageView
+            android:id="@+id/iv_lamp_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/liveroom_lamps"/>
+
+        <!--直播视图-->
+        <RelativeLayout
+            android:id="@+id/rl_live_view"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/background_live_room_root_view">
+
+            <com.tencent.ilivesdk.view.AVRootView
+                android:id="@+id/arv_root"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@drawable/wawa_loading"/>
 
-                <!--直播视图-->
+            <ImageView
+                android:id="@+id/iv_live_room_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/liveroom_btn_camera"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_waiting_game_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/background_live_room_user_name"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="正在等待游戏结果..."
+                android:textColor="@color/pure_white_color"
+                android:textSize="15sp"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/iv_background_music"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="15dp"
+                android:clickable="true"
+                android:src="@drawable/background_music_open"/>
+
+            <TextView
+                android:id="@+id/tv_timer"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/liveroom_btn_time"
+                android:gravity="center"
+                android:text="30s"
+                android:textColor="@color/pure_white_color"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <!--当前房间在线人数-->
+            <RelativeLayout
+                android:id="@+id/rl_live_room_user"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/liveroom_icon_people"
+                android:visibility="gone">
+
                 <RelativeLayout
-                    android:id="@+id/rl_live_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp">
+                    android:id="@+id/rl_users"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp">
 
-                    <com.tencent.ilivesdk.view.AVRootView
-                        android:id="@+id/arv_root"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/wawa_loading"/>
-
-                    <ImageView
-                        android:id="@+id/iv_live_room_camera"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:clickable="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/liveroom_btn_camera"
-                        android:visibility="gone"/>
-
-                    <TextView
-                        android:id="@+id/tv_waiting_game_result"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/background_live_room_user_name"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="正在等待游戏结果..."
-                        android:textColor="@color/pure_white_color"
-                        android:textSize="15sp"
-                        android:visibility="gone"/>
-
-                    <ImageView
-                        android:id="@+id/iv_background_music"
+                    <com.happy.moment.clip.doll.view.CircleImageView
+                        android:id="@+id/iv_user_1"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="25dp"
-                        android:clickable="true"
-                        android:src="@drawable/background_music_open"/>
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/avatar"/>
 
-                    <TextView
-                        android:id="@+id/tv_timer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="80dp"
-                        android:layout_marginLeft="30dp"
-                        android:text="30s"
-                        android:textColor="@color/pure_white_color"
-                        android:textSize="30sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
+                    <com.happy.moment.clip.doll.view.CircleImageView
+                        android:id="@+id/iv_user_2"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:src="@drawable/avatar"/>
 
-                    <!--当前房间在线人数-->
-                    <RelativeLayout
-                        android:id="@+id/rl_live_room_user"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="30dp"
-                        android:background="@drawable/background_users_waiting"
-                        android:visibility="gone">
-
-                        <RelativeLayout
-                            android:id="@+id/rl_users"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginLeft="8dp">
-
-                            <com.happy.moment.clip.doll.view.CircleImageView
-                                android:id="@+id/iv_user_1"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/avatar"/>
-
-                            <com.happy.moment.clip.doll.view.CircleImageView
-                                android:id="@+id/iv_user_2"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="20dp"
-                                android:src="@drawable/avatar"/>
-
-                            <com.happy.moment.clip.doll.view.CircleImageView
-                                android:id="@+id/iv_user_3"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="40dp"
-                                android:src="@drawable/avatar"/>
+                    <com.happy.moment.clip.doll.view.CircleImageView
+                        android:id="@+id/iv_user_3"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="40dp"
+                        android:src="@drawable/avatar"/>
 
 
-                            <com.happy.moment.clip.doll.view.CircleImageView
-                                android:id="@+id/iv_user_4"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="60dp"
-                                android:src="@drawable/avatar"/>
-
-                        </RelativeLayout>
-
-                        <TextView
-                            android:id="@+id/tv_user_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="8dp"
-                            android:layout_toRightOf="@id/rl_users"
-                            android:text="999人在线"
-                            android:textColor="@color/pure_white_color"
-                            android:textSize="14sp"/>
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tv_room_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="70dp"
-                        android:text="房间ID：000000"
-                        android:textColor="@color/pure_white_color"
-                        android:textSize="9sp"/>
-
-                    <!--当前房间玩家-->
-                    <LinearLayout
-                        android:id="@+id/ll_live_room_player"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginTop="15dp"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/tv_live_room_player_name"
-                            android:layout_width="70dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_horizontal"
-                            android:background="@drawable/background_live_room_user_name"
-                            android:ellipsize="end"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:text="alex渡边孔"
-                            android:textColor="@color/pure_white_color"
-                            android:textSize="11sp"/>
-
-                        <ImageView
-                            android:id="@+id/iv_live_room_player"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/wawa_default_user"/>
-
-                    </LinearLayout>
+                    <com.happy.moment.clip.doll.view.CircleImageView
+                        android:id="@+id/iv_user_4"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="60dp"
+                        android:src="@drawable/avatar"/>
 
                 </RelativeLayout>
 
-                <!--开始、充值按钮视图-->
-                <RelativeLayout
-                    android:id="@+id/rl_start_clip_and_recharge"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_user_num"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/rl_live_view"
-                    android:layout_marginTop="50dp"
-                    android:visibility="visible">
-
-                    <LinearLayout
-                        android:id="@+id/ll_start_clip_doll"
-                        android:layout_width="150dp"
-                        android:layout_height="60dp"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/background_start_clip_doll"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_start_clip_doll"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="@string/start_clip_btn"
-                            android:textColor="@color/seventh_text_color"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/tv_cost_coin_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="5dp"
-                            android:text="10币/次"
-                            android:textColor="@color/seventh_text_color"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_coin_recharge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="20dp"
-                        android:clickable="true"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/icon_gold"/>
-
-                            <TextView
-                                android:id="@+id/tv_coin_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="8dp"
-                                android:text="0"
-                                android:textSize="16sp"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="3dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:text="充值"
-                                android:textColor="@color/seventh_text_color"
-                                android:textSize="16sp"/>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="10dp"
-                                android:src="@drawable/liveroom_icon_arrow_right"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <!--操作按钮视图-->
-                <RelativeLayout
-                    android:id="@+id/rl_operation"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="40dp"
-                    android:visibility="gone">
-
-                    <ImageButton
-                        android:id="@+id/action_btn_left"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="25dp"
-                        android:background="@drawable/background_action_btn_left"/>
-
-                    <ImageButton
-                        android:id="@+id/action_btn_bottom"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:layout_below="@id/action_btn_left"
-                        android:layout_toRightOf="@id/action_btn_left"
-                        android:background="@drawable/background_action_btn_bottom"/>
-
-                    <ImageButton
-                        android:id="@+id/action_btn_top"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:layout_above="@id/action_btn_left"
-                        android:layout_toRightOf="@id/action_btn_left"
-                        android:background="@drawable/background_action_btn_top"/>
-
-                    <ImageButton
-                        android:id="@+id/action_btn_right"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:layout_alignTop="@id/action_btn_left"
-                        android:layout_toRightOf="@id/action_btn_top"
-                        android:background="@drawable/background_action_btn_right"/>
-
-                    <ImageButton
-                        android:id="@+id/action_start_clip"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="25dp"
-                        android:background="@drawable/background_action_start_clip"/>
-
-                </RelativeLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toRightOf="@id/rl_users"
+                    android:text="999人在线"
+                    android:textColor="@color/pure_white_color"
+                    android:textSize="14sp"/>
 
             </RelativeLayout>
 
-            <!--底部视图-->
-            <include layout="@layout/clip_doll_detail_bottom"/>
+            <!--房间ID-->
+            <TextView
+                android:id="@+id/tv_room_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="70dp"
+                android:text="房间ID：000000"
+                android:textColor="@color/pure_white_color"
+                android:textSize="9sp"/>
 
-        </LinearLayout>
+            <!--当前房间玩家-->
+            <LinearLayout
+                android:id="@+id/ll_live_room_player"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-    </com.happy.moment.clip.doll.view.MyScrollView>
+                <ImageView
+                    android:id="@+id/iv_live_room_player"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/wawa_default_user"/>
+
+                <TextView
+                    android:id="@+id/tv_live_room_player_name"
+                    android:layout_width="70dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/liveroom_icon_much"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="alex渡边孔"
+                    android:textColor="@color/pure_white_color"
+                    android:textSize="11sp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!--开始、充值按钮视图-->
+        <RelativeLayout
+            android:id="@+id/rl_start_clip_and_recharge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rl_live_view"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_product_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="true"
+                    android:src="@drawable/liveroom_btn_baby"/>
+
+                <ImageView
+                    android:id="@+id/iv_clip_doll_lucky"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/liveroom_btn_lucky"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_start_clip_doll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_live_room_click_start"/>
+
+                <TextView
+                    android:id="@+id/tv_cost_coin_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp"
+                    android:text="10币/次"
+                    android:textColor="@color/pure_white_color"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_coin_recharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:clickable="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/liveroom_btn_recharge"/>
+
+                <TextView
+                    android:id="@+id/tv_coin_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
+                    android:text="0"
+                    android:textColor="@color/pure_white_color"
+                    android:textSize="14sp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!--操作按钮视图-->
+        <RelativeLayout
+            android:id="@+id/rl_operation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/action_btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:background="@drawable/background_action_btn_left"/>
+
+            <ImageButton
+                android:id="@+id/action_btn_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/action_btn_left"
+                android:layout_toRightOf="@id/action_btn_left"
+                android:background="@drawable/background_action_btn_bottom"/>
+
+            <ImageButton
+                android:id="@+id/action_btn_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/action_btn_left"
+                android:layout_toRightOf="@id/action_btn_left"
+                android:background="@drawable/background_action_btn_top"/>
+
+            <ImageButton
+                android:id="@+id/action_btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/action_btn_top"
+                android:background="@drawable/background_action_btn_right"/>
+
+            <ImageButton
+                android:id="@+id/action_start_clip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/background_action_start_clip"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>
 

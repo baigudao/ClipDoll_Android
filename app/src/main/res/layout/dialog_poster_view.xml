@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_background_logout">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:text="添加二维码或链接至宣传渠道"
+        android:textColor="@color/new_third_text_color"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:text="长按二维码保存"
+        android:textColor="@color/new_third_text_color"/>
+
+    <ImageView
+        android:id="@+id/iv_dialog_QR"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/tv1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_dialog_QR"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="专属渠道二维码"
+        android:textColor="@color/new_background_color"/>
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv2"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:text="点击复制链接"
+        android:textColor="@color/new_third_text_color"/>
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv3"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_http"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="http://wwww.baidu.com"
+            android:textColor="@color/new_fifth_text_color"/>
+
+        <TextView
+            android:id="@+id/tv_copy_http"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_shape_poster_dialog"
+            android:paddingBottom="8dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="8dp"
+            android:text="复制链接"
+            android:textColor="@color/new_sixth_text_color"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/background_shape_poster_dialog_close"
+        android:text="关闭"
+        android:textColor="@color/new_third_text_color"
+        android:textSize="18sp"/>
+
+</RelativeLayout>

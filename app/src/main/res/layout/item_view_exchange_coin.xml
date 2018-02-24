@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/background_color"
+              android:background="@color/new_eighth_background_color"
               android:orientation="vertical">
 
     <RelativeLayout
@@ -11,7 +11,7 @@
         android:layout_height="60dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:background="@drawable/border_notification_background_view"
         android:clickable="true">
 
@@ -44,7 +44,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@id/rl_address_choose"
-            android:src="@drawable/avatar"/>
+            android:src="@drawable/product_avatar"/>
 
         <TextView
             android:id="@+id/tv_clip_doll_name"
@@ -57,7 +57,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="可爱的米米大白"
-            android:textColor="@color/main_text_color"
+            android:textColor="@color/new_third_text_color"
             android:textSize="16sp"/>
 
         <TextView

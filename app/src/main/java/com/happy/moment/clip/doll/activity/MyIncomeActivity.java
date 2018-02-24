@@ -2,24 +2,23 @@ package com.happy.moment.clip.doll.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.adapter.BaseRecyclerViewAdapter;
+import com.happy.moment.clip.doll.bean.EarningUserBean;
 import com.happy.moment.clip.doll.bean.WeChatPayParamsBean;
+import com.happy.moment.clip.doll.fragment.InvitePosterFragment;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -28,11 +27,11 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 
@@ -43,90 +42,61 @@ import okhttp3.Call;
 
 public class MyIncomeActivity extends BaseActivity implements View.OnClickListener {
 
-    private Timer mTimer;
-    private int mTotalTime;
-    private TimerTask mTask;
-
-    private TextView tv_income_name;
-    private ImageView iv_income_photo;
-
-    private EditText et_put_real_name;
-    private EditText et_put_real_phone;
-    private EditText et_put_verification_code;
-
-    private Button btn_get_verification_code;
-
-    private Button btn_open_permission;
+    private TextView tv_total;
+    private RecyclerView recyclerView_user;
+    private RecyclerView recyclerView_incoming;
 
     private IWXAPI api;
-    private View view;
+
+    private TextView tv_my_invite_num;
+    private TextView tv_my_earning_num;
+    private TextView tv_system_friend_num;
+
+    private static final int EARNING_USER_DATA_TYPE = 10;
+    private static final int EARNING_INCOMING_DATA_TYPE = 11;
+
+    private String promoteUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = View.inflate(this, R.layout.activity_my_income, null);
+        BarUtils.setStatusBarColor(MyIncomeActivity.this, getResources().getColor(R.color.main_color));
+        BarUtils.hideNavBar(MyIncomeActivity.this);
+        View view = View.inflate(this, R.layout.activity_my_income, null);
         setContentView(view);
 
+        view.findViewById(R.id.iv_go_to_9).setOnClickListener(this);
+
         findViewById(R.id.ll_close).setOnClickListener(this);
-        ((TextView) findViewById(R.id.tv_bar_title)).setText("我要赚钱");
+        ((TextView) findViewById(R.id.tv_bar_title)).setText("代理赚钱");
         findViewById(R.id.iv_share).setVisibility(View.GONE);
 
-        tv_income_name = (TextView) findViewById(R.id.tv_income_name);
-        iv_income_photo = (ImageView) findViewById(R.id.iv_income_photo);
+        tv_total = (TextView) findViewById(R.id.tv_total);
 
-        et_put_real_name = (EditText) findViewById(R.id.et_put_real_name);
-        et_put_real_name.addTextChangedListener(new MyTextChangedListener());
-        et_put_real_phone = (EditText) findViewById(R.id.et_put_real_phone);
-        et_put_real_phone.addTextChangedListener(new MyTextChangedListener());
-        et_put_verification_code = (EditText) findViewById(R.id.et_put_verification_code);
-        et_put_verification_code.addTextChangedListener(new MyTextChangedListener());
+        findViewById(R.id.ll_xianshikaitong).setOnClickListener(this);
+        findViewById(R.id.ll_lizhuan).setOnClickListener(this);
 
-        btn_get_verification_code = (Button) findViewById(R.id.btn_get_verification_code);
-        btn_get_verification_code.setOnClickListener(this);
+        tv_my_invite_num = (TextView) findViewById(R.id.tv_my_invite_num);
+        tv_my_earning_num = (TextView) findViewById(R.id.tv_my_earning_num);
+        tv_system_friend_num = (TextView) findViewById(R.id.tv_system_friend_num);
+        findViewById(R.id.tv_open_permission).setOnClickListener(this);
 
-        btn_open_permission = (Button) findViewById(R.id.btn_open_permission);
-        btn_open_permission.setText(EmptyUtils.isEmpty(SPUtils.getInstance().getString("AGENTER_APPLY_TEXT")) ? "29元开启分销代理" : SPUtils.getInstance().getString("AGENTER_APPLY_TEXT"));
-        btn_open_permission.setOnClickListener(this);
+        recyclerView_user = (RecyclerView) findViewById(R.id.recyclerView_user);
+        recyclerView_incoming = (RecyclerView) findViewById(R.id.recyclerView_incoming);
 
         //注册微信支付
         regToWx();
-
-        initData();
-    }
-
-    private String getRealName() {
-        return et_put_real_name.getText().toString().trim();
-    }
-
-    private String getRealPhone() {
-        return et_put_real_phone.getText().toString().trim();
-    }
-
-    private String getVerificationCode() {
-        return et_put_verification_code.getText().toString().trim();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        String recharge_success = (String) DataManager.getInstance().getData1();
-        DataManager.getInstance().setData1(null);
-        if (EmptyUtils.isNotEmpty(recharge_success) && recharge_success.equals("RECHARGE_SUCCESS")) {
-            finish();
-        }
-    }
-
-    private void initData() {
-        //申请人图像和名字
-        String string_head_img = SPUtils.getInstance().getString(Constants.HEADIMG);
-        if (EmptyUtils.isNotEmpty(string_head_img)) {
-            Glide.with(this)
-                    .load(string_head_img)
-                    .placeholder(R.drawable.avatar)
-                    .error(R.drawable.avatar)
-                    .into(iv_income_photo);
-        }
-        tv_income_name.setText(SPUtils.getInstance().getString(Constants.NICKNAME));
+        getDataFromNet();
+        //        String recharge_success = (String) DataManager.getInstance().getData1();
+        //        DataManager.getInstance().setData1(null);
+        //        if (EmptyUtils.isNotEmpty(recharge_success) && recharge_success.equals("RECHARGE_SUCCESS")) {
+        //            finish();
+        //        }
     }
 
     @Override
@@ -135,55 +105,23 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
             case R.id.ll_close:
                 goBack();
                 break;
-            case R.id.btn_get_verification_code:
-                if (mTotalTime > 0) {
-                    return;
-                }
-                final String mobile = getRealPhone();
-                if (!RegexUtils.isMobileExact(mobile)) {
-                    Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                mTotalTime = 60;
-                mTimer = new Timer();
-                initTimerTask();
-                mTimer.schedule(mTask, 1000, 1000);
-                OkHttpUtils.get()
-                        .url(Constants.getVerificationCodeUrl())
-                        .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
-                        .addParams(Constants.PHONE, mobile)
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                JSONObject jsonObject = null;
-                                try {
-                                    jsonObject = new JSONObject(response);
-                                    JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
-                                    int code = jsonObjectResHead.optInt("code");
-                                    String msg = jsonObjectResHead.optString("msg");
-                                    final String req = jsonObjectResHead.optString("req");
-                                    JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
-                                    if (code == 1) {
-                                        int success = jsonObjectResBody.optInt("success");
-                                        String alertMsg = jsonObjectResBody.optString("alertMsg");
-                                    } else {
-                                        LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
-                                        ToastUtils.showShort("请求数据失败" + msg);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                break;
-            case R.id.btn_open_permission:
+            case R.id.ll_xianshikaitong:
                 openPermission();
+                break;
+            case R.id.ll_lizhuan:
+                if (EmptyUtils.isNotEmpty(promoteUrl)) {
+                    DataManager.getInstance().setData1(promoteUrl);
+                    gotoPager(InvitePosterFragment.class, null);
+                }
+                break;
+            case R.id.tv_open_permission:
+                openPermission();
+                break;
+            case R.id.iv_go_to_9:
+                if (EmptyUtils.isNotEmpty(promoteUrl)) {
+                    DataManager.getInstance().setData1(promoteUrl);
+                    gotoPager(InvitePosterFragment.class, null);
+                }
                 break;
             default:
                 break;
@@ -191,20 +129,10 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void openPermission() {
-        String mobile = getRealPhone();
-        String realName = getRealName();
-        String verificationCode = getVerificationCode();
-        if (!RegexUtils.isMobileExact(mobile)) {
-            Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
-            return;
-        }
         OkHttpUtils.post()
                 .url(Constants.getOpenAgentUrl())
                 .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
                 .addParams(Constants.SDKTYPE, String.valueOf(0))
-                .addParams(Constants.PHONE, mobile)
-                .addParams(Constants.REALNAME, realName)
-                .addParams(Constants.VERIFLYCODE, verificationCode)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -250,6 +178,7 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
                     request.nonceStr = weChatPayParamsBean.getNoncestr();
                     request.timeStamp = String.valueOf(weChatPayParamsBean.getTimestamp());
                     request.sign = weChatPayParamsBean.getSign();
+
                     //发起微信支付
                     api.sendReq(request);
                 }
@@ -257,73 +186,99 @@ public class MyIncomeActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    /**
-     * 初始化时间任务器
-     */
-    private void initTimerTask() {
-        mTask = new TimerTask() {
-            @Override
-            public void run() {
-                if (view == null) {
-                    mTimer.cancel();
-                    return;
-                }
-                MyIncomeActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        --mTotalTime;
-                        if (view == null) {
-                            mTimer.cancel();
-                            return;
-                        }
-                        btn_get_verification_code.setText(String.valueOf(mTotalTime));
-                        btn_get_verification_code.setTextSize(16);
-                        if (mTotalTime <= 0) {
-                            mTimer.cancel();
-                            btn_get_verification_code.setText(getString(R.string.free_get));//免费获取
-                            btn_get_verification_code.setTextSize(14);
-                            btn_get_verification_code.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_enable_selector));
-                        } else {
-                            btn_get_verification_code.setBackgroundDrawable(getResources().getDrawable(R.drawable.my_verification_code_shape));//倒计时时候的背景
-                        }
-                    }
-                });
-            }
-        };
-    }
-
-    private class MyTextChangedListener implements TextWatcher {
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            boolean realName = getRealName().length() > 0;
-            boolean phone = getRealPhone().length() > 0;
-            boolean verificationCode = getVerificationCode().length() > 0;
-            if (phone) {
-                btn_get_verification_code.setEnabled(true);
-            } else {
-                btn_get_verification_code.setEnabled(false);
-            }
-            if (realName && phone && verificationCode) {
-                btn_open_permission.setEnabled(true);
-            } else {
-                btn_open_permission.setEnabled(false);
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    }
-
     private void regToWx() {
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);//false：表示checkSignature
         api.registerApp(Constants.APP_ID);
+    }
+
+    private void getDataFromNet() {
+        OkHttpUtils.get()
+                .url(Constants.getEarningsListUrl())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .addParams(Constants.USERID, String.valueOf(SPUtils.getInstance().getInt(Constants.USERID)))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            final String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                handlerData(jsonObjectResBody);
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    private void handlerData(JSONObject jsonObjectResBody) {
+        if (EmptyUtils.isNotEmpty(jsonObjectResBody)) {
+            JSONObject jsonObjectSynthesizeVo = jsonObjectResBody.optJSONObject("synthesizeVo");
+            if (EmptyUtils.isNotEmpty(jsonObjectSynthesizeVo)) {
+                double systemEarningsNum = jsonObjectSynthesizeVo.optDouble("systemEarningsNum");
+                tv_total.setText(String.valueOf(systemEarningsNum));
+                int friendNum = jsonObjectSynthesizeVo.optInt("friendNum");
+                tv_my_invite_num.setText(String.valueOf(friendNum));
+                double earningsNum = jsonObjectSynthesizeVo.optDouble("earningsNum");
+                if (String.valueOf(earningsNum).equals("NaN")) {
+                    tv_my_earning_num.setText("¥00.00元");//¥00.00元
+                } else {
+                    tv_my_earning_num.setText("¥" + String.valueOf(earningsNum) + "元");//¥00.00元
+                }
+                int systemFriendNum = jsonObjectSynthesizeVo.optInt("systemFriendNum");
+                tv_system_friend_num.setText(String.valueOf(systemFriendNum));
+                promoteUrl = jsonObjectSynthesizeVo.optString("promoteUrl");//url
+
+                JSONArray jsonArrayUserEarningsVos = jsonObjectSynthesizeVo.optJSONArray("userEarningsVos");//4个
+                if (EmptyUtils.isNotEmpty(jsonArrayUserEarningsVos) && jsonArrayUserEarningsVos.length() > 0) {
+                    Gson gson = new Gson();
+                    ArrayList<EarningUserBean> earningUserBeanArrayList = gson.fromJson(jsonArrayUserEarningsVos.toString(), new TypeToken<ArrayList<EarningUserBean>>() {
+                    }.getType());
+                    if (EmptyUtils.isNotEmpty(earningUserBeanArrayList) && earningUserBeanArrayList.size() > 0) {
+                        BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(MyIncomeActivity.this, earningUserBeanArrayList, EARNING_USER_DATA_TYPE);
+                        recyclerView_user.setLayoutManager(new LinearLayoutManager(MyIncomeActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                        recyclerView_user.setAdapter(baseRecyclerViewAdapter);
+                    }
+                }
+
+                JSONArray jsonArrayEarningsVos = jsonObjectSynthesizeVo.optJSONArray("earningsVos");
+                if (EmptyUtils.isNotEmpty(jsonArrayEarningsVos) && jsonArrayEarningsVos.length() > 0) {
+                    Gson gson = new Gson();
+                    ArrayList<EarningUserBean> earningUserBeanArrayList = gson.fromJson(jsonArrayEarningsVos.toString(), new TypeToken<ArrayList<EarningUserBean>>() {
+                    }.getType());
+                    if (EmptyUtils.isNotEmpty(earningUserBeanArrayList) && earningUserBeanArrayList.size() > 0) {
+                        int size = earningUserBeanArrayList.size();
+                        if (size < 6) {
+                            BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(MyIncomeActivity.this, earningUserBeanArrayList, EARNING_INCOMING_DATA_TYPE);
+                            recyclerView_incoming.setLayoutManager(new LinearLayoutManager(MyIncomeActivity.this, LinearLayoutManager.VERTICAL, false));
+                            recyclerView_incoming.setAdapter(baseRecyclerViewAdapter);
+                        } else {
+                            ArrayList<EarningUserBean> earningUserBeanArrayListCopy = new ArrayList<>();
+                            for (int i = 0; i < 5; i++) {
+                                earningUserBeanArrayListCopy.add(earningUserBeanArrayList.get(i));
+                            }
+                            BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(MyIncomeActivity.this, earningUserBeanArrayListCopy, EARNING_INCOMING_DATA_TYPE);
+                            recyclerView_incoming.setLayoutManager(new LinearLayoutManager(MyIncomeActivity.this, LinearLayoutManager.VERTICAL, false));
+                            recyclerView_incoming.setAdapter(baseRecyclerViewAdapter);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -121,14 +121,11 @@
 
     <Button
         android:id="@+id/btn_private_register"
-        android:layout_width="280dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"
-        android:background="@drawable/btn_enable_selector"
-        android:enabled="false"
-        android:text="注册"
-        android:textColor="@drawable/btn_text_background_selector"
-        android:textSize="16sp"/>
+        android:background="@drawable/background_tijiao"
+        android:enabled="false"/>
 
 </LinearLayout>

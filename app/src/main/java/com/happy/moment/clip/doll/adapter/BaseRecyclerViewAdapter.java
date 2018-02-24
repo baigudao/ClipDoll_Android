@@ -2,12 +2,16 @@ package com.happy.moment.clip.doll.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,11 +23,13 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.bean.ClipDollRecordBean;
+import com.happy.moment.clip.doll.bean.EarningUserBean;
 import com.happy.moment.clip.doll.bean.GuestStateClipDollInfoBean;
 import com.happy.moment.clip.doll.bean.HomeRoomBean;
 import com.happy.moment.clip.doll.bean.LiveRoomLuckyUserBean;
@@ -31,6 +37,8 @@ import com.happy.moment.clip.doll.bean.MessageNotificationBean;
 import com.happy.moment.clip.doll.bean.OrderDetailBean;
 import com.happy.moment.clip.doll.bean.SendOverBean;
 import com.happy.moment.clip.doll.bean.SpendCoinRecordBean;
+import com.happy.moment.clip.doll.bean.TagsBean;
+import com.happy.moment.clip.doll.bean.TaskBean;
 import com.happy.moment.clip.doll.bean.WaitingSendBean;
 import com.happy.moment.clip.doll.util.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -43,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import okhttp3.Call;
 
 /**
@@ -61,6 +70,10 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
     private static final int PRODUCT_INTRODUCE_DATA_TYPE = 7;
     private static final int SEND_OVER_DATA_TYPE = 8;
     private static final int ORDER_DETAIL_PRODUCT_INFO_DATA_TYPE = 9;
+    private static final int EARNING_USER_DATA_TYPE = 10;
+    private static final int EARNING_INCOMING_DATA_TYPE = 11;
+    private static final int TASK_DATA_TYPE = 12;
+    private static final int TAGS_DATA_TYPE = 13;
     private static final int NOTIFICATION_CENTER_DATA_TYPE = 16;
 
     private Context mContext;
@@ -120,6 +133,18 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
             case ORDER_DETAIL_PRODUCT_INFO_DATA_TYPE:
                 viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_order_detail_product_info, null));
                 break;
+            case EARNING_USER_DATA_TYPE:
+                viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_my_income_user, null));
+                break;
+            case EARNING_INCOMING_DATA_TYPE:
+                viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_my_income, null));
+                break;
+            case TASK_DATA_TYPE:
+                viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_task, null));
+                break;
+            case TAGS_DATA_TYPE:
+                viewHolder = new ViewHolder(View.inflate(mContext, R.layout.item_view_tags, null));
+                break;
             default:
                 viewHolder = null;
                 break;
@@ -139,16 +164,20 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                                 .load(homeRoomBean.getRoomPicUrl())
                                 .placeholder(R.drawable.wawa_default0)
                                 .error(R.drawable.wawa_default0)
+                                .bitmapTransform(new RoundedCornersTransformation(mContext, SizeUtils.dp2px(8), 0, RoundedCornersTransformation.CornerType.ALL))
                                 .into(holder.iv_item1);
+                        GradientDrawable gradientDrawable = (GradientDrawable) holder.relativeLayout.getBackground();
                         int roomState = homeRoomBean.getRoomState();
                         switch (roomState) {
                             case 0:
                                 holder.tv_item1.setVisibility(View.GONE);
                                 holder.tv_item2.setVisibility(View.VISIBLE);
+                                gradientDrawable.setColor(mContext.getResources().getColor(R.color.new_fifth_background_color));
                                 break;
                             case 1:
                                 holder.tv_item1.setVisibility(View.VISIBLE);
                                 holder.tv_item2.setVisibility(View.GONE);
+                                gradientDrawable.setColor(mContext.getResources().getColor(R.color.new_forth_background_color));
                                 break;
                             default:
                                 break;
@@ -303,8 +332,8 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     if (EmptyUtils.isNotEmpty(waitingSendBean)) {
                         Glide.with(mContext)
                                 .load(waitingSendBean.getToyPicUrl())
-                                .placeholder(R.drawable.avatar)
-                                .error(R.drawable.avatar)
+                                .placeholder(R.drawable.product_avatar)
+                                .error(R.drawable.product_avatar)
                                 .into(holder.iv_item1);
                         holder.tv_item1.setText(waitingSendBean.getToyName());
                         holder.tv_item2.setText(waitingSendBean.getCreateTime() + "抓中");
@@ -318,8 +347,8 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     if (EmptyUtils.isNotEmpty(sendOverBean)) {
                         Glide.with(mContext)
                                 .load(sendOverBean.getToyPicUrl())
-                                .placeholder(R.drawable.avatar)
-                                .error(R.drawable.avatar)
+                                .placeholder(R.drawable.product_avatar)
+                                .error(R.drawable.product_avatar)
                                 .into(holder.iv_item1);
                         holder.tv_item1.setText(sendOverBean.getOrderTitle());
                         holder.tv_item2.setText(sendOverBean.getCreateTime());
@@ -372,6 +401,92 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     }
                 }
                 break;
+            case EARNING_USER_DATA_TYPE:
+                ArrayList<EarningUserBean> earningUserBeanArrayList = (ArrayList<EarningUserBean>) mList;
+                if (EmptyUtils.isNotEmpty(earningUserBeanArrayList)) {
+                    EarningUserBean earningUserBean = earningUserBeanArrayList.get(position);
+                    if (EmptyUtils.isNotEmpty(earningUserBean)) {
+                        Glide.with(mContext)
+                                .load(earningUserBean.getUserImgUrl())
+                                .placeholder(R.drawable.income_avatar)
+                                .error(R.drawable.income_avatar)
+                                .into(holder.iv_item1);
+                    }
+                }
+                break;
+            case EARNING_INCOMING_DATA_TYPE:
+                ArrayList<EarningUserBean> earningUserBeanArrayList1 = (ArrayList<EarningUserBean>) mList;
+                if (EmptyUtils.isNotEmpty(earningUserBeanArrayList1)) {
+                    EarningUserBean earningUserBean = earningUserBeanArrayList1.get(position);
+                    if (EmptyUtils.isNotEmpty(earningUserBean)) {
+                        Glide.with(mContext)
+                                .load(earningUserBean.getUserImgUrl())
+                                .placeholder(R.drawable.income_avatar)
+                                .error(R.drawable.income_avatar)
+                                .into(holder.iv_item1);
+                        int type = earningUserBean.getType();//0: 代理,1:开通
+                        switch (type) {
+                            case 0:
+                                holder.tv_item1.setText(earningUserBean.getUserName() + "通过代理渠道赚取");
+                                holder.tv_item2.setText(String.valueOf(earningUserBean.getEarnings()));
+                                break;
+                            case 1:
+                                holder.tv_item1.setText(earningUserBean.getUserName() + "通过邀请好友赚取");
+                                holder.tv_item2.setText(String.valueOf(earningUserBean.getEarnings()));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                break;
+            case TASK_DATA_TYPE:
+                ArrayList<TaskBean> taskBeanArrayList = (ArrayList<TaskBean>) mList;
+                if (EmptyUtils.isNotEmpty(taskBeanArrayList) && taskBeanArrayList.size() > 0) {
+                    final TaskBean taskBean = taskBeanArrayList.get(position);
+                    if (EmptyUtils.isNotEmpty(taskBean)) {
+                        Glide.with(mContext)
+                                .load(taskBean.getIcon())
+                                .placeholder(R.drawable.income_avatar)
+                                .error(R.drawable.income_avatar)
+                                .into(holder.iv_item1);
+                        holder.tv_item1.setText(taskBean.getTaskName());
+                        holder.tv_item2.setText(taskBean.getTxt());
+                        int isFulfil = taskBean.getIsFulfil();
+                        switch (isFulfil) {
+                            case 0:
+                                holder.btn_item1.setVisibility(View.VISIBLE);
+                                holder.tv_item3.setVisibility(View.GONE);
+                                break;
+                            case 1:
+                                holder.btn_item1.setVisibility(View.GONE);
+                                holder.tv_item3.setVisibility(View.VISIBLE);
+                                break;
+                        }
+                    }
+                }
+                break;
+            case TAGS_DATA_TYPE:
+                ArrayList<TagsBean> tagsBeanArrayList = (ArrayList<TagsBean>) mList;
+
+                if (EmptyUtils.isNotEmpty(tagsBeanArrayList) && tagsBeanArrayList.size() > 0) {
+                    TagsBean tagsBean = tagsBeanArrayList.get(position);
+                    if (EmptyUtils.isNotEmpty(tagsBean)) {
+                        Glide.with(mContext)
+                                .load(tagsBean.getIcon())
+                                .placeholder(R.drawable.income_avatar)
+                                .error(R.drawable.income_avatar)
+                                .into(new SimpleTarget<GlideDrawable>() {
+                                    @Override
+                                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                            holder.rb_home.setBackground(resource);
+                                        }
+                                    }
+                                });
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -405,6 +520,9 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
         private TextView tv_item7;
         private TextView tv_item8;
 
+        private Button btn_item1;
+        private RadioButton rb_home;
+
         private RecyclerView recyclerView;
 
         private LinearLayout linearLayout1;
@@ -422,7 +540,7 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
             this.itemView = itemView;
             switch (dataType) {
                 case HOME_ROOM_LIST_DATA_TYPE:
-                    int size = (ScreenUtils.getScreenWidth() - 80) / 2;
+                    int size = (ScreenUtils.getScreenWidth() - SizeUtils.dp2px(90)) / 2;
 
                     iv_item1 = (ImageView) itemView.findViewById(R.id.iv_room);
                     ViewGroup.LayoutParams layoutParams = iv_item1.getLayoutParams();
@@ -434,6 +552,8 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     tv_item2 = (TextView) itemView.findViewById(R.id.tv_state_free);//空闲中
                     tv_item3 = (TextView) itemView.findViewById(R.id.tv_room_name);
                     tv_item4 = (TextView) itemView.findViewById(R.id.tv_cost_coin_num);
+
+                    relativeLayout = (RelativeLayout) itemView.findViewById(R.id.rl_item_room);
 
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -562,6 +682,48 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
                     tv_item1 = (TextView) itemView.findViewById(R.id.tv_product_name);
                     tv_item2 = (TextView) itemView.findViewById(R.id.tv_product_num);
                     break;
+                case EARNING_USER_DATA_TYPE:
+                    iv_item1 = (ImageView) itemView.findViewById(R.id.iv_user_photo);
+                    break;
+                case EARNING_INCOMING_DATA_TYPE:
+                    iv_item1 = (ImageView) itemView.findViewById(R.id.iv_user_photo);
+
+                    tv_item1 = (TextView) itemView.findViewById(R.id.tv_user_name);
+                    tv_item2 = (TextView) itemView.findViewById(R.id.tv_user_num);
+                    break;
+                case TASK_DATA_TYPE:
+                    iv_item1 = (ImageView) itemView.findViewById(R.id.iv_task);
+
+                    tv_item1 = (TextView) itemView.findViewById(R.id.tv_task_name);
+                    tv_item2 = (TextView) itemView.findViewById(R.id.tv_task_txt);
+
+                    btn_item1 = (Button) itemView.findViewById(R.id.btn_quwancheng);
+
+                    tv_item3 = (TextView) itemView.findViewById(R.id.tv_has_wancheng);
+
+                    btn_item1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mOnItemClickListener != null) {
+                                int position = getLayoutPosition();
+                                mOnItemClickListener.onItemClick(mList.get(position), position);
+                            }
+                        }
+                    });
+                    break;
+                case TAGS_DATA_TYPE:
+                    rb_home = (RadioButton) itemView.findViewById(R.id.rb_home);
+
+                    rb_home.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (onItemViewRBClickListener != null) {
+                                int position = getLayoutPosition();
+                                onItemViewRBClickListener.onItemViewRBClick(mList.get(position), position, rb_home);
+                            }
+                        }
+                    });
+                    break;
                 default:
                     break;
             }
@@ -597,5 +759,18 @@ public class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<BaseRecycle
 
     public void setOnItemViewClickListener(OnItemViewClickListener mOnItemViewClickListener) {
         this.mOnItemViewClickListener = mOnItemViewClickListener;
+    }
+
+    /**
+     * 特殊回调
+     */
+    public interface OnItemViewRBClickListener {
+        void onItemViewRBClick(Object data, int position, RadioButton radioButton);
+    }
+
+    private OnItemViewRBClickListener onItemViewRBClickListener;
+
+    public void setOnItemViewRBClickListener(OnItemViewRBClickListener onItemViewRBClickListener) {
+        this.onItemViewRBClickListener = onItemViewRBClickListener;
     }
 }

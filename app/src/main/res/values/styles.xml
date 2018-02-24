@@ -1,12 +1,23 @@
 <resources>
+    <!--启动图-->
+    <style name="Theme.SplashActivity" parent="Theme.AppCompat.NoActionBar.FullScreen">
+        <item name="android:windowBackground">@drawable/start_image</item>
+    </style>
+
+    <style name="Theme.AppCompat.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/background_color</item> <!--以前的颜色：@color/colorPrimaryDark-->
-        <item name="colorAccent">@color/main_color</item>
-        <item name="android:windowBackground">@drawable/start_pic</item><!--窗口的背景:在应用启动时和xml文件的背景-->
+        <item name="colorAccent">@color/new_background_color</item>
+        <!--<item name="android:windowBackground">@drawable/start_pic</item>&lt;!&ndash;窗口的背景:在应用启动时和xml文件的背景&ndash;&gt;-->
     </style>
 
     <style name="ACPLDialog">
@@ -72,7 +83,7 @@
 
     <style name="AlertDialog_Logout" parent="@android:style/Theme.DeviceDefault.Dialog">
         <!--该行代码就是设置AlertDialog的背景-->
-        <item name="android:background">@drawable/background_logout_view</item>
+        <item name="android:background">@drawable/background_dialog_view</item>
     </style>
 
 </resources>

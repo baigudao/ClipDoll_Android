@@ -1,190 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    android:clipToPadding="true"
+    android:background="@color/new_background_color"
     android:orientation="vertical">
 
-    <View
+    <!--FrameLayout-->
+    <FrameLayout
+        android:id="@+id/fl_content"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:background="@color/background_color"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-    <!--titlebar-->
-    <RelativeLayout
+    <!--底部：LinearLayout-->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/background_color">
+        android:layout_height="wrap_content"
+        android:background="@color/pure_white_color"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/ll_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:clickable="true"
-            android:orientation="horizontal">
+            android:id="@+id/ll_home"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_gravity="center_vertical"
-                android:scaleType="centerCrop"
-                android:src="@drawable/icon_return"/>
-
-            <TextView
+                android:id="@+id/iv_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/close"
-                android:textSize="16sp"/>
+                android:src="@drawable/tab_home_normal"/>
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_user_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/home_icon_us"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/tv_bar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/app_name"
-            android:textColor="@color/main_text_color"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_notification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:clickable="true"
-            android:padding="5dp">
+        <LinearLayout
+            android:id="@+id/ll_earning"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iv_notification"
+                android:id="@+id/iv_earning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:src="@drawable/news"/>
+                android:src="@drawable/tab_zhuanqian_normal"/>
 
-            <View
-                android:id="@+id/view_red_point"
-                android:layout_width="4dp"
-                android:layout_height="4dp"
-                android:layout_alignRight="@id/iv_notification"
-                android:background="@drawable/notification_point_red"/>
+        </LinearLayout>
 
-        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ll_recharge"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    </RelativeLayout>
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/smartRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.design.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/iv_recharge"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/background_color"
-                app:elevation="0dp">
+                android:src="@drawable/tab_chongzhi_normal"/>
 
-                <com.youth.banner.Banner
-                    android:id="@+id/banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/wawa_default1"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    app:layout_scrollFlags="scroll"/>
+        </LinearLayout>
 
-                <!--悬浮的部分-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="一起来抓娃娃"
-                        android:textColor="#333333"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
+        <LinearLayout
+            android:id="@+id/ll_order"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_exchange"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:clickable="true"
-                        android:text="换一组"
-                        android:textColor="@drawable/background_text_color_change"
-                        android:textSize="15sp"/>
+            <ImageView
+                android:id="@+id/iv_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tab_dingdan_normal"/>
 
-                    <ImageView
-                        android:id="@+id/iv_exchange"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@id/tv_exchange"
-                        android:clickable="true"
-                        android:src="@drawable/home_icon_switch"/>
+        </LinearLayout>
 
-                </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ll_center"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            </android.support.design.widget.AppBarLayout>
+            <ImageView
+                android:id="@+id/iv_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tab_wode_normal"/>
 
-            <!--主内容-->
-            <android.support.v4.widget.NestedScrollView
-                android:id="@+id/nestedScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
-
-            </android.support.v4.widget.NestedScrollView>
-
-        </android.support.design.widget.CoordinatorLayout>
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </LinearLayout>
 
 </LinearLayout>

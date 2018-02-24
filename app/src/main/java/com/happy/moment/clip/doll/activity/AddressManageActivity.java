@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -42,7 +43,6 @@ import okhttp3.Call;
 
 public class AddressManageActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button btn_new_add_address;
     private RecyclerView recyclerView;
 
     private LinearLayout ll_no_data;
@@ -54,6 +54,8 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BarUtils.setStatusBarColor(AddressManageActivity.this, getResources().getColor(R.color.new_background_color));
+        BarUtils.hideNavBar(AddressManageActivity.this);
         setContentView(R.layout.activity_address_manage);
 
         initView();
@@ -71,7 +73,7 @@ public class AddressManageActivity extends BaseActivity implements View.OnClickL
         ((TextView) findViewById(R.id.tv_bar_title)).setText("地址管理");
         findViewById(R.id.iv_share).setVisibility(View.GONE);
 
-        btn_new_add_address = (Button) findViewById(R.id.btn_new_add_address);
+        Button btn_new_add_address = (Button) findViewById(R.id.btn_new_add_address);
         btn_new_add_address.setOnClickListener(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);

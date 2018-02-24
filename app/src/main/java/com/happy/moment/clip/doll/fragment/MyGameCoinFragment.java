@@ -22,6 +22,7 @@ import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.bean.PriceParameterBean;
 import com.happy.moment.clip.doll.bean.WeChatPayParamsBean;
 import com.happy.moment.clip.doll.util.Constants;
+import com.happy.moment.clip.doll.util.DataManager;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -60,12 +61,10 @@ public class MyGameCoinFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        view.findViewById(R.id.ll_close).setOnClickListener(this);
+        view.findViewById(R.id.ll_close).setVisibility(View.GONE);
         ((TextView) view.findViewById(R.id.tv_bar_title)).setText("我的娃娃币");
         view.findViewById(R.id.iv_share).setVisibility(View.GONE);
-        TextView tv_cost_record = (TextView) view.findViewById(R.id.tv_cost_record);
-        tv_cost_record.setVisibility(View.VISIBLE);
-        tv_cost_record.setOnClickListener(this);
+        view.findViewById(R.id.btn_cost_record).setOnClickListener(this);
 
         tv_remain_coin = (TextView) view.findViewById(R.id.tv_remain_coin);
 
@@ -89,10 +88,7 @@ public class MyGameCoinFragment extends BaseFragment {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_close:
-                goBack();
-                break;
-            case R.id.tv_cost_record:
+            case R.id.btn_cost_record:
                 gotoPager(SpendCoinRecordFragment.class, null);
                 break;
             case R.id.ll_coin_recharge:
@@ -158,6 +154,45 @@ public class MyGameCoinFragment extends BaseFragment {
                     request.nonceStr = weChatPayParamsBean.getNoncestr();
                     request.timeStamp = String.valueOf(weChatPayParamsBean.getTimestamp());
                     request.sign = weChatPayParamsBean.getSign();
+
+                    //友盟充值统计
+                    int pay_money = 0;
+                    int get_wawa_coin = 0;
+                    switch (priceId) {
+                        case 1:
+                            get_wawa_coin = 100;
+                            pay_money = 10;
+                            break;
+                        case 2:
+                            get_wawa_coin = 330;
+                            pay_money = 30;
+                            break;
+                        case 3:
+                            get_wawa_coin = 565;
+                            pay_money = 50;
+                            break;
+                        case 4:
+                            get_wawa_coin = 1500;
+                            pay_money = 100;
+                            break;
+                        case 5:
+                            get_wawa_coin = 2400;
+                            pay_money = 200;
+                            break;
+                        case 6:
+                            get_wawa_coin = 6000;
+                            pay_money = 500;
+                            break;
+                        case 13:
+                            get_wawa_coin = 1010;
+                            pay_money = 10;
+                            break;
+                        default:
+                            break;
+                    }
+                    DataManager.getInstance().setData1(pay_money);
+                    DataManager.getInstance().setData2(get_wawa_coin);
+
                     //发起微信支付
                     api.sendReq(request);
                 }
@@ -217,7 +252,7 @@ public class MyGameCoinFragment extends BaseFragment {
                 if (priceParameterBeanArrayList.size() != 0) {
                     MyGameCoinRecyclerViewAdapter myGameCoinRecyclerViewAdapter = new MyGameCoinRecyclerViewAdapter();
                     recyclerView.setAdapter(myGameCoinRecyclerViewAdapter);
-                    recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false));
+                    recyclerView.setLayoutManager(new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false));
                 }
             }
         }
@@ -234,11 +269,17 @@ public class MyGameCoinFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             //默认选中第一个价目
-            changeBackgroundColor(holder.rl_id, R.color.pure_white_color);
+            changeBackgroundColor(holder.rl_content, R.color.pure_white_color);
+            holder.tv_chong.setTextColor(getResources().getColor(R.color.new_background_color));
+            holder.tv_recharge_coin.setTextColor(getResources().getColor(R.color.new_background_color));
+            holder.tv_recharge_give_coin_num.setTextColor(getResources().getColor(R.color.new_background_color));
             if (position == 0) {
                 PriceParameterBean priceParameterBean = priceParameterBeanArrayList.get(0);
                 priceId = priceParameterBean.getPriceId();
-                changeBackgroundColor(holder.rl_id, R.color.main_color);
+                changeBackgroundColor(holder.rl_content, R.color.new_ninth_background_color);
+                holder.tv_chong.setTextColor(getResources().getColor(R.color.pure_white_color));
+                holder.tv_recharge_coin.setTextColor(getResources().getColor(R.color.pure_white_color));
+                holder.tv_recharge_give_coin_num.setTextColor(getResources().getColor(R.color.pure_white_color));
                 tv_recharge_num.setText(priceParameterBean.getPrice() + "元");
             }
 
@@ -246,17 +287,34 @@ public class MyGameCoinFragment extends BaseFragment {
             if (EmptyUtils.isNotEmpty(priceParameterBean)) {
                 final int size = priceParameterBeanArrayList.size();
                 //价目表中的内容
-                holder.tv_content.setText(priceParameterBean.getRewardExplain());
-                holder.tv_id.setText(String.valueOf(priceParameterBean.getLqbNum()));
+                holder.tv_recharge_coin.setText(String.valueOf(priceParameterBean.getLqbNum()) + "币");
+                holder.tv_recharge_give_coin_num.setText("送" + String.valueOf(priceParameterBean.getRewardNum()) + "币");
+                holder.tv_recharge_money_num.setText("¥" + priceParameterBean.getPrice() + "元");
+
+                String tagText = priceParameterBean.getTagText();
+                if (EmptyUtils.isNotEmpty(tagText)) {
+                    holder.tv_first_recharge_give_coin_num.setVisibility(View.VISIBLE);
+                    holder.tv_first_recharge_give_coin_num.setText(priceParameterBean.getTagText());
+                }
 
                 holder.rl_id.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         for (int i = 0; i < size; i++) {
-                            RelativeLayout rl_id = (RelativeLayout) recyclerView.getChildAt(i).findViewById(R.id.rl_id);
-                            changeBackgroundColor(rl_id, R.color.pure_white_color);
+                            View view = recyclerView.getChildAt(i);
+                            RelativeLayout rl_content = (RelativeLayout) view.findViewById(R.id.rl_content);
+                            TextView tv_chong = (TextView) view.findViewById(R.id.tv_chong);
+                            TextView tv_recharge_coin = (TextView) view.findViewById(R.id.tv_recharge_coin);
+                            TextView tv_recharge_give_coin_num = (TextView) view.findViewById(R.id.tv_recharge_give_coin_num);
+                            changeBackgroundColor(rl_content, R.color.pure_white_color);
+                            tv_chong.setTextColor(getResources().getColor(R.color.new_background_color));
+                            tv_recharge_coin.setTextColor(getResources().getColor(R.color.new_background_color));
+                            tv_recharge_give_coin_num.setTextColor(getResources().getColor(R.color.new_background_color));
                         }
-                        changeBackgroundColor(holder.rl_id, R.color.main_color);
+                        changeBackgroundColor(holder.rl_content, R.color.new_ninth_background_color);
+                        holder.tv_chong.setTextColor(getResources().getColor(R.color.pure_white_color));
+                        holder.tv_recharge_coin.setTextColor(getResources().getColor(R.color.pure_white_color));
+                        holder.tv_recharge_give_coin_num.setTextColor(getResources().getColor(R.color.pure_white_color));
                         //设置点击的priceId
                         priceId = priceParameterBean.getPriceId();
                         tv_recharge_num.setText(priceParameterBean.getPrice() + "元");
@@ -273,20 +331,31 @@ public class MyGameCoinFragment extends BaseFragment {
         class ViewHolder extends RecyclerView.ViewHolder {
 
             private RelativeLayout rl_id;
-            private TextView tv_id;
-            private TextView tv_content;
+            private RelativeLayout rl_content;
+            private TextView tv_chong;
+            private TextView tv_recharge_coin;
+            private TextView tv_recharge_give_coin_num;
+            private TextView tv_recharge_money_num;
+            private TextView tv_first_recharge_give_coin_num;
 
             ViewHolder(View itemView) {
                 super(itemView);
                 rl_id = (RelativeLayout) itemView.findViewById(R.id.rl_id);
                 int width_size = ScreenUtils.getScreenWidth();
-                int size = (width_size - SizeUtils.dp2px(60.0F)) / 3;
+                int size = (width_size - SizeUtils.dp2px(80.0F)) / 2;
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) rl_id.getLayoutParams();
                 layoutParams.width = size;
                 rl_id.setLayoutParams(layoutParams);
 
-                tv_id = (TextView) itemView.findViewById(R.id.tv_id);
-                tv_content = (TextView) itemView.findViewById(R.id.tv_content);
+                rl_content = (RelativeLayout) itemView.findViewById(R.id.rl_content);
+                tv_chong = (TextView) itemView.findViewById(R.id.tv_chong);
+                tv_recharge_coin = (TextView) itemView.findViewById(R.id.tv_recharge_coin);
+                tv_recharge_give_coin_num = (TextView) itemView.findViewById(R.id.tv_recharge_give_coin_num);
+
+                tv_recharge_money_num = (TextView) itemView.findViewById(R.id.tv_recharge_money_num);
+
+                tv_first_recharge_give_coin_num = (TextView) itemView.findViewById(R.id.tv_first_recharge_give_coin_num);
+                tv_first_recharge_give_coin_num.setVisibility(View.GONE);
             }
         }
     }

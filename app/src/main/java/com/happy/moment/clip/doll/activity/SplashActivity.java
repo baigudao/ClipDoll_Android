@@ -36,7 +36,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BarUtils.setStatusBarAlpha(SplashActivity.this);
+        BarUtils.setStatusBarColor(SplashActivity.this, getResources().getColor(R.color.main_color));
         BarUtils.hideNavBar(SplashActivity.this);
         setContentView(R.layout.activity_splash);
 

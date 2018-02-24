@@ -38,8 +38,6 @@ public class FeedBackFragment extends BaseFragment implements View.OnFocusChange
     private static final int MAX_NUM = 500;
     private ClipboardManager cm;
 
-    private RelativeLayout rl_input_word;
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_feed_back;
@@ -56,13 +54,14 @@ public class FeedBackFragment extends BaseFragment implements View.OnFocusChange
         et_put_feed_back.setOnFocusChangeListener(this);
         tv_word_num = (TextView) view.findViewById(R.id.tv_word_num);
 
-        rl_input_word = (RelativeLayout) view.findViewById(R.id.rl_input_word);
+        RelativeLayout rl_input_word = (RelativeLayout) view.findViewById(R.id.rl_input_word);
         rl_input_word.setOnClickListener(this);
 
         btn_commit = (Button) view.findViewById(R.id.btn_commit);
         btn_commit.setOnClickListener(this);
-        view.findViewById(R.id.btn_copy1).setOnClickListener(this);
-        view.findViewById(R.id.btn_copy2).setOnClickListener(this);
+        btn_commit.setEnabled(false);
+        view.findViewById(R.id.rl_copy1).setOnClickListener(this);
+        view.findViewById(R.id.rl_copy2).setOnClickListener(this);
 
         cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
 
@@ -78,14 +77,14 @@ public class FeedBackFragment extends BaseFragment implements View.OnFocusChange
             case R.id.btn_commit:
                 commitContent();
                 break;
-            case R.id.btn_copy1:
+            case R.id.rl_copy1:
                 // 从API11开始android推荐使用android.content.ClipboardManager
                 // 为了兼容低版本我们这里使用旧版的android.text.ClipboardManager，虽然提示deprecated，但不影响使用。
                 // 将文本内容放到系统剪贴板里。
                 cm.setText("woaizhuawa");
                 ToastUtils.showShort("复制到剪贴板成功");
                 break;
-            case R.id.btn_copy2:
+            case R.id.rl_copy2:
                 // 从API11开始android推荐使用android.content.ClipboardManager
                 // 为了兼容低版本我们这里使用旧版的android.text.ClipboardManager，虽然提示deprecated，但不影响使用。
                 // 将文本内容放到系统剪贴板里。

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
@@ -54,6 +55,8 @@ public class NewAddAddressActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BarUtils.setStatusBarColor(NewAddAddressActivity.this, getResources().getColor(R.color.new_background_color));
+        BarUtils.hideNavBar(NewAddAddressActivity.this);
         setContentView(R.layout.activity_new_add_address);
 
         initView();

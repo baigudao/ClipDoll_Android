@@ -1,137 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/background_color">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/new_background_color"
+              android:orientation="vertical">
 
     <include
         android:id="@+id/top_view"
         layout="@layout/title_bar"/>
 
-    <RelativeLayout
-        android:id="@+id/rl_address"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_below="@id/top_view"
-        android:background="#F1F0F4"
-        android:clickable="true">
-
-        <ImageView
-            android:id="@+id/iv_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/order_icon_where"/>
-
-        <TextView
-            android:id="@+id/tv_address_place"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="40dp"
-            android:layout_toRightOf="@id/iv_location"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="请选择收货地址"/>
-
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/icon_go"/>
-
-    </RelativeLayout>
-
     <LinearLayout
-        android:id="@+id/ll_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_address"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="娃娃可兑换成娃娃币，不满"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:id="@+id/tv_apply_send_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2"
-            android:textColor="@color/seventh_text_color"
-            android:textSize="12sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="件娃娃发货需要额外支付快递费"
-            android:textSize="12sp"/>
-
-    </LinearLayout>
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/smartRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/ll_tv">
+        android:layout_height="0dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_weight="1"
+        android:background="@drawable/background_new_order_white"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
 
         <RelativeLayout
+            android:id="@+id/rl_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border_address_background_view"
+            android:clickable="true">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <ImageView
+                android:id="@+id/iv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/order_icon_where_s"/>
+
+            <TextView
+                android:id="@+id/tv_address_place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="40dp"
+                android:layout_toRightOf="@id/iv_location"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="请选择收货地址"
+                android:textColor="@color/new_third_text_color"
+                android:textSize="13sp"/>
 
-            <LinearLayout
-                android:id="@+id/ll_no_data"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/order_icon_image"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="还没有任何娃娃，快去抓取娃娃吧！"/>
-
-                <Button
-                    android:id="@+id/btn_go_clip_doll"
-                    android:layout_width="100dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/background_go_clip_doll"
-                    android:text="前往抓取"
-                    android:textColor="@color/main_text_color"/>
-
-            </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/order_icon_jiantou"/>
 
         </RelativeLayout>
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        <LinearLayout
+            android:id="@+id/ll_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="娃娃可兑换成娃娃币，不满"
+                android:textColor="@color/new_third_text_color"
+                android:textSize="11sp"/>
+
+            <TextView
+                android:id="@+id/tv_apply_send_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textColor="@color/seventh_text_color"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="件娃娃发货需要额外支付快递费"
+                android:textColor="@color/new_third_text_color"
+                android:textSize="11sp"/>
+
+        </LinearLayout>
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/smartRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_no_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/order_icon_image"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="还没有任何娃娃，快去抓取娃娃吧！"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_qianwangzhuaqu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/background_qianwangzhuaqu"
+                        android:clickable="true"
+                        android:orientation="horizontal"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_bottom_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true">
+        android:layout_height="60dp"
+        android:background="@color/new_eighth_background_color">
 
         <View
             android:layout_width="match_parent"
@@ -154,6 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="快递费："
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -170,6 +191,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="元"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
@@ -185,6 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="您可选择兑换："
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="12sp"/>
 
                 <TextView
@@ -199,6 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="币"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="12sp"/>
 
             </LinearLayout>
@@ -207,27 +231,24 @@
 
         <Button
             android:id="@+id/btn_make_sure_send"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/btn_background_exchange_coin"
-            android:enabled="false"
-            android:text="确认发货"
-            android:textColor="@drawable/text_color_enable"
-            android:textSize="15sp"/>
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/btn_background_make_sure_exchange_coin"
+            android:enabled="false"/>
 
         <Button
             android:id="@+id/btn_exchange_coin"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
             android:layout_toLeftOf="@id/btn_make_sure_send"
-            android:background="@drawable/btn_background_exchange_coin1"
-            android:enabled="false"
-            android:text="兑换娃娃币"
-            android:textColor="@drawable/text_color_enable1"
-            android:textSize="15sp"/>
+            android:background="@drawable/btn_background_make_sure_exchange_coin1"
+            android:enabled="false"/>
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

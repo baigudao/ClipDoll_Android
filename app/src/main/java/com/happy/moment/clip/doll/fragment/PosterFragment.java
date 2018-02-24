@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.EmptyUtils;
@@ -18,7 +18,6 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.happy.moment.clip.doll.R;
-import com.happy.moment.clip.doll.bean.MyIncomeBean;
 import com.happy.moment.clip.doll.util.CommonUtil;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
@@ -39,7 +38,7 @@ public class PosterFragment extends BaseFragment {
 
     private IWXAPI api;
     private ImageView iv_QR_code;
-    private LinearLayout ll_poster_share;
+    private RelativeLayout rl_poster_share;
     private Bitmap bitmap_;
 
     @Override
@@ -53,7 +52,7 @@ public class PosterFragment extends BaseFragment {
         ((TextView) view.findViewById(R.id.tv_bar_title)).setText("推广海报");
         view.findViewById(R.id.iv_share).setOnClickListener(this);
 
-        ll_poster_share = (LinearLayout) view.findViewById(R.id.ll_poster_share);
+        rl_poster_share = (RelativeLayout) view.findViewById(R.id.rl_poster_share);
         iv_QR_code = (ImageView) view.findViewById(R.id.iv_QR_code);
 
         regToWx();
@@ -76,24 +75,21 @@ public class PosterFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
-        MyIncomeBean myIncomeBean = (MyIncomeBean) DataManager.getInstance().getData1();
+        String promoteUrl = (String) DataManager.getInstance().getData1();
         DataManager.getInstance().setData1(null);
-        if (EmptyUtils.isNotEmpty(myIncomeBean)) {
-            String promoteUrl = myIncomeBean.getPromoteUrl();
-            if (EmptyUtils.isNotEmpty(promoteUrl)) {
-                //生成二维码
-                Bitmap bitmap = encodeAsBitmap(promoteUrl);
-                iv_QR_code.setImageBitmap(bitmap);
-                //分享出去的view
-                ll_poster_share.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                    @Override
-                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                        LogUtils.e(ll_poster_share.getWidth() + "和" + ll_poster_share.getHeight());
-                        ll_poster_share.removeOnLayoutChangeListener(this);
-                        bitmap_ = ImageUtils.view2Bitmap(ll_poster_share);
-                    }
-                });
-            }
+        if (EmptyUtils.isNotEmpty(promoteUrl)) {
+            //生成二维码
+            Bitmap bitmap = encodeAsBitmap(promoteUrl);
+            iv_QR_code.setImageBitmap(bitmap);
+            //分享出去的view
+            rl_poster_share.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    LogUtils.e(rl_poster_share.getWidth() + "和" + rl_poster_share.getHeight());
+                    rl_poster_share.removeOnLayoutChangeListener(this);
+                    bitmap_ = ImageUtils.view2Bitmap(rl_poster_share);
+                }
+            });
         }
     }
 

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/new_seventh_background_color"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_bar"/>
+
+    <!--主体视图-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:id="@+id/rl_poster_share"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_poster"
+            android:clickable="true">
+
+            <com.happy.moment.clip.doll.view.CircleImageView
+                android:id="@+id/iv_user_photo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/income_avatar"/>
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/iv_user_photo"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_user_photo"
+                android:text="Devin"
+                android:textColor="@color/pure_white_color"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/iv_user_photo"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_user_photo"
+                android:text="我已经成为代理玩家，正在享受收益分成"
+                android:textColor="@color/pure_white_color"
+                android:textSize="13sp"/>
+
+            <ImageView
+                android:id="@+id/iv_QR_code"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="25dp"
+                android:layout_marginRight="20dp"
+                android:scaleType="fitXY"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_gen_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:src="@drawable/poster_btn_image"/>
+
+    </RelativeLayout>
+
+    <!--下部视图-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/new_seventh_background_color">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="长按上图保存邀请卡发送给好友"
+            android:textColor="@color/half_pure_white_color"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

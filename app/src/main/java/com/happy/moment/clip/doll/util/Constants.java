@@ -1,7 +1,5 @@
 package com.happy.moment.clip.doll.util;
 
-import android.os.Environment;
-
 public class Constants {
 
     //一般常量
@@ -19,10 +17,8 @@ public class Constants {
     public static final String ACCOUNTTYPE = "accountType";
     public static final String PWD = "pwd";
     public static final String VERIFYCODE = "verifyCode";
-    public static final String VERIFLYCODE = "veriflyCode";
     public static final String WECHATCODE = "wechatCode";
     public static final String SDKTYPE = "sdkType";
-    public static final String REALNAME = "realName";
     public static final String SESSION = "session";
     public static final String HEADIMG = "headImg";
     public static final String INVITECODE = "inviteCode";
@@ -39,30 +35,22 @@ public class Constants {
     public static final String GAMEID = "gameId";
     public static final String PRICEID = "priceId";
     public static final String ADDRESSID = "addressId";
-    public static final String OPER = "oper";
-    public static final String LEFT = "left";
-    public static final String RIGHT = "right";
-    public static final String DOWN = "down";
-    public static final String UP = "up";
-    public static final String CATCH = "catch";
     public static final String PAGENUM = "pageNum";
     public static final String PAGESIZE = "pageSize";
     public static final String RESULT = "result";
     public static final String TYPE = "type";
     public static final String WSURL = "wsUrl";
-    public static final String PLAYID = "playId";
     public static final String MESSAGEID = "messageId";
-    public static final String NOTIFYNUM = "notifyNum";
     public static final String FIRSTLOGIN = "firstLogin";
     public static final String FROMINVITECODE = "fromInviteCode";
     public static final String IS_PLAY_BACKGROUND_SOUND = "is_play_background_sound";
     public static final String IS_PLAY_BACKGROUND_MUSIC = "is_play_background_music";
     public static final int PAGE_SIZE = 10;
-    public static final String ROLE_MASTER = "LiveMaster";
     public static final String ROLE_GUEST = "Guest";
+    public static final String ROLE = "role";
+    public static final String TAGS = "tags";
     public static final String ROLE_LIVEGUEST = "LiveGuest";
     public static final String JOIN_ROOM_FAIL = "加入房间失败";
-    public static final String CACHE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 
 
     //网络常量
@@ -132,6 +120,16 @@ public class Constants {
     private static final String myIncomeUrl = BASE_URL + "user/agenter/info/v1";//分销商-我的收益
 
     private static final String allCommonParam = BASE_URL + "common/param/getCommonParamAll/v1";//获取所有公共配置
+
+    private static final String earningsListUrl = BASE_URL + "user/earnings/getEarningsList";//获取分销页面数据
+
+    private static final String userSignInfoUrl = BASE_URL + "sign/notes/getsignInNotes";//获取当前用户签到信息
+    private static final String userSignUrl = BASE_URL + "sign/notes/signInNotes";//用户签到
+    private static final String userSignProductListUrl = BASE_URL + "sign/notes/getSignInDeploy";//获取签到奖品列表
+
+    private static final String userTaskInfoUrl = BASE_URL + "home/getUserTaskInfo/v1";//每日任务详情
+
+    private static final String liveTagUrl = BASE_URL + "live/room/getLiveTags/v1";//直播间标签列表
 
 
     public static String getHomeRoomListUrl() {
@@ -332,5 +330,29 @@ public class Constants {
 
     public static String getWeChatUnifyPayUrl() {
         return weChatUnifyPayUrl;
+    }
+
+    public static String getEarningsListUrl() {
+        return earningsListUrl;
+    }
+
+    public static String getUserSignInfoUrl() {
+        return userSignInfoUrl;
+    }
+
+    public static String getUserSignUrl() {
+        return userSignUrl;
+    }
+
+    public static String getUserSignProductListUrl() {
+        return userSignProductListUrl;
+    }
+
+    public static String getUserTaskInfoUrl() {
+        return userTaskInfoUrl;
+    }
+
+    public static String getLiveTagUrl() {
+        return liveTagUrl;
     }
 }

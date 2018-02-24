@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.activity.AddressManageActivity;
+import com.happy.moment.clip.doll.activity.MainActivity;
 import com.happy.moment.clip.doll.bean.AddressBean;
 import com.happy.moment.clip.doll.bean.WaitingSendBean;
 import com.happy.moment.clip.doll.bean.WeChatPayParamsBean;
@@ -92,6 +93,7 @@ public class ApplyForSendFragment extends BaseFragment implements OnRefreshListe
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         ll_no_data = (LinearLayout) view.findViewById(R.id.ll_no_data);
+        view.findViewById(R.id.ll_qianwangzhuaqu).setOnClickListener(this);
 
         ((TextView) view.findViewById(R.id.tv_apply_send_text)).setText(SPUtils.getInstance().getString("HOW_MACH_FREE"));
 
@@ -135,6 +137,9 @@ public class ApplyForSendFragment extends BaseFragment implements OnRefreshListe
                 break;
             case R.id.btn_make_sure_send:
                 applySend();
+                break;
+            case R.id.ll_qianwangzhuaqu:
+                gotoPager(MainActivity.class, null);
                 break;
             default:
                 break;

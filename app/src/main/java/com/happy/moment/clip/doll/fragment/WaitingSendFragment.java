@@ -3,8 +3,8 @@ package com.happy.moment.clip.doll.fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -19,7 +19,6 @@ import com.happy.moment.clip.doll.bean.WaitingSendBean;
 import com.happy.moment.clip.doll.util.Constants;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -43,7 +42,7 @@ public class WaitingSendFragment extends BaseFragment implements OnRefreshListen
     private RecyclerView recyclerView;
     private LinearLayout ll_no_data;
 
-    private LinearLayout ll_bottom_view;
+    private RelativeLayout rl_bottom_view;
 
     private SmartRefreshLayout smartRefreshLayout;
     private int mPage;
@@ -51,16 +50,6 @@ public class WaitingSendFragment extends BaseFragment implements OnRefreshListen
 
     private static final int WAITING_SEND_DATA_TYPE = 5;
     private BaseRecyclerViewAdapter baseRecyclerViewAdapter;
-
-    static {
-        ClassicsFooter.REFRESH_FOOTER_PULLUP = "";
-        ClassicsFooter.REFRESH_FOOTER_RELEASE = "";
-        ClassicsFooter.REFRESH_FOOTER_REFRESHING = "";
-        ClassicsFooter.REFRESH_FOOTER_LOADING = "";
-        ClassicsFooter.REFRESH_FOOTER_FINISH = "";
-        ClassicsFooter.REFRESH_FOOTER_FAILED = "";
-        ClassicsFooter.REFRESH_FOOTER_ALLLOADED = "";
-    }
 
     @Override
     protected int getLayoutId() {
@@ -72,18 +61,16 @@ public class WaitingSendFragment extends BaseFragment implements OnRefreshListen
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         ll_no_data = (LinearLayout) view.findViewById(R.id.ll_no_data);
 
-        ll_bottom_view = (LinearLayout) view.findViewById(R.id.ll_bottom_view);
+        rl_bottom_view = (RelativeLayout) view.findViewById(R.id.rl_bottom_view);
 
-        Button btn_exchange = (Button) view.findViewById(R.id.btn_exchange);
-        btn_exchange.setOnClickListener(this);
-        Button btn_application = (Button) view.findViewById(R.id.btn_application);
-        btn_application.setOnClickListener(this);
+        view.findViewById(R.id.ll_duihuanwawabi).setOnClickListener(this);
+        view.findViewById(R.id.ll_shenqingfahuo).setOnClickListener(this);
 
         smartRefreshLayout = (SmartRefreshLayout) view.findViewById(R.id.smartRefreshLayout);
         smartRefreshLayout.setOnRefreshListener(this);
         smartRefreshLayout.setOnLoadmoreListener(this);
         refresh_or_load = 0;
-        view.findViewById(R.id.btn_go_clip_doll).setOnClickListener(this);
+        view.findViewById(R.id.ll_qianwangzhuaqu).setOnClickListener(this);
 
         mPage = 1;
     }
@@ -91,13 +78,13 @@ public class WaitingSendFragment extends BaseFragment implements OnRefreshListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_go_clip_doll:
-                gotoPager(MainActivity.class, null);
+            case R.id.ll_qianwangzhuaqu:
+                ((MainActivity)mContext).goToMyHomeFragment();
                 break;
-            case R.id.btn_exchange:
+            case R.id.ll_duihuanwawabi:
                 gotoPager(ExchangeCoinFragment.class, null);//兑换娃娃币
                 break;
-            case R.id.btn_application:
+            case R.id.ll_shenqingfahuo:
                 gotoPager(ApplyForSendFragment.class, null);//申请发货
                 break;
             default:
@@ -181,7 +168,7 @@ public class WaitingSendFragment extends BaseFragment implements OnRefreshListen
             if (jsonArray.length() > 0) {
                 ll_no_data.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                ll_bottom_view.setVisibility(View.VISIBLE);
+                rl_bottom_view.setVisibility(View.VISIBLE);
                 Gson gson = new Gson();
                 ArrayList<WaitingSendBean> waitingSendBeanArrayList = gson.fromJson(jsonArray.toString(), new TypeToken<ArrayList<WaitingSendBean>>() {
                 }.getType());
@@ -201,7 +188,7 @@ public class WaitingSendFragment extends BaseFragment implements OnRefreshListen
                 //没有数据
                 ll_no_data.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
-                ll_bottom_view.setVisibility(View.GONE);
+                rl_bottom_view.setVisibility(View.GONE);
             }
         }
     }

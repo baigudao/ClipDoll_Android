@@ -132,7 +132,6 @@ public class ClipDollResultPopupWindow extends PopupWindow implements View.OnCli
         return (RelativeLayout) getContentView().findViewById(R.id.pop_layout);
     }
 
-
     @Override
     public void dismiss() {
         ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(getViewG(), "alpha", 0f).setDuration(250);

@@ -6,7 +6,7 @@
 
     <color name="half_pure_white_color">#cfcfcf</color>
 
-    <color name="main_color">#fff100</color>
+    <color name="main_color">#F7BDCC</color>
     <color name="main_color_half_transparent">#55dda753</color>
     <color name="pure_white_color">#ffffff</color>
     <color name="background_color">#f9f9f9</color>
@@ -20,6 +20,22 @@
     <color name="divider_color">#e6e6e6</color>
     <color name="warning_color">#ff5d5d</color>
 
+    <!--新背景颜色-->
+    <color name="new_background_color">#FFA9D0</color>
+    <color name="new_second_background_color">#FFE7F4</color>
+    <color name="new_third_background_color">#FFDFE7</color>
+    <color name="new_forth_background_color">#E193FB</color>
+    <color name="new_fifth_background_color">#FFD12F</color>
+    <color name="new_sixth_background_color">#FFC7DE</color>
+    <color name="new_seventh_background_color">#734B5D</color>
+    <color name="new_eighth_background_color">#FCECF3</color>
+    <color name="new_ninth_background_color">#FF7BB3</color>
+    <color name="new_tenth_background_color">#FFB400</color>
+    <color name="new_eleventh_background_color">#E7D5D5</color>
+    <color name="new_twelfth_background_color">#F5CFE3</color>
+    <color name="new_thirteenth_background_color">#F2B7D6</color>
+    <color name="new_fourteenth_background_color">#FFB133</color>
+
     <color name="main_text_color">#333333</color>
     <color name="second_text_color">#929292</color>
     <color name="third_text_color">#bbbbbb</color>
@@ -28,6 +44,16 @@
     <color name="sixth_text_color">#353637</color>
     <color name="seventh_text_color">#ff562b</color>
     <color name="eighth_text_color">#3EBA20</color>
+
+    <!--新字体背景颜色-->
+    <color name="new_main_text_color">#FF7D79</color>
+    <color name="new_second_text_color">#FFE7F4</color>
+    <color name="new_third_text_color">#583724</color>
+    <color name="new_fourth_text_color">#F7BDCC</color>
+    <color name="new_fifth_text_color">#3970FB</color>
+    <color name="new_sixth_text_color">#4BE327</color>
+    <color name="new_seventh_text_color">#FF4DA9</color>
+    <color name="new_eighth_text_color">#FF562B</color>
 
     <color name="btn_press_yes_color">#cd9b1d</color>
     <color name="btn_press_no_color">#e3af5e</color>

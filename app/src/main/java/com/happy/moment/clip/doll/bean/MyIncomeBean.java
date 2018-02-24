@@ -1,5 +1,7 @@
 package com.happy.moment.clip.doll.bean;
 
+import java.util.List;
+
 /**
  * Created by Devin on 2017/12/28 15:03
  * E-mail:971060378@qq.com
@@ -9,8 +11,10 @@ public class MyIncomeBean extends BaseBean {
 
     /**
      * awardRate : 0.3
-     * balance : 0.00
+     * balance : 0
      * channelId : 0
+     * earningsCountVo : {"earningsNum":30.45,"friendNum":3,"userEarningsVos":[{"earnings":10.15,"type":1,"userImgUrl":"http://wawa-1255388722.cosgz.myqcloud.com/img/1516710005201luzle.jpg","userName":"luzle"},{"earnings":10.15,"type":1,"userImgUrl":"http://wawa-1255388722.cosgz.myqcloud.com/img/1516710005302LVDX%E6%99%A8%E5%AE%87.jpg","userName":"LVDX晨宇"},{"earnings":10.15,"type":1,"userImgUrl":"http://wawa-1255388722.cosgz.myqcloud.com/img/1516710005424lxb%E5%B0%8F%E5%BC%BA.jpg","userName":"lxb小强"}]}
+     * earningsTotal : 30.45
      * monthEarnings : 0.00
      * monthUserCount : 0
      * promoteUrl : http://wwh5.tuuban.com/?channelId=0&agenterId=1000039
@@ -27,8 +31,10 @@ public class MyIncomeBean extends BaseBean {
      */
 
     private double awardRate;
-    private String balance;
+    private double balance;
     private int channelId;
+    private EarningsCountVoBean earningsCountVo;
+    private double earningsTotal;
     private String monthEarnings;
     private int monthUserCount;
     private String promoteUrl;
@@ -51,11 +57,11 @@ public class MyIncomeBean extends BaseBean {
         this.awardRate = awardRate;
     }
 
-    public String getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(int balance) {
         this.balance = balance;
     }
 
@@ -65,6 +71,22 @@ public class MyIncomeBean extends BaseBean {
 
     public void setChannelId(int channelId) {
         this.channelId = channelId;
+    }
+
+    public EarningsCountVoBean getEarningsCountVo() {
+        return earningsCountVo;
+    }
+
+    public void setEarningsCountVo(EarningsCountVoBean earningsCountVo) {
+        this.earningsCountVo = earningsCountVo;
+    }
+
+    public double getEarningsTotal() {
+        return earningsTotal;
+    }
+
+    public void setEarningsTotal(double earningsTotal) {
+        this.earningsTotal = earningsTotal;
     }
 
     public String getMonthEarnings() {
@@ -169,5 +191,41 @@ public class MyIncomeBean extends BaseBean {
 
     public void setYesterdayUserCount(int yesterdayUserCount) {
         this.yesterdayUserCount = yesterdayUserCount;
+    }
+
+    public static class EarningsCountVoBean {
+        /**
+         * earningsNum : 30.45
+         * friendNum : 3
+         * userEarningsVos : [{"earnings":10.15,"type":1,"userImgUrl":"http://wawa-1255388722.cosgz.myqcloud.com/img/1516710005201luzle.jpg","userName":"luzle"},{"earnings":10.15,"type":1,"userImgUrl":"http://wawa-1255388722.cosgz.myqcloud.com/img/1516710005302LVDX%E6%99%A8%E5%AE%87.jpg","userName":"LVDX晨宇"},{"earnings":10.15,"type":1,"userImgUrl":"http://wawa-1255388722.cosgz.myqcloud.com/img/1516710005424lxb%E5%B0%8F%E5%BC%BA.jpg","userName":"lxb小强"}]
+         */
+
+        private double earningsNum;
+        private int friendNum;
+        private List<EarningUserBean> userEarningsVos;
+
+        public double getEarningsNum() {
+            return earningsNum;
+        }
+
+        public void setEarningsNum(double earningsNum) {
+            this.earningsNum = earningsNum;
+        }
+
+        public int getFriendNum() {
+            return friendNum;
+        }
+
+        public void setFriendNum(int friendNum) {
+            this.friendNum = friendNum;
+        }
+
+        public List<EarningUserBean> getUserEarningsVos() {
+            return userEarningsVos;
+        }
+
+        public void setUserEarningsVos(List<EarningUserBean> userEarningsVos) {
+            this.userEarningsVos = userEarningsVos;
+        }
     }
 }

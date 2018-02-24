@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color">
+    android:background="@color/new_eighth_background_color">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/smartRefreshLayout"
@@ -38,14 +38,15 @@
                     android:layout_marginTop="20dp"
                     android:text="还没有任何娃娃，快去抓取娃娃吧！"/>
 
-                <Button
-                    android:id="@+id/btn_go_clip_doll"
-                    android:layout_width="100dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/background_go_clip_doll"
-                    android:text="前往抓取"
-                    android:textColor="@color/main_text_color"/>
+                <LinearLayout
+                    android:id="@+id/ll_qianwangzhuaqu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/background_qianwangzhuaqu"
+                    android:clickable="true"
+                    android:orientation="horizontal"/>
 
             </LinearLayout>
 
@@ -53,36 +54,41 @@
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_bottom_view"
+    <RelativeLayout
+        android:id="@+id/rl_bottom_view"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/background_advance_gradually_alpha"
-        android:orientation="vertical"
         android:visibility="gone">
 
-        <Button
-            android:id="@+id/btn_exchange"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/btn_background_share_invite_num"
-            android:text="兑换娃娃币"
-            android:textColor="@color/main_color"
-            android:textSize="16sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_application"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_go_clip_doll"
-            android:text="申请发货"
-            android:textColor="@color/main_text_color"
-            android:textSize="16sp"/>
+            <LinearLayout
+                android:id="@+id/ll_duihuanwawabi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/background_duihuanwawabi"
+                android:clickable="true"
+                android:orientation="horizontal"/>
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_shenqingfahuo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/background_shenqingfahuo"
+                android:clickable="true"
+                android:orientation="horizontal"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

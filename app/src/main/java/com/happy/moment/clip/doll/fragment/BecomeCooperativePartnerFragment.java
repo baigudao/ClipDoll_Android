@@ -4,11 +4,9 @@ import android.content.Context;
 import android.text.ClipboardManager;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
 
@@ -30,15 +28,14 @@ public class BecomeCooperativePartnerFragment extends BaseFragment {
     protected void initView(View view) {
         view.findViewById(R.id.ll_close).setOnClickListener(this);
         ((TextView) view.findViewById(R.id.tv_bar_title)).setText("成为合作伙伴");
-        view.findViewById(R.id.iv_share).setVisibility(View.GONE);
 
-        int size = ScreenUtils.getScreenWidth();
+        //        int size = ScreenUtils.getScreenWidth();
         ImageView iv_cooperative_partner = (ImageView) view.findViewById(R.id.iv_cooperative_partner);
-        LinearLayout.LayoutParams cooperative_partner = (LinearLayout.LayoutParams) iv_cooperative_partner.getLayoutParams();
-        cooperative_partner.height = size;
-        iv_cooperative_partner.setLayoutParams(cooperative_partner);
+        //        LinearLayout.LayoutParams cooperative_partner = (LinearLayout.LayoutParams) iv_cooperative_partner.getLayoutParams();
+        //        cooperative_partner.height = size;
+        //        iv_cooperative_partner.setLayoutParams(cooperative_partner);
 
-        ((TextView)view.findViewById(R.id.tv_weixin_num)).setText(SPUtils.getInstance().getString("CONTACT_WAY"));
+        ((TextView) view.findViewById(R.id.tv_weixin_num)).setText(SPUtils.getInstance().getString("CONTACT_WAY"));
         view.findViewById(R.id.btn_copy).setOnClickListener(this);
 
         cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);

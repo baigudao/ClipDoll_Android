@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/new_sixth_background_color">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp">
+
+        <com.happy.moment.clip.doll.view.CircleImageView
+            android:id="@+id/iv_user_photo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/income_avatar"/>
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_user_photo"
+            android:text="devin通过代理渠道赚取"/>
+
+        <TextView
+            android:id="@+id/tv_user_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_user_name"
+            android:text="00.00"
+            android:textColor="@color/seventh_text_color"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_user_num"
+            android:text="元"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

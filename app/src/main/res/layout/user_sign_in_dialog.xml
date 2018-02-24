@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+
+    <View
+        android:id="@+id/view_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="@android:color/black"
+        android:orientation="vertical"/>
+
+    <RelativeLayout
+        android:id="@+id/pop_layout"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/iv_clip_doll_result"
+            android:layout_width="300dp"
+            android:layout_height="500dp"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:scaleType="fitXY"
+            android:src="@drawable/meiriqiandao_bg_image"/>
+
+        <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:src="@drawable/icon_close"/>
+
+        <LinearLayout
+            android:id="@+id/ll_text_has_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已经连续签到"
+                android:textColor="@color/new_third_text_color"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/tv_han_sign_day_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/warning_color"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天"
+                android:textColor="@color/new_third_text_color"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <!--第一行签到-->
+        <LinearLayout
+            android:id="@+id/ll_sign_first"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_text_has_sign"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/background_user_sign"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_sign_in_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sign_weikaiqi"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="第"
+                        android:textColor="@color/new_third_text_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textColor="@color/warning_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textColor="@color/new_third_text_color"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_coin_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_sign_text_coin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="0币"
+                    android:textColor="@color/new_eighth_text_color"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="10dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/background_user_sign"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_sign_in_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sign_weikaiqi"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="第"
+                        android:textColor="@color/new_third_text_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:textColor="@color/warning_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textColor="@color/new_third_text_color"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_coin_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_sign_text_coin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="0币"
+                    android:textColor="@color/new_eighth_text_color"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="10dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/background_user_sign"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_sign_in_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sign_weikaiqi"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="第"
+                        android:textColor="@color/new_third_text_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:textColor="@color/warning_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textColor="@color/new_third_text_color"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_coin_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_sign_text_coin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="0币"
+                    android:textColor="@color/new_eighth_text_color"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="10dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/background_user_sign"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_sign_in_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sign_weikaiqi"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="第"
+                        android:textColor="@color/new_third_text_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:textColor="@color/warning_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textColor="@color/new_third_text_color"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_coin_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_sign_text_coin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="0币"
+                    android:textColor="@color/new_eighth_text_color"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--第二行签到-->
+        <LinearLayout
+            android:id="@+id/ll_sign_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_sign_first"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_user_sign"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_sign_in_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sign_weikaiqi"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="第"
+                        android:textColor="@color/new_third_text_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:textColor="@color/warning_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textColor="@color/new_third_text_color"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_coin_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_sign_text_coin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="0币"
+                    android:textColor="@color/new_eighth_text_color"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="10dp"/>
+
+            <LinearLayout
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_user_sign"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_sign_in_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sign_weikaiqi"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="第"
+                        android:textColor="@color/new_third_text_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6"
+                        android:textColor="@color/warning_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textColor="@color/new_third_text_color"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_coin_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_sign_text_coin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="0币"
+                    android:textColor="@color/new_eighth_text_color"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="10dp"/>
+
+            <LinearLayout
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_user_sign"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_sign_in_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sign_weikaiqi"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="第"
+                        android:textColor="@color/new_third_text_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7"
+                        android:textColor="@color/warning_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="天"
+                        android:textColor="@color/new_third_text_color"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_coin_7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_sign_text_coin"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="0币"
+                    android:textColor="@color/new_eighth_text_color"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_text_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_sign_second"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="连续7天签到可获得超级礼包"
+            android:textColor="@color/new_seventh_text_color"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/btn_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_text_7"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_lijiqiandao"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

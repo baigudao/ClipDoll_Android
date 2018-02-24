@@ -2,18 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/pure_white_color"
+              android:background="@color/new_background_color"
               android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:background="@color/main_color"/>
+        android:background="@color/new_background_color"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/main_color">
+        android:background="@color/new_background_color">
 
         <LinearLayout
             android:id="@+id/ll_close"
@@ -22,21 +22,15 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:clickable="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:scaleType="centerCrop"
                 android:src="@drawable/icon_return"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/close"
-                android:textSize="16sp"/>
 
         </LinearLayout>
 
@@ -68,15 +62,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:clickable="true"
-            android:padding="5dp">
+            android:clickable="true">
 
             <ImageView
                 android:id="@+id/iv_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:src="@drawable/news"/>
+                android:src="@drawable/home_icon_news"/>
 
             <View
                 android:id="@+id/view_red_point"
@@ -98,34 +91,43 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!--当前用户信息-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/personal_icon_image"/>
+                <!--用户头像-->
+                <RelativeLayout
+                    android:id="@+id/rl_user_photo"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="0dp">
 
-                <com.happy.moment.clip.doll.view.CircleImageView
-                    android:id="@+id/iv_user_photo"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginTop="0dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/avatar"/>
+                    <com.happy.moment.clip.doll.view.CircleImageView
+                        android:layout_width="85dp"
+                        android:layout_height="85dp"
+                        android:src="@drawable/background_setting_user_photo"/>
+
+                    <com.happy.moment.clip.doll.view.CircleImageView
+                        android:id="@+id/iv_user_photo"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/avatar"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tv_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_user_photo"
-                    android:layout_marginLeft="60dp"
+                    android:layout_below="@id/rl_user_photo"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:text="渡边孔"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_main_text_color"
                     android:textSize="28sp"
                     android:textStyle="bold"/>
 
@@ -134,21 +136,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_user_name"
-                    android:layout_marginLeft="60dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="8dp"
                     android:text="ID:1299302"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_main_text_color"
                     android:textSize="16sp"/>
 
             </RelativeLayout>
 
+            <!--我的娃娃币-->
             <RelativeLayout
                 android:id="@+id/rl_game_coin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/setting_background_top"
                 android:clickable="true">
 
                 <ImageView
@@ -156,26 +160,64 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_currency"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_currency"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_game_coin"
                     android:text="我的娃娃币"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/iv_go"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
+
+                <Button
+                    android:id="@+id/btn_recharge"
+                    android:layout_width="60dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@id/iv_go"
+                    android:background="@drawable/background_chongzhi"/>
+
+                <TextView
+                    android:id="@+id/tv_remain_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0币"
+                    android:textColor="@color/new_background_color"
+                    android:textSize="20sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/personal_icon_dashed"/>
 
             </RelativeLayout>
 
+            <!--抓取记录-->
             <RelativeLayout
                 android:id="@+id/rl_clip_doll_record"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
+                android:background="@drawable/setting_background_top"
                 android:clickable="true">
 
                 <ImageView
@@ -183,26 +225,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_recording"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_recording"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_clip_doll_record"
                     android:text="抓取记录"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/personal_icon_dashed"/>
 
             </RelativeLayout>
 
+            <!--我的订单-->
             <RelativeLayout
                 android:id="@+id/rl_order"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
+                android:background="@drawable/personal_icon_bg"
                 android:clickable="true">
 
                 <ImageView
@@ -210,32 +271,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_order"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_order"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_order"
                     android:text="我的订单"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/divider_color"/>
-
+            <!--邀请奖励-->
             <RelativeLayout
                 android:id="@+id/rl_prize"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/setting_background_top"
                 android:clickable="true">
 
                 <ImageView
@@ -243,26 +311,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_coupon"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_coupon"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_prize"
                     android:text="邀请奖励"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/personal_icon_dashed"/>
 
             </RelativeLayout>
 
+            <!--邀请码兑换-->
             <RelativeLayout
                 android:id="@+id/rl_invite_num"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
+                android:background="@drawable/personal_icon_bg"
                 android:clickable="true">
 
                 <ImageView
@@ -270,32 +357,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_invite"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_invite"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_invite_num"
                     android:text="邀请码兑换"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/divider_color"/>
-
+            <!--我要赚钱-->
             <RelativeLayout
                 android:id="@+id/rl_my_income"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/setting_background_top"
                 android:clickable="true">
 
                 <ImageView
@@ -303,27 +397,46 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_rmb"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_rmb"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_my_income"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_my_income"
                     android:text="我要赚钱"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/personal_icon_dashed"/>
 
             </RelativeLayout>
 
+            <!--成为合作伙伴-->
             <RelativeLayout
                 android:id="@+id/rl_become_cooperative_partner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
+                android:background="@drawable/personal_icon_bg"
                 android:clickable="true">
 
                 <ImageView
@@ -331,32 +444,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_partner"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_partner"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_become_cooperative_partner"
                     android:text="成为合作伙伴"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/divider_color"/>
-
+            <!--背景音乐-->
             <RelativeLayout
                 android:id="@+id/rl_background_music"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/setting_background_top"
                 android:clickable="true">
 
                 <ImageView
@@ -364,24 +484,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_music"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_music"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_music"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_background_music"
                     android:text="背景音乐"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
 
                 <ImageView
                     android:id="@+id/music_btn_toggle_on"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/tv_music"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
                     android:src="@drawable/personal_icon_open"
                     android:visibility="gone"/>
 
@@ -389,20 +513,29 @@
                     android:id="@+id/music_btn_toggle_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/tv_music"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
                     android:src="@drawable/personal_icon_shutdown"
                     android:visibility="gone"/>
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/personal_icon_dashed"/>
+
             </RelativeLayout>
 
+            <!--音效-->
             <RelativeLayout
                 android:id="@+id/rl_sound_effect"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
+                android:background="@drawable/personal_icon_bg"
                 android:clickable="true">
 
                 <ImageView
@@ -410,24 +543,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_musiceffect"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_musiceffect"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_sound_effect"
                     android:text="音效"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
 
                 <ImageView
                     android:id="@+id/sound_btn_toggle_on"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="55dp"
-                    android:layout_toRightOf="@id/tv_sound"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
                     android:src="@drawable/personal_icon_open"
                     android:visibility="gone"/>
 
@@ -435,26 +572,23 @@
                     android:id="@+id/sound_btn_toggle_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="55dp"
-                    android:layout_toRightOf="@id/tv_sound"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
                     android:src="@drawable/personal_icon_shutdown"
                     android:visibility="gone"/>
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/divider_color"/>
-
+            <!--关于我们-->
             <RelativeLayout
                 android:id="@+id/rl_about_us"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/setting_background_top"
                 android:clickable="true">
 
                 <ImageView
@@ -462,26 +596,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_us"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_us"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_about_us"
                     android:text="关于我们"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/personal_icon_dashed"/>
 
             </RelativeLayout>
 
+            <!--意见反馈-->
             <RelativeLayout
                 android:id="@+id/rl_feed_back"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
+                android:background="@drawable/setting_background_top"
                 android:clickable="true">
 
                 <ImageView
@@ -489,54 +642,91 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_feedback"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_feedback"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_feed_back"
                     android:text="意见反馈"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/personal_icon_dashed"/>
 
             </RelativeLayout>
 
+            <!--评分奖励-->
             <RelativeLayout
                 android:id="@+id/rl_score_prize"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
-                android:clickable="true"
-                android:visibility="gone">
+                android:background="@drawable/setting_background_top"
+                android:clickable="true">
 
                 <ImageView
                     android:id="@+id/iv_score_prize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_score"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_score"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_score_prize"
                     android:text="评分有奖"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/personal_icon_dashed"/>
 
             </RelativeLayout>
 
+            <!--检查更新-->
             <RelativeLayout
                 android:id="@+id/rl_check_update"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
+                android:background="@drawable/personal_icon_bg"
                 android:clickable="true">
 
                 <ImageView
@@ -544,31 +734,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/personal_icon_updated"/>
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/personal_icon_updated"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/iv_check_update"
                     android:text="检查更新"
-                    android:textColor="@color/main_text_color"
+                    android:textColor="@color/new_third_text_color"
                     android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/personal_icon_jiantou"/>
 
             </RelativeLayout>
 
             <Button
                 android:id="@+id/btn_exit_login"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="30dp"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/border_btn_exit_login"
-                android:elevation="0dp"
-                android:text="退出登录"
-                android:textSize="18sp"/>
+                android:background="@drawable/background_logout_view"
+                android:enabled="true"/>
 
         </LinearLayout>
 

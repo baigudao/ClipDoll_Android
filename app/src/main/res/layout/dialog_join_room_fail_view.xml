@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/background_logout_view">
+                android:background="@drawable/background_logout_normal_view">
 
     <TextView
         android:id="@+id/tv"
@@ -40,8 +40,9 @@
             android:id="@+id/btn_out_room"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:textColor="@color/new_third_text_color"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/background_invite_num_exchange_enable_no"
+            android:background="@drawable/background_join_room_fail_logout"
             android:text="退出房间"/>
 
         <Button
@@ -51,6 +52,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
             android:background="@drawable/background_invite_num_exchange_enable_yes"
+            android:textColor="@color/new_third_text_color"
             android:text="上报故障"/>
 
     </LinearLayout>

@@ -158,6 +158,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                                     SPUtils.getInstance().put(Constants.INVITECODE, userInfo.getInviteCode());
                                     SPUtils.getInstance().put(Constants.NICKNAME, userInfo.getNickName());
                                     SPUtils.getInstance().put(Constants.USERID, userInfo.getUserId());
+                                    SPUtils.getInstance().put(Constants.ROLE,userInfo.getRole());
                                     DataManager.getInstance().setUserInfo(userInfo);
 
                                     //配置信鸽推送

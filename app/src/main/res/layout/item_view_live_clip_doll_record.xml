@@ -2,26 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/new_second_background_color"
               android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/pure_white_color">
+        android:background="@color/new_second_background_color">
 
         <com.happy.moment.clip.doll.view.CircleImageView
             android:id="@+id/iv_user_photo"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_centerVertical="true"
             android:src="@drawable/avatar"/>
 
         <TextView
             android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_user_photo"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/iv_user_photo"
@@ -31,13 +33,19 @@
 
         <TextView
             android:id="@+id/tv_clip_doll_time"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_user_name"
+            android:layout_alignBottom="@id/iv_user_photo"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="2dp"
             android:layout_toRightOf="@id/iv_user_photo"
             android:text="40分钟前"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/personal_icon_dashed"/>
 
     </RelativeLayout>
 

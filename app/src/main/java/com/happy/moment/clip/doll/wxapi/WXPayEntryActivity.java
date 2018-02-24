@@ -15,6 +15,7 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.analytics.game.UMGameAgent;
 
 /**
  * Created by jackie on 2017/8/15 22:52.
@@ -73,7 +74,12 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         int result = 0;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                DataManager.getInstance().setData1("RECHARGE_SUCCESS");
+                int pay_money = (int) DataManager.getInstance().getData1();
+                int get_wawa_coin = (int) DataManager.getInstance().getData2();
+                DataManager.getInstance().setData1(null);
+                DataManager.getInstance().setData2(null);
+                UMGameAgent.pay(pay_money, get_wawa_coin, 21);//比如通过微信用 10元钱 购买了 1000 个金币，可以这样调用：
+                LogUtils.e("支付金额：" + pay_money + "\n得到的娃娃币：" + get_wawa_coin);
                 result = R.string.errcode_success;
                 goBack();
                 break;

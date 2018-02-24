@@ -59,15 +59,15 @@ public class SendOverFragment extends BaseFragment implements OnRefreshListener,
         smartRefreshLayout = (SmartRefreshLayout) view.findViewById(R.id.smartRefreshLayout);
         smartRefreshLayout.setOnRefreshListener(this);
         smartRefreshLayout.setEnableLoadmore(false);
-        view.findViewById(R.id.btn_go_clip_doll).setOnClickListener(this);
+        view.findViewById(R.id.ll_qianwangzhuaqu).setOnClickListener(this);
 
         mPage = 1;
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_go_clip_doll) {
-            gotoPager(MainActivity.class, null);
+        if (v.getId() == R.id.ll_qianwangzhuaqu) {
+            ((MainActivity) mContext).goToMyHomeFragment();
         }
     }
 
@@ -148,7 +148,7 @@ public class SendOverFragment extends BaseFragment implements OnRefreshListener,
             SendOverBean sendOverBean = (SendOverBean) data;
             if (EmptyUtils.isNotEmpty(sendOverBean)) {
                 DataManager.getInstance().setData1(sendOverBean.getOrderId());
-                gotoPager(OrderDetailFragment.class,null);
+                gotoPager(OrderDetailFragment.class, null);
             }
         }
     }

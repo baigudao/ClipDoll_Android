@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.happy.moment.clip.doll.R;
+import com.happy.moment.clip.doll.activity.MainActivity;
 import com.happy.moment.clip.doll.bean.WaitingSendBean;
 import com.happy.moment.clip.doll.util.Constants;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -76,6 +77,7 @@ public class ExchangeCoinFragment extends BaseFragment implements OnRefreshListe
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         ll_no_data = (LinearLayout) view.findViewById(R.id.ll_no_data);
+        view.findViewById(R.id.ll_qianwangzhuaqu).setOnClickListener(this);
 
         ((TextView) view.findViewById(tv_exchange_day_num)).setText(SPUtils.getInstance().getString("AUTO_EXCHANGE_TIME"));
 
@@ -104,6 +106,9 @@ public class ExchangeCoinFragment extends BaseFragment implements OnRefreshListe
                 break;
             case R.id.btn_make_sure_exchange:
                 showDialog();
+                break;
+            case R.id.ll_qianwangzhuaqu:
+                gotoPager(MainActivity.class, null);
                 break;
             default:
                 break;

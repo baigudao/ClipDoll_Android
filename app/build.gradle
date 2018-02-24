@@ -8,8 +8,8 @@ android {
         applicationId "com.happy.moment.clip.doll"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 4
-        versionName "1.2"
+        versionCode 8
+        versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
@@ -158,9 +158,9 @@ dependencies {
     //compile 'com.tencent.wup:wup:1.0.0.E-alpha'//可能混淆有异常，需注释掉
     //mid包
     compile 'com.tencent.mid:mid:3.9.0-release'
-    //友盟统计
-    compile files('libs/umeng-analytics-7.4.0.jar')
-    compile files('libs/umeng-common-1.4.0.jar')
+    //友盟游戏统计
+    compile files('libs/umeng-analytics-v6.1.0.jar')
+    compile files('libs/utdid4all-1.0.4.jar')
     //二维码
     compile 'com.google.zxing:core:3.2.1'
     compile 'com.journeyapps:zxing-android-embedded:3.3.0'

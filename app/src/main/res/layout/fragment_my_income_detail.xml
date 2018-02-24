@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/background_color"
+              android:background="@color/new_background_color"
               android:orientation="vertical">
 
     <include layout="@layout/title_bar"/>
@@ -16,328 +16,409 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/proxy_banner_image"/>
-
-            <!--当前可提现-->
+            <!--头部的图片-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv1"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="30dp"
-                    android:text="当前可提现："
-                    android:textColor="@color/main_text_color"
-                    android:textSize="16sp"/>
+                    android:scaleType="fitXY"
+                    android:src="@drawable/proxy_banner_image"/>
 
-                <TextView
-                    android:id="@+id/tv_take_cash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/tv1"
-                    android:text="0.00"
-                    android:textColor="@color/seventh_text_color"
-                    android:textSize="24sp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_take_cash"
-                    android:layout_toRightOf="@id/tv_take_cash"
-                    android:text="元"
-                    android:textColor="@color/main_text_color"
-                    android:textSize="16sp"/>
-
-                <Button
-                    android:id="@+id/btn_take_cash"
-                    android:layout_width="60dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="30dp"
-                    android:background="@drawable/border_take_cash_background_view"
-                    android:text="提现"
-                    android:textColor="@color/main_text_color"
-                    android:textSize="15sp"
-                    android:textStyle="bold"/>
-
-            </RelativeLayout>
-
-            <!--已结算和总收益-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    android:id="@+id/tv_has_clearing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="已结算：0.00元"
-                    android:textColor="@color/main_text_color"
-                    android:textSize="16sp"/>
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="15dp"
-                    android:layout_centerInParent="true"
-                    android:background="@color/divider_color"/>
-
-                <TextView
-                    android:id="@+id/tv_total_income"
+                <ImageView
+                    android:id="@+id/iv_go_to_9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="总收益：0.00元"
-                    android:textColor="@color/main_text_color"
-                    android:textSize="16sp"/>
+                    android:clickable="true"
+                    android:src="@drawable/distribution_fenxiang"/>
 
             </RelativeLayout>
 
-            <!--昨日收益和新增用户-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/border_income_detail_background_view"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/background_new_setting_white"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <!--当前可提现-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_marginTop="8dp">
+
+                    <ImageView
+                        android:id="@+id/iv_image_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/proxy_many_image"/>
+
+                    <TextView
+                        android:id="@+id/tv1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/iv_image_money"
+                        android:text="当前可提现："
+                        android:textColor="@color/new_third_text_color"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_take_cash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tv1"
+                        android:text="0.00"
+                        android:textColor="@color/seventh_text_color"
+                        android:textSize="24sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="昨日新增收益"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="17sp"/>
+                        android:layout_alignBottom="@id/tv_take_cash"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tv_take_cash"
+                        android:text="元"
+                        android:textColor="@color/new_third_text_color"
+                        android:textSize="15sp"/>
+
+                    <Button
+                        android:id="@+id/btn_take_cash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/border_take_cash_background_view"/>
+
+                </RelativeLayout>
+
+                <!--已结算和总收益-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/tv_has_clearing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="已结算：0.00元"
+                        android:textColor="@color/new_third_text_color"
+                        android:textSize="16sp"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="15dp"
+                        android:layout_centerInParent="true"
+                        android:background="@color/divider_color"/>
 
                     <TextView
                         android:id="@+id/tv_yesterday_income_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="0.00"
-                        android:textColor="@color/seventh_text_color"
-                        android:textSize="22sp"
-                        android:textStyle="bold"/>
+                        android:layout_alignParentRight="true"
+                        android:text="昨日收益：0.00元"
+                        android:textColor="@color/new_third_text_color"
+                        android:textSize="16sp"/>
+
+                </RelativeLayout>
+
+                <!--昨日收益和新增用户-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/border_about_us_background_view"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="我的总收益"
+                            android:textColor="@color/new_third_text_color"
+                            android:textSize="17sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_total_income"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="0.00"
+                            android:textColor="@color/seventh_text_color"
+                            android:textSize="22sp"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="我的用户"
+                            android:textColor="@color/new_third_text_color"
+                            android:textSize="17sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_yesterday_user_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="0"
+                            android:textColor="@color/seventh_text_color"
+                            android:textSize="22sp"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
+
+                <!--7日新增-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="7日新增收益"
+                            android:textColor="@color/new_third_text_color"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_seven_new_income_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0.00"
+                            android:textColor="@color/eighth_text_color"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="元"
+                            android:textColor="@color/new_third_text_color"
+                            android:textSize="16sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="7日新增用户"
+                            android:textColor="@color/main_text_color"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_seven_new_user_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/eighth_text_color"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="人"
+                            android:textColor="@color/main_text_color"
+                            android:textSize="16sp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/personal_icon_dashed"/>
+
+                <!--30日新增-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="30日新增收益"
+                            android:textColor="@color/new_third_text_color"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_thirtieth_new_income_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0.00"
+                            android:textColor="@color/eighth_text_color"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="元"
+                            android:textColor="@color/new_third_text_color"
+                            android:textSize="16sp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="7日新增用户"
+                            android:textColor="@color/new_third_text_color"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_thirtieth_new_user_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/eighth_text_color"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="人"
+                            android:textColor="@color/new_third_text_color"
+                            android:textSize="16sp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/background_my_income_text"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="邀请更多好友来玩，赚取更多收益分成"
+                    android:textColor="@color/pure_white_color"
+                    android:textSize="14sp"/>
+
+                <Button
+                    android:id="@+id/btn_get_poster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/btn_background_poster"/>
+
+                <Button
+                    android:id="@+id/btn_lizhuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_lizhuan"/>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="昨日新增用户"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="17sp"/>
+                        android:text="已邀请"
+                        android:textColor="@color/new_third_text_color"/>
 
                     <TextView
-                        android:id="@+id/tv_yesterday_user_num"
+                        android:id="@+id/tv_has_invite_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
                         android:text="0"
-                        android:textColor="@color/seventh_text_color"
-                        android:textSize="22sp"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/eighth_text_color"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="个好友开通，赚取"
+                        android:textColor="@color/new_third_text_color"/>
+
+                    <TextView
+                        android:id="@+id/tv_has_earning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥00.00元"
+                        android:textColor="@color/seventh_text_color"/>
 
                 </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"/>
 
             </LinearLayout>
-
-            <!--7日新增-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7日新增收益"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_seven_new_income_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0.00"
-                        android:textColor="@color/eighth_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="元"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="16sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7日新增用户"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_seven_new_user_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/eighth_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="人"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="16sp"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/divider_color"/>
-
-            <!--30日新增-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="30日新增收益"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_thirtieth_new_income_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0.00"
-                        android:textColor="@color/eighth_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="元"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="16sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="30dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="7日新增用户"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/tv_thirtieth_new_user_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/eighth_text_color"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="人"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="16sp"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
-                android:text="点击获取推广海报，生成专属链接"
-                android:textColor="@color/main_text_color"
-                android:textSize="16sp"/>
-
-            <Button
-                android:id="@+id/btn_get_poster"
-                android:layout_width="280dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/btn_background_selector"
-                android:text="获取推广海报"
-                android:textColor="@drawable/btn_text_background_selector"
-                android:textSize="16sp"/>
 
         </LinearLayout>
 

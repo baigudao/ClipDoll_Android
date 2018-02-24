@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/background_color"
+              android:background="@color/new_background_color"
               android:orientation="vertical">
 
     <LinearLayout
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/border_notification_background_view"
         android:orientation="vertical">
 
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="杨晓渡"
-                android:textColor="@color/main_text_color"
+                android:textColor="@color/new_third_text_color"
                 android:textSize="16sp"/>
 
             <TextView
@@ -36,7 +36,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@id/tv_address_name"
-                android:text="13456789859"/>
+                android:text="13456789859"
+                android:textColor="@color/new_third_text_color"/>
 
         </RelativeLayout>
 
@@ -49,7 +50,8 @@
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="广东省深圳市宝安区西乡大道45号"/>
+            android:text="广东省深圳市宝安区西乡大道45号"
+            android:textColor="@color/new_third_text_color"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -80,7 +82,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_address_choose_no"
-                android:text="设为默认"/>
+                android:text="设为默认"
+                android:textColor="@color/new_third_text_color"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -105,7 +108,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="2dp"
-                        android:text="编辑"/>
+                        android:text="编辑"
+                        android:textColor="@color/new_third_text_color"/>
 
                 </LinearLayout>
 
@@ -127,7 +131,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="2dp"
-                        android:text="删除"/>
+                        android:text="删除"
+                        android:textColor="@color/new_third_text_color"/>
 
                 </LinearLayout>
 

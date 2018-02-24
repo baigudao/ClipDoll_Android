@@ -108,6 +108,7 @@ public class RegisterAndLoginFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
+                        LogUtils.e(response);
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response);
@@ -135,6 +136,7 @@ public class RegisterAndLoginFragment extends BaseFragment {
                                     SPUtils.getInstance().put(Constants.INVITECODE, userInfo.getInviteCode());
                                     SPUtils.getInstance().put(Constants.NICKNAME, userInfo.getNickName());
                                     SPUtils.getInstance().put(Constants.USERID, userInfo.getUserId());
+                                    SPUtils.getInstance().put(Constants.ROLE,userInfo.getRole());
                                     DataManager.getInstance().setUserInfo(userInfo);
 
                                     //配置信鸽推送

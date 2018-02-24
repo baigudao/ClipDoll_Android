@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+
+    <View
+        android:id="@+id/view_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="@android:color/black"
+        android:orientation="vertical"/>
+
+    <RelativeLayout
+        android:id="@+id/pop_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/iv_clip_doll_result"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:scaleType="fitXY"
+            android:src="@drawable/home_sign_image"/>
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_sign_second"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="170dp"
+            android:text="连续7天签到可获得超级礼包"
+            android:textColor="@color/pure_white_color"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/btn_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_logout_queding"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

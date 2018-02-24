@@ -37,6 +37,7 @@ import com.happy.moment.clip.doll.bean.LiveRoomUserBean;
 import com.happy.moment.clip.doll.fragment.GuestStateFragment;
 import com.happy.moment.clip.doll.fragment.InvitePrizeFragment;
 import com.happy.moment.clip.doll.fragment.MyGameCoinFragment;
+import com.happy.moment.clip.doll.fragment.ProductDetailFragment;
 import com.happy.moment.clip.doll.util.BackgroundMusicPlayerUtil;
 import com.happy.moment.clip.doll.util.Constants;
 import com.happy.moment.clip.doll.util.DataManager;
@@ -60,6 +61,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.wawasdk.TXWawaCallBack;
 import com.tencent.wawasdk.TXWawaPlayer;
+import com.umeng.analytics.game.UMGameAgent;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -83,11 +85,10 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     private View view;
     private RelativeLayout rl_start_clip_and_recharge;
     private RelativeLayout rl_operation;
-    private LinearLayout ll_start_clip_doll;
 
+    private Button btn_start_clip_doll;
     private TextView tv_cost_coin_num;
     private TextView tv_coin_num;
-    private TextView tv_start_clip_doll;
 
     private ImageButton action_btn_left;
     private ImageButton action_btn_bottom;
@@ -108,14 +109,14 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     private TextView tv_room_id;
     private ImageView iv_live_room_camera;
     private ImageView iv_background_music;
+    private ImageView iv_lamp_left;
+    private ImageView iv_lamp_right;
+    private boolean isChangeLamp;
 
     private AVRootView arv_root;
     private boolean isFront;
 
     private static final int CLIP_DOLL_RECORD_LIVE_DATA_TYPE = 3;
-    private RecyclerView recyclerView_lucky;
-    private static final int PRODUCT_INTRODUCE_DATA_TYPE = 7;
-    private RecyclerView recyclerView_introduce;
 
     private TextView tv_timer;
 
@@ -135,6 +136,8 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
     private int exceptionTime;
     private Timer exceptionTimer;
     private TimerTask exceptionTimerTask;
+    private Timer lampTimer;
+    private TimerTask lampTimerTask;
 
     private ClipDollResultPopupWindow clipDollResultPopupWindow;
 
@@ -149,6 +152,8 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
     private String gameId;
     private boolean isTXWawaPlayerOnTime;
+
+    private ArrayList<LiveRoomLuckyUserBean> liveRoomLuckyUserBeanArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,10 +171,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //一屏显示
         int height = ScreenUtils.getScreenHeight() - 50;
-        RelativeLayout rl_fill_screen = (RelativeLayout) findViewById(R.id.rl_fill_screen);
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) rl_fill_screen.getLayoutParams();
-        layoutParams.height = height;
-        rl_fill_screen.setLayoutParams(layoutParams);
         //设置直播视图7/10显示
         RelativeLayout rl_live_view = (RelativeLayout) findViewById(R.id.rl_live_view);
         RelativeLayout.LayoutParams layoutParams_live = (RelativeLayout.LayoutParams) rl_live_view.getLayoutParams();
@@ -177,15 +178,12 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         rl_live_view.setLayoutParams(layoutParams_live);
         //开始和充值按钮距离上面\
         rl_start_clip_and_recharge = (RelativeLayout) findViewById(R.id.rl_start_clip_and_recharge);
-        RelativeLayout.LayoutParams layoutParams_start_clip = (RelativeLayout.LayoutParams) rl_start_clip_and_recharge.getLayoutParams();
-        layoutParams_start_clip.topMargin = (height * 3 / 10 - SizeUtils.dp2px(100)) / 2;
-        rl_start_clip_and_recharge.setLayoutParams(layoutParams_start_clip);
 
         //头部视图
         findViewById(R.id.ll_close).setOnClickListener(this);
         findViewById(R.id.iv_share).setOnClickListener(this);
 
-        //主要视图
+        //主体视图
         arv_root = (AVRootView) findViewById(R.id.arv_root);
         ILVLiveManager.getInstance().setAvVideoView(arv_root);
         arv_root.setBackground(R.drawable.wawa_loading);
@@ -196,13 +194,14 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         //初始化TXWawaPlayer
         wawaPlayer = new TXWawaPlayer(ClipDollDetailActivity.this);
 
+        iv_lamp_left = (ImageView) findViewById(R.id.iv_lamp_left);
+        iv_lamp_right = (ImageView) findViewById(R.id.iv_lamp_right);
         rl_operation = (RelativeLayout) findViewById(R.id.rl_operation);
         tv_cost_coin_num = (TextView) findViewById(R.id.tv_cost_coin_num);
         tv_coin_num = (TextView) findViewById(R.id.tv_coin_num);
-        tv_start_clip_doll = (TextView) findViewById(R.id.tv_start_clip_doll);
-        ll_start_clip_doll = (LinearLayout) findViewById(R.id.ll_start_clip_doll);
-        ll_start_clip_doll.setOnClickListener(this);
-        findViewById(R.id.ll_coin_recharge).setOnClickListener(this);
+        btn_start_clip_doll = (Button) findViewById(R.id.btn_start_clip_doll);
+        btn_start_clip_doll.setOnClickListener(this);
+        findViewById(R.id.rl_coin_recharge).setOnClickListener(this);
         tv_timer = (TextView) findViewById(R.id.tv_timer);
         tv_room_id = (TextView) findViewById(R.id.tv_room_id);
         iv_live_room_camera = (ImageView) findViewById(R.id.iv_live_room_camera);
@@ -226,6 +225,8 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         iv_user_4 = (CircleImageView) findViewById(R.id.iv_user_4);
         tv_user_num = (TextView) findViewById(R.id.tv_user_num);
         tv_waiting_game_result = (TextView) findViewById(R.id.tv_waiting_game_result);
+        findViewById(R.id.iv_product_detail).setOnClickListener(this);
+        findViewById(R.id.iv_clip_doll_lucky).setOnClickListener(this);
 
         //上下左右下抓操作按钮视图
         action_btn_left = (ImageButton) findViewById(R.id.action_btn_left);
@@ -238,10 +239,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         action_btn_right.setOnTouchListener(this);
         action_start_clip = (ImageButton) findViewById(R.id.action_start_clip);
         action_start_clip.setOnClickListener(this);
-
-        //底部视图的初始化
-        recyclerView_lucky = (RecyclerView) findViewById(R.id.recyclerView_lucky);
-        recyclerView_introduce = (RecyclerView) findViewById(R.id.recyclerView_introduce);
     }
 
     private void initData() {
@@ -251,15 +248,6 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
         //房间ID
         tv_room_id.setText("房间ID:" + homeRoomBean.getRoomId());
-        //渲染宝贝图片
-        if (EmptyUtils.isNotEmpty(homeRoomBean)) {
-            ArrayList<String> stringArrayList = (ArrayList<String>) homeRoomBean.getProduct().getDetailPics();
-            if (stringArrayList.size() != 0) {
-                BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(ClipDollDetailActivity.this, stringArrayList, PRODUCT_INTRODUCE_DATA_TYPE);
-                recyclerView_introduce.setAdapter(baseRecyclerViewAdapter);
-                recyclerView_introduce.setLayoutManager(new LinearLayoutManager(ClipDollDetailActivity.this, LinearLayoutManager.VERTICAL, false));
-            }
-        }
 
         //控制媒体音量
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -321,8 +309,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         //显示开始抓取和充值的入口
         rl_start_clip_and_recharge.setVisibility(View.VISIBLE);
         rl_operation.setVisibility(View.GONE);
-        ll_start_clip_doll.setEnabled(true);
-        tv_start_clip_doll.setTextColor(getResources().getColor(R.color.seventh_text_color));
+        btn_start_clip_doll.setEnabled(true);
         tv_cost_coin_num.setTextColor(getResources().getColor(R.color.seventh_text_color));
         tv_cost_coin_num.setText(String.valueOf(homeRoomBean.getGamePrice()) + "币/次");
         //隐藏等待游戏结果的提示文字
@@ -370,14 +357,12 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                                                     switch (roomState) {
                                                         case 0:
                                                             //空闲中：显示开始按钮并激活
-                                                            ll_start_clip_doll.setEnabled(true);
-                                                            tv_start_clip_doll.setTextColor(getResources().getColor(R.color.seventh_text_color));
+                                                            btn_start_clip_doll.setEnabled(true);
                                                             tv_cost_coin_num.setTextColor(getResources().getColor(R.color.seventh_text_color));
                                                             break;
                                                         case 1:
                                                             //游戏中
-                                                            ll_start_clip_doll.setEnabled(false);
-                                                            tv_start_clip_doll.setTextColor(getResources().getColor(R.color.pure_white_color));
+                                                            btn_start_clip_doll.setEnabled(false);
                                                             tv_cost_coin_num.setTextColor(getResources().getColor(R.color.pure_white_color));
                                                             break;
                                                         default:
@@ -588,6 +573,9 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
         if (!SPUtils.getInstance().getBoolean(Constants.IS_PLAY_BACKGROUND_MUSIC)) {
             BackgroundMusicPlayerUtil.getInstance(getApplicationContext()).playMusic();
         }
+        //跑马灯的闪烁
+        isChangeLamp = false;
+        startLamp();
     }
 
     private void getBalanceCoin() {
@@ -673,15 +661,8 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
             JSONArray jsonArrayForLuckyUsers = jsonObjectResBody.optJSONArray("pageData");
             if (EmptyUtils.isNotEmpty(jsonArrayForLuckyUsers)) {
                 Gson gson = new Gson();
-                ArrayList<LiveRoomLuckyUserBean> liveRoomLuckyUserBeanArrayList = gson.fromJson(jsonArrayForLuckyUsers.toString()
-                        , new TypeToken<ArrayList<LiveRoomLuckyUserBean>>() {
-                        }.getType());
-                if (EmptyUtils.isNotEmpty(liveRoomLuckyUserBeanArrayList) && liveRoomLuckyUserBeanArrayList.size() != 0) {
-                    BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(ClipDollDetailActivity.this, liveRoomLuckyUserBeanArrayList, CLIP_DOLL_RECORD_LIVE_DATA_TYPE);
-                    recyclerView_lucky.setAdapter(baseRecyclerViewAdapter);
-                    recyclerView_lucky.setLayoutManager(new LinearLayoutManager(ClipDollDetailActivity.this, LinearLayoutManager.VERTICAL, false));
-                    baseRecyclerViewAdapter.setOnItemClickListener(this);
-                }
+                liveRoomLuckyUserBeanArrayList = gson.fromJson(jsonArrayForLuckyUsers.toString(), new TypeToken<ArrayList<LiveRoomLuckyUserBean>>() {
+                }.getType());
             }
         }
     }
@@ -727,11 +708,37 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 });
     }
 
+    /**
+     * 跑马灯的闪烁
+     */
+    private void startLamp() {
+        lampTimer = new Timer();
+        lampTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isChangeLamp) {
+                            iv_lamp_left.setImageResource(R.drawable.liveroom_lamp);
+                            iv_lamp_right.setImageResource(R.drawable.liveroom_lamps);
+                            isChangeLamp = false;
+                        } else {
+                            iv_lamp_left.setImageResource(R.drawable.liveroom_lamps);
+                            iv_lamp_right.setImageResource(R.drawable.liveroom_lamp);
+                            isChangeLamp = true;
+                        }
+                    }
+                });
+            }
+        };
+        lampTimer.schedule(lampTimerTask, 0, 600);
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LogUtils.e("onPause");
+        //        LogUtils.e("onPause");
         ILVLiveManager.getInstance().onPause();
     }
 
@@ -740,12 +747,21 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
      */
     @Override
     protected void onStop() {
-        LogUtils.e("onStop");
+        //        LogUtils.e("onStop");
         super.onStop();
         //用户退出直播间 计数
         removeUserNumForLiveRoom();
         //停止播放背景音乐
         BackgroundMusicPlayerUtil.getInstance(getApplicationContext()).stopMusic();
+
+        if (EmptyUtils.isNotEmpty(lampTimer)) {
+            lampTimer.cancel();
+            lampTimer = null;
+        }
+        if (EmptyUtils.isNotEmpty(lampTimerTask)) {
+            lampTimerTask.cancel();
+            lampTimerTask = null;
+        }
     }
 
     /**
@@ -791,7 +807,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void onDestroy() {
-        LogUtils.e("onDestroy");
+        //        LogUtils.e("onDestroy");
         ILVLiveManager.getInstance().onDestory();
         //wawaPlayer退出游戏
         wawaPlayer.quitGame();
@@ -856,11 +872,20 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                     isFront = true;
                 }
                 break;
-            case R.id.ll_start_clip_doll:
+            case R.id.iv_product_detail:
+                //宝贝详情
+                DataManager.getInstance().setData1(homeRoomBean);
+                gotoPager(ProductDetailFragment.class, null);
+                break;
+            case R.id.iv_clip_doll_lucky:
+                //抓中幸运儿
+                showDialogs(2, false);
+                break;
+            case R.id.btn_start_clip_doll:
                 //请求开始游戏
                 requestBeginGame();
                 break;
-            case R.id.ll_coin_recharge:
+            case R.id.rl_coin_recharge:
                 gotoPager(MyGameCoinFragment.class, null);
                 break;
             case R.id.action_start_clip:
@@ -942,6 +967,8 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                                                     LogUtils.e("开始排队失败：" + s);
                                                 }
                                             });
+                                            //友盟统计关卡
+                                            UMGameAgent.startLevel("level");
                                         }
                                         break;
                                     default:
@@ -1106,10 +1133,12 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                                                                         gameResultTimerTask.cancel();
                                                                         gameResultTimerTask = null;
                                                                     }
-                                                                    showDialogs(2, false);
+                                                                    showDialogs(3, false);
                                                                     if (!SPUtils.getInstance().getBoolean(Constants.IS_PLAY_BACKGROUND_SOUND)) {
                                                                         SoundPoolUtil.getInstance(getApplicationContext()).play(5);
                                                                     }
+                                                                    //友盟统计关卡
+                                                                    UMGameAgent.failLevel("level");
                                                                     break;
                                                                 case 1:
                                                                     //抓中
@@ -1121,10 +1150,12 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                                                                         gameResultTimerTask.cancel();
                                                                         gameResultTimerTask = null;
                                                                     }
-                                                                    showDialogs(2, true);
+                                                                    showDialogs(3, true);
                                                                     if (!SPUtils.getInstance().getBoolean(Constants.IS_PLAY_BACKGROUND_SOUND)) {
                                                                         SoundPoolUtil.getInstance(getApplicationContext()).play(4);
                                                                     }
+                                                                    //友盟统计关卡
+                                                                    UMGameAgent.finishLevel("level");
                                                                     break;
                                                                 default:
                                                                     break;
@@ -1253,6 +1284,9 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
      * @param isClip 是否抓中
      */
     private void showDialogs(int flag, boolean isClip) {
+        if (isFinishing()) {
+            return;
+        }
         switch (flag) {
             case 0:
                 //加入房间失败
@@ -1311,9 +1345,31 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 });
                 break;
             case 2:
-                if(isFinishing()){
-                    return;
+                //抓中幸运儿的对话框
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this, R.style.AlertDialog_Logout);
+                View view2 = View.inflate(this, R.layout.dialog_clip_doll_lucky_view, null);
+                builder2.setView(view2);
+                final AlertDialog alertDialog2 = builder2.create();
+                alertDialog2.show();
+                //设置对话框的大小
+                alertDialog2.getWindow().setLayout(SizeUtils.dp2px(350), LinearLayout.LayoutParams.WRAP_CONTENT);
+                //监听事件
+                view2.findViewById(R.id.iv_cancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog2.dismiss();
+                    }
+                });
+                RecyclerView recyclerView_lucky = (RecyclerView) view2.findViewById(R.id.recyclerView_lucky);
+
+                if (EmptyUtils.isNotEmpty(recyclerView_lucky) && EmptyUtils.isNotEmpty(liveRoomLuckyUserBeanArrayList) && liveRoomLuckyUserBeanArrayList.size() != 0) {
+                    BaseRecyclerViewAdapter baseRecyclerViewAdapter = new BaseRecyclerViewAdapter(ClipDollDetailActivity.this, liveRoomLuckyUserBeanArrayList, CLIP_DOLL_RECORD_LIVE_DATA_TYPE);
+                    recyclerView_lucky.setAdapter(baseRecyclerViewAdapter);
+                    recyclerView_lucky.setLayoutManager(new LinearLayoutManager(ClipDollDetailActivity.this, LinearLayoutManager.VERTICAL, false));
+                    baseRecyclerViewAdapter.setOnItemClickListener(this);
                 }
+                break;
+            case 3:
                 //结果对话框
                 tryAgingTime = 10;
                 //隐藏等待游戏结果的提示文字
@@ -1343,6 +1399,7 @@ public class ClipDollDetailActivity extends BaseActivity implements View.OnClick
                 ImageView iv_clip_doll_result = (ImageView) clipDollResultPopupWindow.getContentView().findViewById(R.id.iv_clip_doll_result);
                 TextView tv_clip_doll_result = (TextView) clipDollResultPopupWindow.getContentView().findViewById(R.id.tv_clip_doll_result);
                 TextView tv_clip_doll_desc = (TextView) clipDollResultPopupWindow.getContentView().findViewById(R.id.tv_clip_doll_desc);
+                ImageView iv_clip_doll_result_lamp = (ImageView) clipDollResultPopupWindow.getContentView().findViewById(R.id.iv_clip_doll_result_lamp);
                 if (isClip) {
                     iv_clip_doll_result.setImageResource(R.drawable.liveroom_image_happy);
                     tv_clip_doll_result.setText("恭喜你抓到一个宝贝");

@@ -2,6 +2,7 @@ package com.happy.moment.clip.doll.fragment;
 
 import android.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ public class UserCenterFragment extends BaseFragment {
     private int role;
 
     private TextView tv_my_income;
+    private TextView tv_remain_coin;
 
     @Override
     protected int getLayoutId() {
@@ -55,7 +57,7 @@ public class UserCenterFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        view.findViewById(R.id.ll_close).setOnClickListener(this);
+        view.findViewById(R.id.ll_close).setVisibility(View.GONE);
         ((TextView) view.findViewById(R.id.tv_bar_title)).setText("");
         view.findViewById(R.id.rl_notification).setOnClickListener(this);
         view_red_point = view.findViewById(R.id.view_red_point);
@@ -64,7 +66,10 @@ public class UserCenterFragment extends BaseFragment {
         tv_user_name = (TextView) view.findViewById(R.id.tv_user_name);
         tv_id_num = (TextView) view.findViewById(R.id.tv_id_num);
 
+        Button btn_recharge = (Button) view.findViewById(R.id.btn_recharge);
+        btn_recharge.setOnClickListener(this);
         tv_my_income = (TextView) view.findViewById(R.id.tv_my_income);
+        tv_remain_coin = (TextView) view.findViewById(R.id.tv_remain_coin);
 
         view.findViewById(R.id.rl_game_coin).setOnClickListener(this);
         view.findViewById(R.id.rl_clip_doll_record).setOnClickListener(this);
@@ -111,12 +116,10 @@ public class UserCenterFragment extends BaseFragment {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_close:
-                goBack();
-                break;
             case R.id.rl_notification:
                 gotoPager(NotificationCenterFragment.class, null);
                 break;
+            case R.id.btn_recharge:
             case R.id.rl_game_coin:
                 gotoPager(MyGameCoinFragment.class, null);
                 break;
@@ -154,7 +157,7 @@ public class UserCenterFragment extends BaseFragment {
                 gotoPager(FeedBackFragment.class, null);
                 break;
             case R.id.rl_score_prize:
-                ToastUtils.showShort("评分有奖");
+                gotoPager(ScorePrizeFragment.class, null);
                 break;
             case R.id.rl_check_update:
                 checkUpdate();
@@ -255,6 +258,45 @@ public class UserCenterFragment extends BaseFragment {
         showRedPoint();
         //拉取最新的个人信息
         getUserInfoFromNet();
+        //得到剩余娃娃币的数量
+        getUserBalanceFromNet();
+    }
+
+    private void getUserBalanceFromNet() {
+        OkHttpUtils.post()
+                .url(Constants.getUserBalance())
+                .addParams(Constants.SESSION, SPUtils.getInstance().getString(Constants.SESSION))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                String balance = jsonObjectResBody.optString("balance");
+                                if (EmptyUtils.isNotEmpty(balance)) {
+                                    tv_remain_coin.setText(balance + "币");
+                                }
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void getUserInfoFromNet() {
