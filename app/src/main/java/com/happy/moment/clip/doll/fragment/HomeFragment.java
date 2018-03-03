@@ -357,7 +357,6 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnL
                                                 }
                                             }
                                         });
-
                                     }
                                 } else {
                                     //初始化标签区

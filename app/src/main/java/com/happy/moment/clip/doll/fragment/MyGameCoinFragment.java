@@ -161,11 +161,12 @@ public class MyGameCoinFragment extends BaseFragment {
                     switch (priceId) {
                         case 1:
                             get_wawa_coin = 100;
+                            //                            pay_money = Double.parseDouble(priceParameterBeanArrayList.get(0).getPrice());
                             pay_money = 10;
                             break;
                         case 2:
                             get_wawa_coin = 330;
-                            pay_money = 30;
+                            pay_money = 20;
                             break;
                         case 3:
                             get_wawa_coin = 565;
@@ -177,7 +178,7 @@ public class MyGameCoinFragment extends BaseFragment {
                             break;
                         case 5:
                             get_wawa_coin = 2400;
-                            pay_money = 200;
+                            pay_money = 300;
                             break;
                         case 6:
                             get_wawa_coin = 6000;
@@ -217,6 +218,7 @@ public class MyGameCoinFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
+                        LogUtils.e(response);
                         JSONObject jsonObject = null;
                         try {
                             jsonObject = new JSONObject(response);

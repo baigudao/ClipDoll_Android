@@ -9,12 +9,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.happy.moment.clip.doll.R;
 import com.happy.moment.clip.doll.util.Constants;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import okhttp3.Call;
 
 /**
  * Created by Devin on 2017/11/18 17:39
@@ -40,6 +50,9 @@ public class SplashActivity extends BaseActivity {
         BarUtils.hideNavBar(SplashActivity.this);
         setContentView(R.layout.activity_splash);
 
+        //app版本控制
+        appVersionControl();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //SDK版本大于等于23，也就是Android 6.0
             requestPermission();//请求权限 Xiaomi6.0.1
@@ -47,6 +60,58 @@ public class SplashActivity extends BaseActivity {
             //SDK版本小于23的走这
             afterRequestPermission();//请求权限之后 Meizu5.1
         }
+    }
+
+    /**
+     * App版本控制
+     */
+    private void appVersionControl() {
+        OkHttpUtils.get()
+                .url(Constants.getAppVersionControlUrl())
+                .addParams(Constants.PLATFORM, String.valueOf(0))
+                .addParams(Constants.BUILD, String.valueOf(AppUtils.getAppVersionCode()))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        LogUtils.e(e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            JSONObject jsonObjectResHead = jsonObject.optJSONObject("resHead");
+                            int code = jsonObjectResHead.optInt("code");
+                            String msg = jsonObjectResHead.optString("msg");
+                            String req = jsonObjectResHead.optString("req");
+                            JSONObject jsonObjectResBody = jsonObject.optJSONObject("resBody");
+                            if (code == 1) {
+                                int appUpdateType = jsonObjectResBody.optInt("appUpdateType");//0.无需更新,1.推荐更新,2.强制更新
+                                int reviewBuild = jsonObjectResBody.optInt("reviewBuild");//审核中BuildId
+                                switch (appUpdateType) {
+                                    case 0:
+                                        //                                        ToastUtils.showShort("无需更新");
+                                        break;
+                                    case 1:
+                                        //                                        ToastUtils.showShort("推荐更新");
+                                        break;
+                                    case 2:
+                                        //                                        ToastUtils.showShort("强制更新");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } else {
+                                LogUtils.e("请求数据失败：" + msg + "-" + code + "-" + req);
+                                ToastUtils.showShort("请求数据失败:" + msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void requestPermission() {

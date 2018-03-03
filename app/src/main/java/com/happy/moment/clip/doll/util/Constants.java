@@ -13,6 +13,7 @@ public class Constants {
     public static final String IS_USER_LOGIN = "is_user_login";
     public static final String LOGINTYPE = "loginType";
     public static final String PLATFORM = "platform";
+    public static final String BUILD = "build";
     public static final String PLATFORMTYPE = "platformType";
     public static final String ACCOUNTTYPE = "accountType";
     public static final String PWD = "pwd";
@@ -130,6 +131,8 @@ public class Constants {
     private static final String userTaskInfoUrl = BASE_URL + "home/getUserTaskInfo/v1";//每日任务详情
 
     private static final String liveTagUrl = BASE_URL + "live/room/getLiveTags/v1";//直播间标签列表
+
+    private static final String appVersionControlUrl = BASE_URL + "version/app/control";//APP版本控制
 
 
     public static String getHomeRoomListUrl() {
@@ -354,5 +357,9 @@ public class Constants {
 
     public static String getLiveTagUrl() {
         return liveTagUrl;
+    }
+
+    public static String getAppVersionControlUrl() {
+        return appVersionControlUrl;
     }
 }
